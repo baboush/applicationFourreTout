@@ -1,11 +1,14 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import configuration from './infrastructure/config/configuration';
-import * as Joi from 'joi';
+import Joi from 'joi';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { DataSourceService } from '@infrastructure/persistence';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
+      isGlobal: true,
       load: [configuration],
       cache: true,
       validationSchema: Joi.object({
@@ -14,6 +17,9 @@ import * as Joi from 'joi';
           .default('development'),
         PORT: Joi.number().port().default(3000),
       }),
+    }),
+    TypeOrmModule.forRootAsync({
+      useClass: DataSourceService,
     }),
   ],
   controllers: [],

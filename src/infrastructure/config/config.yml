@@ -3,8 +3,7 @@
 db:
   mysql:
     url: 'localhost'
-    ports:
-      - '3306:3333'
+    ports: '3306:3333'
     database: 'nestjs-fil-rouge'
     database_usr: 'root'
     database_passd: 'root'
