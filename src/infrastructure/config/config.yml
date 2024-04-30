@@ -1,0 +1,15 @@
+# Use root/example as user/password credentials
+
+db:
+  mysql:
+    url: 'localhost'
+    ports: '3306:3333'
+    database: 'nestjs-fil-rouge'
+    database_usr: 'root'
+    database_passd: 'root'
+    database_type: 'mysql'
+
+swagger:
+  title: 'Application Fourre Tout'
+  description: 'Api Rest pour ajouter, supprimer, des rendez-vous, des films, des livres, des taches'
+  version: 1.0.0
