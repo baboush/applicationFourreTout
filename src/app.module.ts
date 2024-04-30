@@ -1,9 +1,10 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import configuration from './infrastructure/config/configuration';
-import Joi from 'joi';
+import * as Joi from 'joi';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { DataSourceService } from '@infrastructure/persistence';
+import { SwaggerService } from '@shared/swagger/swagger.service';
 
 @Module({
   imports: [
@@ -23,6 +24,6 @@ import { DataSourceService } from '@infrastructure/persistence';
     }),
   ],
   controllers: [],
-  providers: [],
+  providers: [SwaggerService],
 })
 export class AppModule {}
