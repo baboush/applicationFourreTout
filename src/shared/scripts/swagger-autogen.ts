@@ -14,7 +14,7 @@ import {
 const project = new Project();
 function generateControllerDoc() {
   const sourceFiles = project.addSourceFilesAtPaths(
-    '../src/**/*.controller.ts',
+    '../../application/**/*.controller.ts',
   );
 
   // Importations Swagger nécessaires
@@ -140,7 +140,9 @@ function generateControllerDoc() {
 }
 
 function generateDtoEntitySwagger() {
-  const dtoSourceFiles = project.addSourceFilesAtPaths('../src/**/*.dto.ts');
+  const dtoSourceFiles = project.addSourceFilesAtPaths(
+    '../../application/**/*.dto.ts',
+  );
   const entitySourceFiles = project.addSourceFilesAtPaths(
     '../src/**/*.entity.ts',
   );

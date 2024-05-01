@@ -1,10 +1,11 @@
+import { DataSourceService } from '@infrastructure/persistence';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import configuration from './infrastructure/config/configuration';
-import * as Joi from 'joi';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { DataSourceService } from '@infrastructure/persistence';
 import { SwaggerService } from '@shared/swagger/swagger.service';
+import * as Joi from 'joi';
+import configuration from './infrastructure/config/configuration';
+import { AuthApplcationModule } from '@application/user/auth';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { SwaggerService } from '@shared/swagger/swagger.service';
     TypeOrmModule.forRootAsync({
       useClass: DataSourceService,
     }),
+    AuthApplcationModule,
   ],
   controllers: [],
   providers: [SwaggerService],

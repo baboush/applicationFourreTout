@@ -1,7 +1,7 @@
-import { Email, Password, Role, Ursername } from '@shared/types';
+import { Email, Password, Role, Username } from '@shared/types';
 
 export interface User {
-  readonly username: Ursername;
+  readonly username: Username;
   readonly password: Password;
   readonly email: Email;
   readonly role: Role;

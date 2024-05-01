@@ -3,8 +3,8 @@
 db:
   mysql:
     url: 'localhost'
-    ports: '3306:3333'
-    database: 'nestjs-fil-rouge'
+    ports: '3333'
+    database: 'migration1'
     database_usr: 'root'
     database_passd: 'root'
     database_type: 'mysql'

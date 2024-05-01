@@ -1,6 +1,7 @@
 import { ArgumentsHost, Catch, Logger } from '@nestjs/common';
 import { BaseExceptionFilter } from '@nestjs/core';
 
+//TODO: Corriger erreur filter renvoie deux reponses qui faire crash le server
 @Catch()
 export class CatchAllExceptionFilterFilter extends BaseExceptionFilter {
   private logger = new Logger('ExceptionFilter');

@@ -7,9 +7,9 @@ export class SwaggerService {
   constructor(private readonly configService: ConfigService) {}
 
   configSwagger = new DocumentBuilder()
-    .setTitle(this.configService.get<string>('title'))
-    .setDescription(this.configService.get<string>('description'))
-    .setVersion(this.configService.get<string>('version'))
+    .setTitle(this.configService.get<string>('swagger.title'))
+    .setDescription(this.configService.get<string>('swagger.description'))
+    .setVersion(this.configService.get<string>('swagger.version'))
     .build();
 
   createDocumentSwagger(app: INestApplication) {

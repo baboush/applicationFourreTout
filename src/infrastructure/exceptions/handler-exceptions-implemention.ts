@@ -8,7 +8,6 @@ export class HandlerExceptionsImplemention extends HttpException {
   static handlerNotFoundException(
     message: string,
   ): HandlerExceptionsImplemention {
-    const error = `[LOG] `;
     return new HandlerExceptionsImplemention(message, HttpStatus.NOT_FOUND);
   }
   static handlerUnauthorizedException(
