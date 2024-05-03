@@ -1,34 +1,20 @@
-import { LoginUserSchema } from '@shared/schemas';
-import Joi from 'joi';
+import {
+  emailSchema,
+  loginUserSchema,
+  passwordSchema,
+  promiseUserSchema,
+  roleSchema,
+  usernameSchema,
+} from '@shared/schemas';
+import * as z from 'zod';
 
-//TODO: Separer schema et type
-export const usernameSchema = Joi.string()
-  .max(80)
-  .min(4)
-  .pattern(new RegExp('/^[a-zA-Z0-9s]*$/'))
-  .required();
+export type Username = z.infer<typeof usernameSchema>;
 
-export type Username = Joi.Schema<typeof usernameSchema>;
+export type Password = z.infer<typeof passwordSchema>;
 
-export const passwordSchema = Joi.string()
-  .pattern(
-    new RegExp(
-      '^(?=.*[a-z])(?=.*[A-Z])(?=.*d)(?=.*[!@#$%^&*()_+])[A-Za-zd!@#$%^&*()_+]{8,20}$',
-    ),
-  )
-  .required();
+export type Email = z.infer<typeof emailSchema>;
 
-export type Password = Joi.Schema<typeof passwordSchema>;
+export type Role = z.infer<typeof roleSchema>;
 
-export const emailSchema = Joi.string().email({
-  minDomainSegments: 2,
-  tlds: { allow: ['com', 'net', 'fr'] },
-});
-
-export type Email = Joi.Schema<typeof emailSchema>;
-
-export const roleSchema = ['ADMIN', 'USER', 'MODERATEUR'];
-
-export type Role = Joi.Schema<typeof roleSchema>;
-
-export type LoginUser = Joi.Schema<typeof LoginUserSchema>;
+export type PromiseUser = z.infer<typeof promiseUserSchema>;
+export type LoginUser = z.infer<typeof loginUserSchema>;

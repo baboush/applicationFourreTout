@@ -92,9 +92,7 @@ function generateControllerDoc() {
           if (methodType.includes('Promise')) {
             method.addDecorator({
               name: 'ApiOperation',
-              arguments: [
-                `{ summary: "Description de ${methodName}", type: "${methodType}" }`,
-              ],
+              arguments: [`{ summary: "Description de ${methodName}" }`],
             });
           }
 
@@ -141,10 +139,10 @@ function generateControllerDoc() {
 
 function generateDtoEntitySwagger() {
   const dtoSourceFiles = project.addSourceFilesAtPaths(
-    '../../application/**/*.dto.ts',
+    '../../application/**/*-dto.ts',
   );
   const entitySourceFiles = project.addSourceFilesAtPaths(
-    '../src/**/*.entity.ts',
+    '../../domain/entities/*.entity.ts',
   );
   const dtoImportDeclaration: ImportDeclarationStructure = {
     kind: StructureKind.ImportDeclaration,
@@ -186,12 +184,19 @@ function generateDtoEntitySwagger() {
   // Parcourir tous les fichiers entité
   entitySourceFiles.forEach((sourceFile) => {
     // Ajouter l'import dans le fichier entité si nécessaire
+    console.log(`Début du traitement du fichier : ${sourceFile.getFilePath()}`);
+
     const hasSwaggerImport = sourceFile.getImportDeclaration(
       (importDeclaration) =>
         importDeclaration.getModuleSpecifierValue() === '@nestjs/swagger',
     );
+    console.log(`Importation Swagger présente : ${hasSwaggerImport}`);
 
     if (!hasSwaggerImport) {
+      console.log(
+        `Ajout de l'importation Swagger au fichier : ${sourceFile.getFilePath()}`,
+      );
+
       sourceFile.addImportDeclaration(dtoImportDeclaration);
     }
 
@@ -199,17 +204,24 @@ function generateDtoEntitySwagger() {
     sourceFile.getClasses().forEach((classDeclaration: ClassDeclaration) => {
       // Parcourir toutes les propriétés de la classe
       classDeclaration.getProperties().forEach((property) => {
+        console.log(`Traitement de la classe : ${classDeclaration.getName()}`);
+
         // Récupérer le nom et le type de la propriété
         const propertyName = property.getName();
         const propertyType = property.getType().getText();
 
         // Vérifier si la propriété est déjà documentée avec le décorateur ApiProperty
+        console.log(`Propriété : ${propertyName}, Type : ${propertyType}`);
+
         const isDocumented = property.getDecorator(
           (d) => d.getName() === 'ApiProperty',
         );
 
         // Ajouter le décorateur ApiProperty si la propriété n'est pas déjà documentée
         if (!isDocumented) {
+          console.log(
+            `Ajout du décorateur ApiProperty à la propriété : ${propertyName}`,
+          );
           property.addDecorator({
             name: 'ApiProperty',
             arguments: [

@@ -1,5 +1,8 @@
-import { LoginUserDto } from '@domain/dto';
-
+import { CreateUserDto, LoginUserDto } from '@domain/dto';
+import { User } from '@domain/entities/User.entity';
+import { DeepPartial } from 'typeorm';
 export interface AuthController {
-  signIn(data: LoginUserDto): Promise<LoginUserDto>;
+  signIn(loginUserDto: LoginUserDto): Promise<{ access_token: string }>;
+  signUp(createUserDto: DeepPartial<CreateUserDto>): Promise<User>;
+  logOut(): Promise<boolean>;
 }

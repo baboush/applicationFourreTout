@@ -1,9 +1,9 @@
-import { Password, Username } from '@shared/types';
-import { LoginUser } from '@shared/types/user-type';
+import { CreateUserDto, LoginUserDto } from '@domain/dto';
+import { User } from '@domain/interfaces/user.interface';
+import { DeepPartial } from 'typeorm';
 
 export interface AuthService {
-  signIn(
-    username: Username,
-    password: Password,
-  ): Promise<LoginUser | undefined>;
+  signIn(loginUserDto: LoginUserDto): Promise<{ access_token: string }>;
+  signUp(createUserDto: DeepPartial<CreateUserDto>): Promise<User>;
+  logOut(): Promise<boolean>;
 }

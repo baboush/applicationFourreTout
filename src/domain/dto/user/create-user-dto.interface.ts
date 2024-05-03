@@ -1,8 +1,8 @@
-import { Email, Password, Username } from '@shared/types';
+import { Email, Password, Role, Username } from '@shared/types';
 
 export interface CreateUserDto {
   readonly username: Username;
   readonly password: Password;
   readonly email: Email;
-  readonly role: string;
+  readonly role?: Role;
 }

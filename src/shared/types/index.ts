@@ -3,12 +3,7 @@ import { Name, Surname } from './profile-types';
 import { NameCategory } from './category-types';
 import { TitleMovie, DirectorMovie, PosterMovie } from './movie-types';
 import { TitleBook, AuthorBook, PosterBook } from './book-types';
-import {
-  usernameSchema,
-  passwordSchema,
-  roleSchema,
-  emailSchema,
-} from './user-type';
+import {} from './user-type';
 
 export {
   Name,
@@ -24,8 +19,4 @@ export {
   PosterBook,
   TitleBook,
   AuthorBook,
-  usernameSchema,
-  passwordSchema,
-  roleSchema,
-  emailSchema,
 };

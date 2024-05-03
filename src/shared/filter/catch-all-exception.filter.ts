@@ -1,30 +1,31 @@
-import { ArgumentsHost, Catch, Logger } from '@nestjs/common';
-import { BaseExceptionFilter } from '@nestjs/core';
+import {
+  ArgumentsHost,
+  Catch,
+  HttpException,
+  HttpStatus,
+} from '@nestjs/common';
+import { HttpAdapterHost } from '@nestjs/core';
 
-//TODO: Corriger erreur filter renvoie deux reponses qui faire crash le server
 @Catch()
-export class CatchAllExceptionFilterFilter extends BaseExceptionFilter {
-  private logger = new Logger('ExceptionFilter');
+export class CatchAllExceptionFilterFilter {
+  constructor(private readonly httpAdapterHost: HttpAdapterHost) {}
 
-  catch(exception: any, host: ArgumentsHost) {
-    super.catch(exception, host);
+  catch(exception: unknown, host: ArgumentsHost): void {
+    const { httpAdapter } = this.httpAdapterHost;
 
     const ctx = host.switchToHttp();
-    const response = ctx.getResponse();
-    const request = ctx.getRequest();
 
-    const status = exception.getStatus ? exception.getStatus() : 500;
+    const httpStatus =
+      exception instanceof HttpException
+        ? exception.getStatus()
+        : HttpStatus.INTERNAL_SERVER_ERROR;
 
-    this.logger.error(
-      `HTTP ${status} - ${exception.message}`,
-      exception.stack,
-      'AllExcptionFilter',
-    );
-
-    response.status(status).json({
-      statusCode: status,
+    const responseBody = {
+      statusCode: httpStatus,
       timestamp: new Date().toISOString(),
-      path: request.url,
-    });
+      path: httpAdapter.getRequestUrl(ctx.getRequest()),
+    };
+
+    httpAdapter.reply(ctx.getResponse(), responseBody, httpStatus);
   }
 }

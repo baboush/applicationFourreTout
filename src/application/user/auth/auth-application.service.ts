@@ -2,8 +2,11 @@ import { AuthService } from '@domain/services';
 import { AuthRepositoryPersistence } from '@infrastructure/persistence/repositories';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { Username, Password } from '@shared/types';
 import * as bcrypt from 'bcrypt';
+import { AuthSignInDto } from './dto/auth-sign-in.dto';
+import { User } from '@domain/interfaces/user.interface';
+import { DeepPartial } from 'typeorm';
+import { CreateUserDtoApplication } from './dto/create-user-dto-application';
 
 @Injectable()
 export class AuthServiceApplication implements AuthService {
@@ -12,11 +15,8 @@ export class AuthServiceApplication implements AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async signIn(
-    username: Username,
-    password: Password,
-  ): Promise<{ access_token: string }> {
-    const response = await this.authRepostory.signIn(username, password);
+  async signIn(loginUserDto: AuthSignInDto): Promise<{ access_token: string }> {
+    const response = await this.authRepostory.signIn({ ...loginUserDto });
 
     const salt = await bcrypt.genSalt();
     const passwordResponse = response.password;
@@ -30,5 +30,17 @@ export class AuthServiceApplication implements AuthService {
     return {
       access_token: await this.jwtService.signAsync(payload),
     };
+  }
+  async signUp(
+    createUserDto: DeepPartial<CreateUserDtoApplication>,
+  ): Promise<User> {
+    const newUser = { ...createUserDto };
+    const response = await this.authRepostory.signUp(newUser);
+
+    return response;
+  }
+
+  async logOut(): Promise<boolean> {
+    return true;
   }
 }

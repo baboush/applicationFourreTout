@@ -1,2 +1,3 @@
 import { AuthSignInUsecase } from './auth-sign-in-usecase.interface';
-export { AuthSignInUsecase };
+import { CreateUserUsecase } from './create-user-usecase.interface';
+export { AuthSignInUsecase, CreateUserUsecase };

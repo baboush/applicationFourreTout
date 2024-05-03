@@ -14,7 +14,7 @@ async function bootstrap() {
   app.use(helmet());
   app.use(compression());
   swaggerService.createDocumentSwagger(app);
-  app.useGlobalFilters(new CatchAllExceptionFilterFilter(httpAdapter));
+  app.useGlobalFilters(new CatchAllExceptionFilterFilter({ httpAdapter }));
 
   await app.listen(3000);
 }
