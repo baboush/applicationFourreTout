@@ -10,7 +10,6 @@ export class CreateUserUsecaseApplcation implements CreateUserUsecase {
   async execute(
     createUserDto: DeepPartial<CreateUserDtoApplication>,
   ): Promise<User> {
-    const newUser = { ...createUserDto };
-    return await this.authService.signUp(newUser);
+    return await this.authService.signUp(createUserDto);
   }
 }

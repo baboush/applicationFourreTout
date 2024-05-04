@@ -4,9 +4,10 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { AuthSignInDto } from './dto/auth-sign-in.dto';
-import { User } from '@domain/interfaces/user.interface';
 import { DeepPartial } from 'typeorm';
 import { CreateUserDtoApplication } from './dto/create-user-dto-application';
+import { User } from '@domain/entities/User.entity';
+import { Profile } from '@domain/entities/Profile.entity';
 
 @Injectable()
 export class AuthServiceApplication implements AuthService {
@@ -31,10 +32,20 @@ export class AuthServiceApplication implements AuthService {
       access_token: await this.jwtService.signAsync(payload),
     };
   }
+
   async signUp(
     createUserDto: DeepPartial<CreateUserDtoApplication>,
   ): Promise<User> {
-    const newUser = { ...createUserDto };
+    console.table(createUserDto + `service`);
+    const profile = new Profile();
+    const newUser: CreateUserDtoApplication = {
+      username: createUserDto.username,
+      password: createUserDto.password,
+      email: createUserDto.email,
+      role: createUserDto.role,
+      profile: profile,
+    };
+    console.log(JSON.stringify(newUser) + ' service');
     const response = await this.authRepostory.signUp(newUser);
 
     return response;

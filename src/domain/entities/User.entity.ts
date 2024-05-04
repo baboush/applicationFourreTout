@@ -9,6 +9,7 @@ import {
 import { Profile } from './Profile.entity';
 import { Email, Password, Username } from '@shared/types';
 import { ApiProperty, ApiTags } from '@nestjs/swagger';
+import { UserRole } from '@application/user/auth/dto/create-user-dto-application';
 
 @ApiTags('User', 'Authentification')
 @Index('ck_email', ['email'], { unique: true })
@@ -32,17 +33,17 @@ export class User {
 
   @Column('enum', {
     name: 'role',
-    enum: ['ADMIN', 'USER', 'CONTRIBUTEUR'],
-    default: () => "'USER'",
+    enum: UserRole,
+    default: UserRole.User,
   })
   @ApiProperty({
     description: 'role',
     type: '"ADMIN" | "USER" | "CONTRIBUTEUR"',
   })
-  role: 'ADMIN' | 'USER' | 'CONTRIBUTEUR';
+  role: UserRole;
 
-  @OneToOne(() => Profile)
+  @OneToOne(() => Profile, (profile) => profile.user)
   @JoinColumn()
-  @ApiProperty({ description: 'profiles', type: 'Profile' })
-  profiles: Profile;
+  @ApiProperty({ description: 'profile', type: 'Profile' })
+  profile: Profile;
 }

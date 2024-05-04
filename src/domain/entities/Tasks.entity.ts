@@ -2,6 +2,12 @@ import { Column, Entity, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { Profile } from './Profile.entity';
 import { ApiProperty } from '@nestjs/swagger';
 
+export enum Etat {
+  ENCOUR = 'en',
+  ENATTENTE = 'ea',
+  FINI = 'fi',
+}
+
 @Entity('Tasks', { schema: 'migration1' })
 export class Tasks {
   @PrimaryGeneratedColumn({ type: 'int', name: 'id' })
@@ -20,9 +26,9 @@ export class Tasks {
   @ApiProperty({ description: 'dateFinish', type: 'string' })
   dateFinish: string;
 
-  @Column('enum', { name: 'etat', enum: ['EC', 'EA', 'F'] })
+  @Column({ type: 'enum', enum: Etat, default: Etat.ENCOUR })
   @ApiProperty({ description: 'etat', type: 'EC" | "EA" | "F"' })
-  etat: 'EC' | 'EA' | 'F';
+  etat: Etat;
 
   @ManyToMany(() => Profile, (profile) => profile.tasks)
   @ApiProperty({ description: 'profiles', type: 'Profile[]' })

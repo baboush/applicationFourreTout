@@ -1,9 +1,9 @@
 import * as z from 'zod';
 
-const Role = ['USER', 'ADMIN', 'CONTRIBUTEUR'] as const;
+const Role = ['USR', 'ADMIN', 'CONTRIBUTEUR'] as const;
 
 // Définition du schéma Zod
-export const roleSchema = z.enum(Role).default('USER');
+export const roleSchema = z.enum(Role).default('USR');
 export const emailSchema = z.string().email().min(5);
 export const usernameSchema = z
   .string()

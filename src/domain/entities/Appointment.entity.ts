@@ -8,6 +8,12 @@ import {
 import { Profile } from './Profile.entity';
 import { ApiProperty } from '@nestjs/swagger';
 
+export enum etat {
+  ENCOUR = 'EN',
+  ANNULER = 'AN',
+  FINI = 'FI',
+}
+
 @Entity('Appointment', { schema: 'migration1' })
 export class Appointment {
   @PrimaryGeneratedColumn({ type: 'int', name: 'id' })
@@ -22,13 +28,13 @@ export class Appointment {
   @ApiProperty({ description: 'content', type: 'string' })
   content: string;
 
-  @Column('enum', {
-    name: 'etat',
-    enum: ['EN', 'AN', 'F'],
-    default: () => "'EN'",
+  @Column({
+    type: 'enum',
+    enum: etat,
+    default: etat.ENCOUR,
   })
   @ApiProperty({ description: 'etat', type: 'EN" | "AN" | "F"' })
-  etat: 'EN' | 'AN' | 'F';
+  etat: etat;
 
   @Column('date', { name: 'date_appointment' })
   @ApiProperty({ description: 'dateAppointment', type: 'Date' })

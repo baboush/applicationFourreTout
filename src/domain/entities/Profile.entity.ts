@@ -2,10 +2,10 @@ import { Name, Surname } from '@shared/types';
 import {
   Column,
   Entity,
-  Index,
   JoinTable,
   ManyToMany,
   OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Favories } from './Favories.entity';
@@ -14,8 +14,8 @@ import { Books } from './Books.entity';
 import { Movies } from './Movies.entity';
 import { Tasks } from './Tasks.entity';
 import { ApiProperty } from '@nestjs/swagger';
+import { User } from './User.entity';
 
-@Index('fk_profile_id', ['userId'], {})
 @Entity('Profile', { schema: 'migration1' })
 export class Profile {
   @PrimaryGeneratedColumn({ type: 'int', name: 'id' })
@@ -30,9 +30,10 @@ export class Profile {
   @ApiProperty({ description: 'surname', type: 'any' })
   surname: Surname | null;
 
+  @OneToOne(() => User, (user) => user.profile)
   @Column('int', { name: 'userId' })
-  @ApiProperty({ description: 'userId', type: 'number' })
-  userId: number;
+  @ApiProperty({ description: 'userId', type: 'user' })
+  user: User;
 
   @OneToMany(() => Favories, (favories) => favories.profile)
   @ApiProperty({ description: 'favories', type: 'Favories[]' })

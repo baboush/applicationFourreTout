@@ -9,6 +9,10 @@ import { AuthApplcationModule } from '@application/user/auth';
 
 @Module({
   imports: [
+    TypeOrmModule.forRootAsync({
+      useClass: DataSourceService,
+    }),
+
     ConfigModule.forRoot({
       isGlobal: true,
       load: [configuration],
@@ -19,9 +23,6 @@ import { AuthApplcationModule } from '@application/user/auth';
           .default('development'),
         PORT: Joi.number().port().default(3000),
       }),
-    }),
-    TypeOrmModule.forRootAsync({
-      useClass: DataSourceService,
     }),
     AuthApplcationModule,
   ],

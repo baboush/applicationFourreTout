@@ -3,10 +3,10 @@
 db:
   mysql:
     url: 'localhost'
-    ports: '3333'
+    port: '3333'
     database: 'migration1'
     database_usr: 'root'
-    database_passd: 'root'
+    database_password: 'root'
     database_type: 'mysql'
 
 swagger:

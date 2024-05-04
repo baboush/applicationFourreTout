@@ -1,3 +1,7 @@
-import { AuthSignInUsecase, CreateUserUsecase } from './user';
+import {
+  AuthSignInUsecase,
+  CreateUserUsecase,
+  CreateUserProfileUsecase,
+} from './user';
 
-export { AuthSignInUsecase, CreateUserUsecase };
+export { AuthSignInUsecase, CreateUserUsecase, CreateUserProfileUsecase };

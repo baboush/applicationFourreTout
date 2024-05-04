@@ -2,6 +2,13 @@ import { ApiTags, ApiProperty } from '@nestjs/swagger';
 import { CreateUserDto } from '@domain/dto';
 import { IsNotEmpty, IsString, Length, Matches } from 'class-validator';
 import { Role } from '@shared/types';
+import { Profile } from '@domain/entities/Profile.entity';
+
+export enum UserRole {
+  Admin = 'ADMIN',
+  Moderator = 'MODERATOR',
+  User = 'USER',
+}
 @ApiTags('Authentification')
 export class CreateUserDtoApplication implements CreateUserDto {
   @IsString()
@@ -24,6 +31,9 @@ export class CreateUserDtoApplication implements CreateUserDto {
 
   @IsNotEmpty()
   @IsString()
-  @ApiProperty({ description: 'role', enum: ['user', 'admin', 'contributeur'] })
-  readonly role?: Role;
+  @ApiProperty({ description: 'role', enum: ['USER', 'ADMIN', 'CONTRIBUTEUR'] })
+  readonly role?: UserRole;
+
+  @ApiProperty({ description: 'profile' })
+  readonly profile: Profile;
 }

@@ -17,9 +17,9 @@ export class DataSourceService implements TypeOrmOptionsFactory {
   createTypeOrmOptions(): TypeOrmModuleOptions {
     return {
       type: 'mysql',
-      port: this.configService.get<number>('db.mysql.ports'),
+      port: this.configService.get<number>('db.mysql.port'),
       username: this.configService.get<string>('db.mysql.database_usr'),
-      password: this.configService.get<string>('db.mysql.database_passd'),
+      password: this.configService.get<string>('db.mysql.database_password'),
       database: this.configService.get<string>('db.mysql.database'),
       entities: [
         User,
@@ -31,6 +31,8 @@ export class DataSourceService implements TypeOrmOptionsFactory {
         Tasks,
         Appointment,
       ],
+      migrations: ['../migrations/'],
+      synchronize: true,
     };
   }
 }

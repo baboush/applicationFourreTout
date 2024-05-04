@@ -10,14 +10,13 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { DeepPartial, Repository } from 'typeorm';
 import { AuthSignInDto } from '@application/user/auth/dto/auth-sign-in.dto';
-import { JwtService } from '@nestjs/jwt';
 import { LoginUserDto } from '@domain/dto';
 import { CreateUserDtoApplication } from '@application/user/auth/dto/create-user-dto-application';
+import { Profile } from '@domain/entities/Profile.entity';
 @Injectable()
 export class AuthRepositoryPersistence implements AuthRepository {
   constructor(
     @InjectRepository(User) private readonly userRepository: Repository<User>,
-    private jwtService: JwtService,
   ) {}
 
   //TODO: Password
@@ -39,7 +38,6 @@ export class AuthRepositoryPersistence implements AuthRepository {
     }
 
     if (userValidation.password !== password) {
-      console.log('caver');
       throw new UnauthorizedException(`User password is invalid`);
     }
     return userValidation;
@@ -48,7 +46,16 @@ export class AuthRepositoryPersistence implements AuthRepository {
   async signUp(
     createUserDto: DeepPartial<CreateUserDtoApplication>,
   ): Promise<User> {
-    const newUser = { ...createUserDto };
+    const profile = new Profile();
+    const newUser: CreateUserDtoApplication = {
+      username: createUserDto.username,
+      password: createUserDto.password,
+      email: createUserDto.email,
+      role: createUserDto.role,
+      profile: profile,
+    };
+
+    console.log(JSON.stringify(newUser));
 
     if (!newUser) {
       throw new BadRequestException(`Bad request User `);

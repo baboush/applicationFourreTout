@@ -3,6 +3,7 @@ import {
   DeleteUserDto,
   LoginUserDto,
   UpdateUserDto,
+  CreateUserProfile,
 } from './user';
 
 import {
@@ -54,4 +55,5 @@ export {
   DeleteAppointmentDto,
   UpdateAppointmentDto,
   FindAppointmentDto,
+  CreateUserProfile,
 };

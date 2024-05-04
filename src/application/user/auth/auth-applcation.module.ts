@@ -5,6 +5,7 @@ import { AuthSignInUsecaseApplication } from './usecases/auth-sign-in-usecase-ap
 import { AuthControllerApplication } from './auth-application.controller';
 import { JwtModule } from '@nestjs/jwt';
 import { jwtApiSecrect } from './constants';
+import { CreateUserUsecaseApplcation } from './usecases/create-user-usercase-applcation';
 
 @Module({
   imports: [
@@ -15,7 +16,11 @@ import { jwtApiSecrect } from './constants';
       signOptions: { expiresIn: '60s' },
     }),
   ],
-  providers: [AuthServiceApplication, AuthSignInUsecaseApplication],
+  providers: [
+    AuthServiceApplication,
+    AuthSignInUsecaseApplication,
+    CreateUserUsecaseApplcation,
+  ],
   controllers: [AuthControllerApplication],
 })
 export class AuthApplcationModule {}
