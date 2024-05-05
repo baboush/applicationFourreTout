@@ -1,22 +1,24 @@
-import { User } from '@domain/entities/User.entity';
-import { AuthRepository } from '@domain/repositories';
-import { LoginUser } from '@shared/types/user-type';
+import { User } from "@domain/entities/User.entity";
+import { AuthRepository } from "@domain/repositories";
+import { LoginUser } from "@shared/types/user-type";
 import {
   BadRequestException,
   Injectable,
   NotFoundException,
   UnauthorizedException,
-} from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { DeepPartial, Repository } from 'typeorm';
-import { AuthSignInDto } from '@application/user/auth/dto/auth-sign-in.dto';
-import { LoginUserDto } from '@domain/dto';
-import { CreateUserDtoApplication } from '@application/user/auth/dto/create-user-dto-application';
-import { Profile } from '@domain/entities/Profile.entity';
+} from "@nestjs/common";
+import { InjectRepository } from "@nestjs/typeorm";
+import { Repository } from "typeorm";
+import { AuthSignInDto } from "@application/user/auth/dto/auth-sign-in.dto";
+import { LoginUserDto } from "@domain/dto";
+import { CreateUserDtoApplication } from "@application/user/auth/dto/create-user-dto-application";
+import { Profile } from "@domain/entities/Profile.entity";
 @Injectable()
 export class AuthRepositoryPersistence implements AuthRepository {
   constructor(
     @InjectRepository(User) private readonly userRepository: Repository<User>,
+    @InjectRepository(Profile)
+    private readonly profileRepository: Repository<Profile>,
   ) {}
 
   //TODO: Password
@@ -24,7 +26,7 @@ export class AuthRepositoryPersistence implements AuthRepository {
     const { username, password } = { ...loginUserDto };
     const response = await this.userRepository
       .createQueryBuilder()
-      .where('User.username = :username', { username })
+      .where("User.username = :username", { username })
       .getOne();
 
     const userValidation: AuthSignInDto = {
@@ -36,33 +38,29 @@ export class AuthRepositoryPersistence implements AuthRepository {
     if (!userValidation) {
       throw new NotFoundException(`User: ${userValidation.username} not found`);
     }
-
-    if (userValidation.password !== password) {
-      throw new UnauthorizedException(`User password is invalid`);
-    }
     return userValidation;
   }
 
-  async signUp(
-    createUserDto: DeepPartial<CreateUserDtoApplication>,
-  ): Promise<User> {
-    const profile = new Profile();
-    const newUser: CreateUserDtoApplication = {
+  async signUp(createUserDto: CreateUserDtoApplication): Promise<User> {
+    //TODO: validator email et refactory lorsque le repository profile est creer
+    const newProfile = new Profile();
+    const profileAdd = this.profileRepository.create(newProfile);
+    await this.profileRepository.save(profileAdd);
+
+    const newUser: Partial<User> = {
       username: createUserDto.username,
       password: createUserDto.password,
       email: createUserDto.email,
       role: createUserDto.role,
-      profile: profile,
+      profile: profileAdd,
     };
 
-    console.log(JSON.stringify(newUser));
-
+    const response = this.userRepository.create(newUser);
     if (!newUser) {
       throw new BadRequestException(`Bad request User `);
     }
 
-    const response = this.userRepository.create(newUser);
-    const createUser = this.userRepository.save(response);
+    const createUser = await this.userRepository.save(response);
     return createUser;
   }
 

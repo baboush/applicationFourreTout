@@ -6,7 +6,9 @@ import {
   loginUserSchema,
   promiseUserSchema,
   roleSchema,
-} from './user-schema';
+} from "./user-schema";
+
+import { nameSchema, surnameSchema } from "./profile-schema";
 
 export {
   emailSchema,
@@ -16,4 +18,6 @@ export {
   loginUserSchema,
   promiseUserSchema,
   roleSchema,
+  nameSchema,
+  surnameSchema,
 };

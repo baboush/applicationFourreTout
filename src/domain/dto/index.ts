@@ -4,35 +4,35 @@ import {
   LoginUserDto,
   UpdateUserDto,
   CreateUserProfile,
-} from './user';
+} from "./user";
 
 import {
   CreateMovieDto,
   DeleteMovieDto,
   UpdateMoviesDto,
   FindMovieDto,
-} from './movies';
+} from "./movies";
 
 import {
   CreateBookDto,
   DeleteBookDto,
   UpdateBookDto,
   FindBookDto,
-} from './books';
+} from "./books";
 
 import {
   CreateTaskDto,
   DeleteTaskDto,
   UpdateTaskDto,
   FindTaskDto,
-} from './tasks';
+} from "./tasks";
 
 import {
   CreateAppointmentDto,
   DeleteAppointmentDto,
   UpdateAppointmentDto,
   FindAppointmentDto,
-} from './appointments';
+} from "./appointments";
 
 export {
   CreateUserDto,

@@ -1,12 +1,12 @@
-import { HttpAdapterHost, NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
-import helmet from 'helmet';
-import * as compression from 'compression';
-import { SwaggerService } from '@shared/swagger/swagger.service';
-import { CatchAllExceptionFilterFilter } from '@shared/filter/catch-all-exception.filter';
+import { HttpAdapterHost, NestFactory } from "@nestjs/core";
+import { AppModule } from "./app.module";
+import helmet from "helmet";
+import * as compression from "compression";
+import { SwaggerService } from "@shared/swagger/swagger.service";
+import { CatchAllExceptionFilterFilter } from "@shared/filter/catch-all-exception.filter";
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, {});
   const swaggerService = app.get(SwaggerService);
   const { httpAdapter } = app.get(HttpAdapterHost);
 

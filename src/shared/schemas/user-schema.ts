@@ -1,9 +1,9 @@
-import * as z from 'zod';
+import * as z from "zod";
 
-const Role = ['USR', 'ADMIN', 'CONTRIBUTEUR'] as const;
+const Role = ["USER", "ADMIN", "CONTRIBUTEUR"] as const;
 
 // Définition du schéma Zod
-export const roleSchema = z.enum(Role).default('USR');
+export const roleSchema = z.enum(Role).default("USER");
 export const emailSchema = z.string().email().min(5);
 export const usernameSchema = z
   .string()
@@ -13,11 +13,9 @@ export const usernameSchema = z
 
 export const passwordSchema = z
   .string()
-  .regex(
-    /^(?=.*[a-z])(?=.*[A-Z])(?=.*d)(?=.*[!@#$%^&*()_+])[A-Za-zd!@#$%^&*()_+]{8,20}$/,
-  );
+  .regex(/^(?=.*[A-Z])(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]{8,}$/);
 export const userSchema = z.object({
-  usrname: usernameSchema,
+  username: usernameSchema,
   password: passwordSchema,
   email: emailSchema,
   role: roleSchema,

@@ -1,13 +1,11 @@
-import { AuthService } from '@domain/services';
-import { AuthRepositoryPersistence } from '@infrastructure/persistence/repositories';
-import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
-import * as bcrypt from 'bcrypt';
-import { AuthSignInDto } from './dto/auth-sign-in.dto';
-import { DeepPartial } from 'typeorm';
-import { CreateUserDtoApplication } from './dto/create-user-dto-application';
-import { User } from '@domain/entities/User.entity';
-import { Profile } from '@domain/entities/Profile.entity';
+import { AuthService } from "@domain/services";
+import { AuthRepositoryPersistence } from "@infrastructure/persistence/repositories";
+import { Injectable, UnauthorizedException } from "@nestjs/common";
+import { JwtService } from "@nestjs/jwt";
+import * as bcrypt from "bcrypt";
+import { AuthSignInDto } from "./dto/auth-sign-in.dto";
+import { CreateUserDtoApplication } from "./dto/create-user-dto-application";
+import { User } from "@domain/entities/User.entity";
 
 @Injectable()
 export class AuthServiceApplication implements AuthService {
@@ -19,10 +17,10 @@ export class AuthServiceApplication implements AuthService {
   async signIn(loginUserDto: AuthSignInDto): Promise<{ access_token: string }> {
     const response = await this.authRepostory.signIn({ ...loginUserDto });
 
-    const salt = await bcrypt.genSalt();
     const passwordResponse = response.password;
-    const hash = await bcrypt.hash(passwordResponse, salt);
-    const isMatch = await bcrypt.compare(passwordResponse, hash);
+    const passwordProvided = loginUserDto.password;
+    console.log(passwordProvided);
+    const isMatch = await bcrypt.compare(passwordProvided, passwordResponse);
 
     if (!isMatch) {
       throw new UnauthorizedException(`Password is invalid`);
@@ -33,22 +31,15 @@ export class AuthServiceApplication implements AuthService {
     };
   }
 
-  async signUp(
-    createUserDto: DeepPartial<CreateUserDtoApplication>,
-  ): Promise<User> {
-    console.table(createUserDto + `service`);
-    const profile = new Profile();
+  async signUp(createUserDto: CreateUserDtoApplication): Promise<User> {
+    const password = await bcrypt.hash(createUserDto.password, 10);
     const newUser: CreateUserDtoApplication = {
       username: createUserDto.username,
-      password: createUserDto.password,
+      password: password,
       email: createUserDto.email,
       role: createUserDto.role,
-      profile: profile,
     };
-    console.log(JSON.stringify(newUser) + ' service');
-    const response = await this.authRepostory.signUp(newUser);
-
-    return response;
+    return await this.authRepostory.signUp(newUser);
   }
 
   async logOut(): Promise<boolean> {
