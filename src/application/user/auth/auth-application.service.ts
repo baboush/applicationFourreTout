@@ -7,6 +7,7 @@ import { AuthSignInDto } from "./dto/auth-sign-in.dto";
 import { CreateUserDtoApplication } from "./dto/create-user-dto-application";
 import { User } from "@domain/entities/User.entity";
 import { Password, Username } from "@shared/types";
+import { LoginDtoApplication } from "./dto/login-dto-application";
 
 @Injectable()
 export class AuthServiceApplication implements AuthService {
@@ -24,14 +25,16 @@ export class AuthServiceApplication implements AuthService {
     };
   }
 
-  async validateUser(username: Username, password: Password): Promise<any> {
-    const user = await this.authRepostory.signIn(username, password);
+  async validateUser(loginUser: LoginDtoApplication): Promise<any> {
+    console.log(JSON.stringify(loginUser) + `service`);
+    const user = await this.authRepostory.signIn(loginUser);
 
     if (!user) {
       throw new UnauthorizedException(`Password invalid`);
     }
+    console.log(user);
     const passwordResponse = user.password;
-    const passwordProvided = password;
+    const passwordProvided = loginUser.password;
     const isMatch = await bcrypt.compare(passwordProvided, passwordResponse);
 
     if (!isMatch) {

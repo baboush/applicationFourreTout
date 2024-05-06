@@ -21,6 +21,8 @@ import { CreateUserDtoApplication } from "./dto/create-user-dto-application";
 import { userSchema } from "@shared/schemas";
 import { AuthGuard } from "@nestjs/passport";
 import { AuthServiceApplication } from "./auth-application.service";
+import { AuthSignInDto } from "./dto/auth-sign-in.dto";
+import { LoginDtoApplication } from "./dto/login-dto-application";
 
 @ApiTags("Authentification")
 @Controller("auth")
@@ -38,7 +40,11 @@ export class AuthControllerApplication implements AuthController {
   @ApiOperation({ summary: "Description de signIn" })
   @ApiNotFoundResponse({ description: "Ressource non trouvée" })
   @ApiInternalServerErrorResponse({ description: "Erreur interne du serveur" })
-  async signIn(@Request() req): Promise<any> {
+  async signIn(
+    @Body() loginDto: LoginDtoApplication,
+    @Request() req,
+  ): Promise<{ access_token: string }> {
+    const user = this.service.validateUser(loginDto);
     return await this.service.getToken(req);
   }
 
