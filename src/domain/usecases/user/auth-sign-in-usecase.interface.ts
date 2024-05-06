@@ -1,5 +1,5 @@
-import { LoginUserDto } from '@domain/dto';
+import { Password, Username } from "@shared/types";
 
 export interface AuthSignInUsecase {
-  execute(loginUserDto: LoginUserDto): Promise<{ access_token: string }>;
+  execute(username: Username, password: Password): Promise<any>;
 }

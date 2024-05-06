@@ -1,4 +1,11 @@
-import { Body, Controller, Post } from "@nestjs/common";
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  Request,
+  UseGuards,
+} from "@nestjs/common";
 import { AuthController } from "@domain/controllers";
 import {
   ApiOperation,
@@ -8,11 +15,12 @@ import {
   ApiTags,
 } from "@nestjs/swagger";
 import { AuthSignInUsecaseApplication } from "./usecases/auth-sign-in-usecase-application";
-import { AuthSignInDto } from "./dto/auth-sign-in.dto";
 import { User } from "@domain/entities/User.entity";
 import { CreateUserUsecaseApplcation } from "./usecases/create-user-usercase-applcation";
 import { CreateUserDtoApplication } from "./dto/create-user-dto-application";
 import { userSchema } from "@shared/schemas";
+import { AuthGuard } from "@nestjs/passport";
+import { AuthServiceApplication } from "./auth-application.service";
 
 @ApiTags("Authentification")
 @Controller("auth")
@@ -20,17 +28,18 @@ export class AuthControllerApplication implements AuthController {
   constructor(
     private readonly authSignIn: AuthSignInUsecaseApplication,
     private readonly authSignUp: CreateUserUsecaseApplcation,
+    private readonly service: AuthServiceApplication,
   ) {}
 
+  //TODO: Mettre a jour le usecrase authSignIn
+  @UseGuards(AuthGuard("local"))
   @Post("login")
   @ApiResponse({ status: 200, description: "Réponse réussie" })
   @ApiOperation({ summary: "Description de signIn" })
   @ApiNotFoundResponse({ description: "Ressource non trouvée" })
   @ApiInternalServerErrorResponse({ description: "Erreur interne du serveur" })
-  async signIn(
-    @Body() authSignInDto: AuthSignInDto,
-  ): Promise<{ access_token: string }> {
-    return await this.authSignIn.execute(authSignInDto);
+  async signIn(@Request() req): Promise<any> {
+    return await this.service.getToken(req);
   }
 
   @Post("signUp")
@@ -45,7 +54,10 @@ export class AuthControllerApplication implements AuthController {
     return await this.authSignUp.execute(newUser);
   }
 
+  @Get("logOut")
+  @ApiResponse({ status: 201, description: "Success Create User" })
   async logOut(): Promise<boolean> {
+    console.log("logout");
     return true;
   }
 }

@@ -6,6 +6,7 @@ import * as bcrypt from "bcrypt";
 import { AuthSignInDto } from "./dto/auth-sign-in.dto";
 import { CreateUserDtoApplication } from "./dto/create-user-dto-application";
 import { User } from "@domain/entities/User.entity";
+import { Password, Username } from "@shared/types";
 
 @Injectable()
 export class AuthServiceApplication implements AuthService {
@@ -14,21 +15,29 @@ export class AuthServiceApplication implements AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async signIn(loginUserDto: AuthSignInDto): Promise<{ access_token: string }> {
-    const response = await this.authRepostory.signIn({ ...loginUserDto });
+  async getToken(
+    loginUserDto: AuthSignInDto,
+  ): Promise<{ access_token: string }> {
+    const payload = { sub: loginUserDto.id, username: loginUserDto.username };
+    return {
+      access_token: await this.jwtService.signAsync(payload),
+    };
+  }
 
-    const passwordResponse = response.password;
-    const passwordProvided = loginUserDto.password;
-    console.log(passwordProvided);
+  async validateUser(username: Username, password: Password): Promise<any> {
+    const user = await this.authRepostory.signIn(username, password);
+
+    if (!user) {
+      throw new UnauthorizedException(`Password invalid`);
+    }
+    const passwordResponse = user.password;
+    const passwordProvided = password;
     const isMatch = await bcrypt.compare(passwordProvided, passwordResponse);
 
     if (!isMatch) {
       throw new UnauthorizedException(`Password is invalid`);
     }
-    const payload = { sub: response.id, username: response.username };
-    return {
-      access_token: await this.jwtService.signAsync(payload),
-    };
+    return user;
   }
 
   async signUp(createUserDto: CreateUserDtoApplication): Promise<User> {

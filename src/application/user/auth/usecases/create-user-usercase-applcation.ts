@@ -1,5 +1,4 @@
 import { CreateUserUsecase } from "@domain/usecases";
-import { DeepPartial } from "typeorm";
 import { CreateUserDtoApplication } from "../dto/create-user-dto-application";
 import { AuthServiceApplication } from "../auth-application.service";
 import { Injectable } from "@nestjs/common";

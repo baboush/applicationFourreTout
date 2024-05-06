@@ -1,6 +1,6 @@
 import { User } from "@domain/entities/User.entity";
 import { AuthRepository } from "@domain/repositories";
-import { LoginUser } from "@shared/types/user-type";
+import { LoginUser, Password, Username } from "@shared/types/user-type";
 import {
   BadRequestException,
   Injectable,
@@ -8,11 +8,11 @@ import {
   UnauthorizedException,
 } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { Repository } from "typeorm";
+import { Equal, Repository } from "typeorm";
 import { AuthSignInDto } from "@application/user/auth/dto/auth-sign-in.dto";
-import { LoginUserDto } from "@domain/dto";
 import { CreateUserDtoApplication } from "@application/user/auth/dto/create-user-dto-application";
 import { Profile } from "@domain/entities/Profile.entity";
+import { log } from "console";
 @Injectable()
 export class AuthRepositoryPersistence implements AuthRepository {
   constructor(
@@ -22,17 +22,22 @@ export class AuthRepositoryPersistence implements AuthRepository {
   ) {}
 
   //TODO: Password
-  async signIn(loginUserDto: LoginUserDto): Promise<LoginUser> {
-    const { username, password } = { ...loginUserDto };
-    const response = await this.userRepository
-      .createQueryBuilder()
-      .where("User.username = :username", { username })
+  async signIn(username: Username, password: Password): Promise<LoginUser> {
+    const response = { username, password };
+    console.log(
+      JSON.stringify({ username, password }) +
+        ` repository sign in loginUserDto`,
+    );
+    const user = await this.userRepository
+      .createQueryBuilder("user")
+      .where("user.username = :username", { username })
       .getOne();
+    console.log(JSON.stringify(user) + `repository signIn `);
 
     const userValidation: AuthSignInDto = {
-      id: response.id,
-      username: response.username,
-      password: response.password,
+      id: user.id,
+      username: user.username,
+      password: user.password,
     };
 
     if (!userValidation) {
@@ -44,6 +49,7 @@ export class AuthRepositoryPersistence implements AuthRepository {
   async signUp(createUserDto: CreateUserDtoApplication): Promise<User> {
     //TODO: validator email et refactory lorsque le repository profile est creer
     const newProfile = new Profile();
+    console.log(createUserDto);
     const profileAdd = this.profileRepository.create(newProfile);
     await this.profileRepository.save(profileAdd);
 
