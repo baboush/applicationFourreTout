@@ -5,7 +5,6 @@ import {
   JoinTable,
   ManyToMany,
   OneToMany,
-  OneToOne,
   PrimaryGeneratedColumn,
 } from "typeorm";
 import { Favories } from "./Favories.entity";
@@ -14,9 +13,6 @@ import { Books } from "./Books.entity";
 import { Movies } from "./Movies.entity";
 import { Tasks } from "./Tasks.entity";
 import { ApiProperty } from "@nestjs/swagger";
-import { User } from "./User.entity";
-import { ValidateNested } from "class-validator";
-import { Type } from "class-transformer";
 
 @Entity("Profile", { schema: "migration1" })
 export class Profile {

@@ -1,0 +1,11 @@
+import { Injectable } from "@nestjs/common";
+import { AuthServiceApplication } from "../auth-application.service";
+import { Password, Username } from "@shared/types";
+import { AuthSignInUsecase, User } from "@domain/Auth";
+@Injectable()
+export class AuthSignInUsecaseApplication implements AuthSignInUsecase {
+  constructor(private readonly authService: AuthServiceApplication) {}
+  async execute(username: Username, password: Password): Promise<User> {
+    return await this.authService.validateUser(username, password);
+  }
+}

@@ -1,14 +1,14 @@
-import { Appointment } from '@domain/entities/Appointment.entity';
-import { Books } from '@domain/entities/Books.entity';
-import { Categories } from '@domain/entities/Categories.entity';
-import { Favories } from '@domain/entities/Favories.entity';
-import { Movies } from '@domain/entities/Movies.entity';
-import { Profile } from '@domain/entities/Profile.entity';
-import { Tasks } from '@domain/entities/Tasks.entity';
-import { User } from '@domain/entities/User.entity';
-import { Injectable } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
-import { TypeOrmModuleOptions, TypeOrmOptionsFactory } from '@nestjs/typeorm';
+import { UserEntity } from "@domain/Auth";
+import { Appointment } from "@domain/entities/Appointment.entity";
+import { Books } from "@domain/entities/Books.entity";
+import { Categories } from "@domain/entities/Categories.entity";
+import { Favories } from "@domain/entities/Favories.entity";
+import { Movies } from "@domain/entities/Movies.entity";
+import { Profile } from "@domain/entities/Profile.entity";
+import { Tasks } from "@domain/entities/Tasks.entity";
+import { Injectable } from "@nestjs/common";
+import { ConfigService } from "@nestjs/config";
+import { TypeOrmModuleOptions, TypeOrmOptionsFactory } from "@nestjs/typeorm";
 
 @Injectable()
 export class DataSourceService implements TypeOrmOptionsFactory {
@@ -16,13 +16,13 @@ export class DataSourceService implements TypeOrmOptionsFactory {
 
   createTypeOrmOptions(): TypeOrmModuleOptions {
     return {
-      type: 'mysql',
-      port: this.configService.get<number>('db.mysql.port'),
-      username: this.configService.get<string>('db.mysql.database_usr'),
-      password: this.configService.get<string>('db.mysql.database_password'),
-      database: this.configService.get<string>('db.mysql.database'),
+      type: "mysql",
+      port: this.configService.get<number>("db.mysql.port"),
+      username: this.configService.get<string>("db.mysql.database_usr"),
+      password: this.configService.get<string>("db.mysql.database_password"),
+      database: this.configService.get<string>("db.mysql.database"),
       entities: [
-        User,
+        UserEntity,
         Profile,
         Favories,
         Categories,
@@ -31,7 +31,7 @@ export class DataSourceService implements TypeOrmOptionsFactory {
         Tasks,
         Appointment,
       ],
-      migrations: ['../migrations/'],
+      migrations: ["../migrations/"],
       synchronize: true,
     };
   }

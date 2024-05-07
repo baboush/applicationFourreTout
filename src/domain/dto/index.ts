@@ -1,12 +1,4 @@
 import {
-  CreateUserDto,
-  DeleteUserDto,
-  LoginUserDto,
-  UpdateUserDto,
-  CreateUserProfile,
-} from "./user";
-
-import {
   CreateMovieDto,
   DeleteMovieDto,
   UpdateMoviesDto,
@@ -35,10 +27,6 @@ import {
 } from "./appointments";
 
 export {
-  CreateUserDto,
-  DeleteUserDto,
-  LoginUserDto,
-  UpdateUserDto,
   CreateMovieDto,
   DeleteMovieDto,
   FindMovieDto,
@@ -55,5 +43,4 @@ export {
   DeleteAppointmentDto,
   UpdateAppointmentDto,
   FindAppointmentDto,
-  CreateUserProfile,
 };
