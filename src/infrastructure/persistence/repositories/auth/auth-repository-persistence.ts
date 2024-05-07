@@ -23,7 +23,6 @@ export class AuthRepositoryPersistence implements AuthRepository {
     private readonly profileRepository: Repository<Profile>,
   ) {}
 
-  //TODO: Password
   async signIn(username: Username, password: Password): Promise<LoginUser> {
     const user = await this.userRepository
       .createQueryBuilder("user")

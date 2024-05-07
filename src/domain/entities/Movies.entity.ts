@@ -1,4 +1,4 @@
-import { DirectorMovie, PosterMovie, TitleMovie } from '@shared/types';
+import { DirectorMovie, PosterMovie, TitleMovie } from "@shared/types";
 import {
   Column,
   Entity,
@@ -7,48 +7,48 @@ import {
   ManyToMany,
   OneToMany,
   PrimaryGeneratedColumn,
-} from 'typeorm';
-import { Categories } from './Categories.entity';
-import { Profile } from './Profile.entity';
-import { Favories } from './Favories.entity';
-import { ApiProperty } from '@nestjs/swagger';
+} from "typeorm";
+import { Categories } from "./Categories.entity";
+import { Profile } from "./Profile.entity";
+import { Favories } from "./Favories.entity";
+import { ApiProperty } from "@nestjs/swagger";
 
-@Index('ck_movie_poster_director', ['title', 'poster', 'director'], {
+@Index("ck_movie_poster_director", ["title", "poster", "director"], {
   unique: true,
 })
-@Entity('Movies', { schema: 'migration1' })
+@Entity("Movies", { schema: "migration1" })
 export class Movies {
-  @PrimaryGeneratedColumn({ type: 'int', name: 'id' })
-  @ApiProperty({ description: 'id', type: 'number' })
+  @PrimaryGeneratedColumn({ type: "int", name: "id" })
+  @ApiProperty({ description: "id", type: "number" })
   id: number;
 
-  @Column('char', { name: 'title', length: 80 })
-  @ApiProperty({ description: 'title', type: 'TitleMovie' })
+  @Column("varchar", { name: "title", length: 80 })
+  @ApiProperty({ description: "title", type: "TitleMovie" })
   title: TitleMovie;
 
-  @Column('varchar', { name: 'poster', length: 250 })
-  @ApiProperty({ description: 'poster', type: 'PosterMovie' })
+  @Column("varchar", { name: "poster", length: 250 })
+  @ApiProperty({ description: "poster", type: "PosterMovie" })
   poster: PosterMovie;
 
-  @Column('varchar', { name: 'director', length: 250 })
-  @ApiProperty({ description: 'director', type: 'DirectorMovie' })
+  @Column("varchar", { name: "director", length: 250 })
+  @ApiProperty({ description: "director", type: "DirectorMovie" })
   director: DirectorMovie;
 
   @OneToMany(() => Favories, (favories) => favories.movie)
-  @ApiProperty({ description: 'favories', type: 'Favories[]' })
+  @ApiProperty({ description: "favories", type: "Favories[]" })
   favories: Favories[];
 
   @ManyToMany(() => Categories, (categories) => categories.movies)
-  @ApiProperty({ description: 'categories', type: 'Categories[]' })
+  @ApiProperty({ description: "categories", type: "Categories[]" })
   categories: Categories[];
 
   @ManyToMany(() => Profile, (profile) => profile.movies)
   @JoinTable({
-    name: 'Profile_movie',
-    joinColumns: [{ name: 'film_id', referencedColumnName: 'id' }],
-    inverseJoinColumns: [{ name: 'profile_id', referencedColumnName: 'id' }],
-    schema: 'migration1',
+    name: "Profile_movie",
+    joinColumns: [{ name: "film_id", referencedColumnName: "id" }],
+    inverseJoinColumns: [{ name: "profile_id", referencedColumnName: "id" }],
+    schema: "migration1",
   })
-  @ApiProperty({ description: 'profiles', type: 'Profile[]' })
+  @ApiProperty({ description: "profiles", type: "Profile[]" })
   profiles: Profile[];
 }
