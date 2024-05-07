@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Get,
@@ -33,7 +34,6 @@ export class AuthControllerApplication implements AuthController {
     private readonly service: AuthServiceApplication,
   ) {}
 
-  //TODO: Mettre a jour le usecrase authSignIn
   @UseGuards(AuthGuard("local"))
   @Post("login")
   @ApiResponse({ status: 200, description: "Réponse réussie" })
@@ -42,9 +42,15 @@ export class AuthControllerApplication implements AuthController {
   @ApiInternalServerErrorResponse({ description: "Erreur interne du serveur" })
   async signIn(
     @Body() loginDto: LoginDtoApplication,
-    @Request() req,
+    @Request() req: AuthSignInDto,
   ): Promise<{ access_token: string }> {
-    const user = this.service.validateUser(loginDto);
+    const { username, password } = loginDto;
+    if (!username) {
+      throw new BadRequestException(`User ${username} is invalide`);
+    }
+
+    const user = this.authSignIn.execute(username, password);
+
     return await this.service.getToken(req);
   }
 

@@ -13,6 +13,7 @@ import { AuthSignInDto } from "@application/user/auth/dto/auth-sign-in.dto";
 import { CreateUserDtoApplication } from "@application/user/auth/dto/create-user-dto-application";
 import { Profile } from "@domain/entities/Profile.entity";
 import { log } from "console";
+import { LoginDtoApplication } from "@application/user/auth/dto/login-dto-application";
 @Injectable()
 export class AuthRepositoryPersistence implements AuthRepository {
   constructor(
@@ -23,19 +24,12 @@ export class AuthRepositoryPersistence implements AuthRepository {
 
   //TODO: Password
   async signIn(username: Username, password: Password): Promise<LoginUser> {
-    const response = { username, password };
-    console.log(
-      JSON.stringify({ username, password }) +
-        ` repository sign in loginUserDto`,
-    );
     const user = await this.userRepository
       .createQueryBuilder("user")
       .where("user.username = :username", { username })
       .getOne();
-    console.log(JSON.stringify(user) + `repository signIn `);
 
-    const userValidation: AuthSignInDto = {
-      id: user.id,
+    const userValidation: LoginDtoApplication = {
       username: user.username,
       password: user.password,
     };
@@ -49,7 +43,6 @@ export class AuthRepositoryPersistence implements AuthRepository {
   async signUp(createUserDto: CreateUserDtoApplication): Promise<User> {
     //TODO: validator email et refactory lorsque le repository profile est creer
     const newProfile = new Profile();
-    console.log(createUserDto);
     const profileAdd = this.profileRepository.create(newProfile);
     await this.profileRepository.save(profileAdd);
 
