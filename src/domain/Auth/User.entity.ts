@@ -9,7 +9,6 @@ import {
 import { Profile } from "../entities/Profile.entity";
 import { Email, Password, Role, Username } from "@shared/types";
 import { ApiProperty, ApiTags } from "@nestjs/swagger";
-import { roleSchema } from "@shared/schemas";
 
 @ApiTags("User", "Authentification")
 @Index("ck_email", ["email"], { unique: true })

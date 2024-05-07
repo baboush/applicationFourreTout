@@ -8,10 +8,10 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from "typeorm";
-import { Categories } from "./Categories.entity";
-import { Profile } from "./Profile.entity";
-import { Favories } from "./Favories.entity";
 import { ApiProperty } from "@nestjs/swagger";
+import { Favories } from "@domain/entities/Favories.entity";
+import { Categories } from "@domain/entities/Categories.entity";
+import { Profile } from "@domain/entities/Profile.entity";
 
 @Index("ck_movie_poster_director", ["title", "poster", "director"], {
   unique: true,
