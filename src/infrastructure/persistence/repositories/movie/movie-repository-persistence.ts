@@ -1,19 +1,19 @@
 import { InjectRepository } from "@nestjs/typeorm";
 import { Injectable } from "@nestjs/common";
-import { Movies } from "@domain/movies/Movies.entity";
 import { Repository } from "typeorm";
+import { ListMoviesDto, Movie } from "@domain/movies";
+import { MovieEntity } from "@domain/movies";
 import {
   CreateMovieDto,
   MovieRepository,
   UpdateMovieDto,
 } from "@domain/movies";
-import { Movie } from "@domain/movies/movie.interface";
 
 @Injectable()
 export class MovieRepositoryPersistence implements MovieRepository {
   constructor(
-    @InjectRepository(Movies)
-    private readonly moviesRepository: Repository<Movies>,
+    @InjectRepository(MovieEntity)
+    private readonly moviesRepository: Repository<MovieEntity>,
   ) {}
 
   async createMovie(createMovie: CreateMovieDto): Promise<Movie> {
@@ -21,9 +21,17 @@ export class MovieRepositoryPersistence implements MovieRepository {
     return await this.moviesRepository.save(newMovie);
   }
 
-  async findAllMovie(): Promise<Movie[]> {
-    const listMovies = await this.moviesRepository.find();
-    return listMovies;
+  async findAllMovie(pagination): Promise<ListMoviesDto> {
+    const limit = pagination.limit || 10;
+    const skip = pagination.skip;
+    const [itemsMovies, itemsCount] = await this.moviesRepository.findAndCount({
+      skip,
+      take: limit,
+    });
+    return {
+      itemsMovies,
+      itemsCount,
+    };
   }
 
   async findOneMovie(id: number): Promise<Movie> {

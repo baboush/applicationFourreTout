@@ -6,9 +6,9 @@ import {
   OneToOne,
   PrimaryGeneratedColumn,
 } from "typeorm";
-import { Profile } from "../entities/Profile.entity";
 import { Email, Password, Role, Username } from "@shared/types";
 import { ApiProperty, ApiTags } from "@nestjs/swagger";
+import { ProfileEntity } from "@domain/profiles";
 
 @ApiTags("User", "Authentification")
 @Index("ck_email", ["email"], { unique: true })
@@ -41,8 +41,8 @@ export class User {
   })
   role: Role;
 
-  @OneToOne(() => Profile, (profile) => profile)
+  @OneToOne(() => ProfileEntity, (profile) => profile)
   @JoinColumn()
   @ApiProperty({ description: "profile", type: "Profile" })
-  profile: Profile;
+  profile: ProfileEntity;
 }

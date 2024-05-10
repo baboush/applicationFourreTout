@@ -1,5 +1,5 @@
-import { Movie } from "../movie.interface";
+import { ListMoviesDto } from "../dto/list-movies-dto.interface";
 
 export interface FindAllMoviesUsecase {
-  execute(): Promise<Movie[]>;
+  execute(pagination): Promise<ListMoviesDto>;
 }

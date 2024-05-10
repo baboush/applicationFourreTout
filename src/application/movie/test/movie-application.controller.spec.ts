@@ -1,7 +1,7 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { MovieApplicationController } from './movie-application.controller';
+import { Test, TestingModule } from "@nestjs/testing";
+import { MovieApplicationController } from "../movie-application.controller";
 
-describe('MovieApplicationController', () => {
+describe("MovieApplicationController", () => {
   let controller: MovieApplicationController;
 
   beforeEach(async () => {
@@ -9,10 +9,12 @@ describe('MovieApplicationController', () => {
       controllers: [MovieApplicationController],
     }).compile();
 
-    controller = module.get<MovieApplicationController>(MovieApplicationController);
+    controller = module.get<MovieApplicationController>(
+      MovieApplicationController,
+    );
   });
 
-  it('should be defined', () => {
+  it("should be defined", () => {
     expect(controller).toBeDefined();
   });
 });

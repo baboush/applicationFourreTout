@@ -1,13 +1,13 @@
-import Joi from 'joi';
+import * as z from "zod";
 
-const titleMovieSchema = Joi.string().max(80).min(3).required();
+const titleMovieSchema = z.string().max(80).min(3);
 
-export type TitleMovie = Joi.Schema<typeof titleMovieSchema>;
+export type TitleMovie = z.infer<typeof titleMovieSchema>;
 
-const posterMovieSchema = Joi.string().max(250).min(50).required();
+const posterMovieSchema = z.string().max(250).min(50);
 
-export type PosterMovie = Joi.Schema<typeof posterMovieSchema>;
+export type PosterMovie = z.infer<typeof posterMovieSchema>;
 
-const directorMovieSchema = Joi.string().max(250).min(10).required();
+const directorMovieSchema = z.string().max(250).min(10);
 
-export type DirectorMovie = Joi.Schema<typeof directorMovieSchema>;
+export type DirectorMovie = z.infer<typeof directorMovieSchema>;

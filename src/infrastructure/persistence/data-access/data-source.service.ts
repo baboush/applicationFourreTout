@@ -1,11 +1,11 @@
 import { UserEntity } from "@domain/Auth";
-import { Appointment } from "@domain/entities/Appointment.entity";
-import { Books } from "@domain/entities/Books.entity";
-import { Categories } from "@domain/entities/Categories.entity";
-import { Favories } from "@domain/entities/Favories.entity";
-import { Movies } from "@domain/entities/Movies.entity";
-import { Profile } from "@domain/entities/Profile.entity";
-import { Tasks } from "@domain/entities/Tasks.entity";
+import { AppointmentEntity } from "@domain/appointements";
+import { BookEntity } from "@domain/books";
+import { CategoriesEntity } from "@domain/categories";
+import { FavoriesEntity } from "@domain/favories";
+import { MovieEntity } from "@domain/movies";
+import { ProfileEntity } from "@domain/profiles";
+import { TaskEntity } from "@domain/tasks";
 import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { TypeOrmModuleOptions, TypeOrmOptionsFactory } from "@nestjs/typeorm";
@@ -23,13 +23,13 @@ export class DataSourceService implements TypeOrmOptionsFactory {
       database: this.configService.get<string>("db.mysql.database"),
       entities: [
         UserEntity,
-        Profile,
-        Favories,
-        Categories,
-        Movies,
-        Books,
-        Tasks,
-        Appointment,
+        ProfileEntity,
+        FavoriesEntity,
+        CategoriesEntity,
+        MovieEntity,
+        BookEntity,
+        TaskEntity,
+        AppointmentEntity,
       ],
       migrations: ["../migrations/"],
       synchronize: true,

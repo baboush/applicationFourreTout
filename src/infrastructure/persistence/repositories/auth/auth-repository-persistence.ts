@@ -5,7 +5,7 @@ import {
   User,
   UserEntity,
 } from "@domain/Auth";
-import { Profile } from "@domain/entities/Profile.entity";
+import { ProfileEntity } from "@domain/profiles";
 import {
   BadRequestException,
   Injectable,
@@ -19,8 +19,8 @@ export class AuthRepositoryPersistence implements AuthRepository {
   constructor(
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>,
-    @InjectRepository(Profile)
-    private readonly profileRepository: Repository<Profile>,
+    @InjectRepository(ProfileEntity)
+    private readonly profileRepository: Repository<ProfileEntity>,
   ) {}
 
   async signIn(username: Username, password: Password): Promise<LoginUser> {
@@ -42,7 +42,7 @@ export class AuthRepositoryPersistence implements AuthRepository {
 
   async signUp(createUserDto: CreateUserDto): Promise<User> {
     //TODO: validator email et refactory lorsque le repository profile est creer
-    const newProfile = new Profile();
+    const newProfile = new ProfileEntity();
     const profileCreate = this.profileRepository.create(newProfile);
     await this.profileRepository.save(profileCreate);
 

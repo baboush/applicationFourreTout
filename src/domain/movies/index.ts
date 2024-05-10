@@ -8,6 +8,8 @@ import { ReadMovieUsecase } from "./usecase/read-movie-usecase.interface";
 import { MovieController } from "./movie-controller.interface";
 import { MovieRepository } from "./movie-repository.interface";
 import { MovieService } from "./movie-service.interface";
+import { MovieEntity } from "./Movies.entity";
+import { Movie } from "./movie.interface";
 
 export {
   CreateMovieDto,
@@ -20,4 +22,6 @@ export {
   MovieController,
   MovieService,
   MovieRepository,
+  MovieEntity,
+  Movie,
 };

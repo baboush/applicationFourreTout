@@ -1,6 +1,6 @@
-import { Profile } from "@domain/entities/Profile.entity";
+import { ProfileEntity } from "@domain/profiles";
 import { CreateUserProfile } from "../dto";
 
 export interface CreateUserProfileUsecase {
-  execute(createProfileDto: CreateUserProfile): Promise<Profile>;
+  execute(createProfileDto: CreateUserProfile): Promise<ProfileEntity>;
 }

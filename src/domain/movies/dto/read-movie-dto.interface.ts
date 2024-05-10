@@ -1,4 +1,3 @@
-import { Categories } from "@domain/entities/Categories.entity";
 import { DirectorMovie, PosterMovie, TitleMovie } from "@shared/types";
 
 export interface ReadMovieDto {

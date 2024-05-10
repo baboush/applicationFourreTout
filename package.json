@@ -70,12 +70,13 @@
     "zod": "^3.23.6"
   },
   "jest": {
+    "verbose": true,
     "moduleFileExtensions": [
       "js",
       "json",
       "ts"
     ],
-    "rootDir": "src",
+    "rootDir": "./",
     "testRegex": ".*\\.spec\\.ts$",
     "transform": {
       "^.+\\.(t|j)s$": "ts-jest"
@@ -85,5 +86,13 @@
     ],
     "coverageDirectory": "../coverage",
     "testEnvironment": "node"
+  },
+  "modulePaths": [
+    "<rootDir>"
+  ],
+  "moduleNameMapper": {
+    "^@domain/(.*)$": "<rootDir>/domain/$1",
+    "^@application/(.*)$": "<rootDir>/application/$1",
+    "^@infrastructure/(.*)$": "<rootDir>/infrastructure/$1"
   }
 }
