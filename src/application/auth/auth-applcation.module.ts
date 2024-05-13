@@ -13,11 +13,11 @@ import { AuthRepositoryModule } from "@infrastructure/persistence/repositories";
 @Module({
   imports: [
     forwardRef(() => AuthRepositoryModule),
-    PassportModule,
+    PassportModule.register({ defaultStrategy: "jwt" }),
     JwtModule.register({
       global: true,
       secret: jwtApiSecrect.secret,
-      signOptions: { expiresIn: "60s" },
+      signOptions: { expiresIn: "3600s" },
     }),
   ],
   providers: [

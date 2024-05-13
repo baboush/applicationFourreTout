@@ -9,6 +9,7 @@ import {
   Param,
   Post,
   Put,
+  UseGuards,
 } from "@nestjs/common";
 import {
   ApiInternalServerErrorResponse,
@@ -28,6 +29,7 @@ import { UpdateMovieUsecaseApplication } from "./usecases/update-movie-usecase-a
 import { DeleteMovieUsecaseApplication } from "./usecases/delete-movie-usecase-application";
 import { Paginate, PaginateQuery, Paginated } from "nestjs-paginate";
 import { movieSchema } from "@shared/types/movie-types";
+import { JwtGuard } from "@application/auth/jwt.guard";
 
 @ApiTags("Movie")
 @Controller("movie")
@@ -45,6 +47,7 @@ export class MovieApplicationController implements MovieController {
   @ApiNotFoundResponse({ description: "Ressources not exists" })
   @ApiInternalServerErrorResponse({ description: "Error server" })
   @Post("create")
+  @UseGuards(JwtGuard)
   async handleCreateAndPublishMovie(
     @Body()
     createMovie: CreateMovieDtoApplication,
@@ -87,11 +90,11 @@ export class MovieApplicationController implements MovieController {
     return movie;
   }
 
-  //TODO: update function with id
   @ApiResponse({ status: 200, description: "Update Movie" })
   @ApiOperation({ summary: "Update movie" })
   @ApiNotFoundResponse({ description: "Ressources not exists" })
   @ApiInternalServerErrorResponse({ description: "Error server" })
+  @UseGuards(JwtGuard)
   @Put(":id")
   async handleUpdateMovieDetail(
     @Body()
@@ -118,6 +121,7 @@ export class MovieApplicationController implements MovieController {
     type: "number",
     description: "The ID of the movie to delete",
   })
+  @UseGuards(JwtGuard)
   @Delete(":id")
   async handleDeleteSavedMovie(@Param("id") id: number): Promise<boolean> {
     const isDeleted = true;

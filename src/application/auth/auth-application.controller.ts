@@ -23,6 +23,7 @@ import { AuthServiceApplication } from "./auth-application.service";
 import { AuthSignInDto } from "./dto/auth-sign-in.dto";
 import { LoginDtoApplication } from "./dto/login-dto-application";
 import { AuthController, User } from "@domain/Auth";
+import { LocalStrategy } from "./local.strategy";
 
 @ApiTags("Authentification")
 @Controller("auth")
@@ -33,7 +34,7 @@ export class AuthControllerApplication implements AuthController {
     private readonly service: AuthServiceApplication,
   ) {}
 
-  @UseGuards(AuthGuard("local"))
+  @UseGuards(LocalStrategy)
   @Post("login")
   @ApiResponse({ status: 200, description: "Réponse réussie" })
   @ApiOperation({ summary: "Description de signIn" })
@@ -48,7 +49,7 @@ export class AuthControllerApplication implements AuthController {
       throw new BadRequestException(`User ${username} is invalide`);
     }
 
-    const user = this.authSignIn.execute(username, password);
+    await this.authSignIn.execute(username, password);
 
     return await this.service.getToken(req);
   }
