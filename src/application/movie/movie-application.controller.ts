@@ -1,4 +1,4 @@
-import { Movie, MovieController } from "@domain/movies";
+import { Movie, MovieController, MovieEntity } from "@domain/movies";
 import {
   BadRequestException,
   Body,
@@ -22,11 +22,12 @@ import { CreateMovieDtoApplication } from "./dto/create-movie-dto-application";
 import { UpdateMovieDtoApplication } from "./dto/update-movie-dto-application";
 import { CreateMoviesUsecaseApplication } from "./usecases/create-movie-usecase-application";
 import { FindAllMoviesUsecaseApplication } from "./usecases/find-all-movies-usecase-application";
-import { ListMoviesDtoApplication } from "./dto/list-movies-dto-application";
 import { ReadMovieUsecaseApplication } from "./usecases/read-movie-usecase-application";
 import { ReadMovieDtoApplication } from "./dto/read-movie-dto-application";
 import { UpdateMovieUsecaseApplication } from "./usecases/update-movie-usecase-application";
 import { DeleteMovieUsecaseApplication } from "./usecases/delete-movie-usecase-application";
+import { Paginate, PaginateQuery, Paginated } from "nestjs-paginate";
+import { movieSchema } from "@shared/types/movie-types";
 
 @ApiTags("Movie")
 @Controller("movie")
@@ -49,28 +50,28 @@ export class MovieApplicationController implements MovieController {
     createMovie: CreateMovieDtoApplication,
   ): Promise<Partial<Movie>> {
     const newMovie: CreateMovieDtoApplication = { ...createMovie };
+    const validMovie = movieSchema.safeParse(newMovie);
 
-    if (!newMovie) {
+    if (!newMovie || !validMovie.success) {
       throw new BadRequestException(`${newMovie} Data is missing`);
     }
 
     return await this.createMovieUsecase.execute(newMovie);
   }
 
-  //TODO: pagination nestjs pagination library
-  @ApiResponse({ status: 201, description: "Find Movies list pagination" })
+  @ApiResponse({ status: 200, description: "Find Movies list pagination" })
   @ApiOperation({ summary: "Find all movies" })
   @ApiNotFoundResponse({ description: "Ressources not exists" })
   @ApiInternalServerErrorResponse({ description: "Error server" })
   @Get("list")
   async handleFindSavedMoviesList(
-    @Body()
-    pagination: any,
-  ): Promise<ListMoviesDtoApplication> {
+    @Paginate()
+    pagination: PaginateQuery,
+  ): Promise<Paginated<MovieEntity>> {
     return await this.findAllMovieUsecase.execute(pagination);
   }
 
-  @ApiResponse({ status: 201, description: "Find One movie" })
+  @ApiResponse({ status: 200, description: "Find One movie" })
   @ApiOperation({ summary: "Find movie" })
   @ApiNotFoundResponse({ description: "Ressources not exists" })
   @ApiInternalServerErrorResponse({ description: "Error server" })
@@ -78,35 +79,36 @@ export class MovieApplicationController implements MovieController {
   async handleFindOneSavedMovie(@Param("id") id: number): Promise<Movie> {
     const movie: ReadMovieDtoApplication =
       await this.readOneMovieUsecase.execute(id);
+    const validMovie = movieSchema.safeParse(movie);
 
-    if (!movie) {
+    if (!movie || !validMovie.success) {
       throw new NotFoundException(`${movie} Doesn's exist in database`);
     }
     return movie;
   }
 
   //TODO: update function with id
-  @ApiResponse({ status: 201, description: "Update Movie" })
+  @ApiResponse({ status: 200, description: "Update Movie" })
   @ApiOperation({ summary: "Update movie" })
   @ApiNotFoundResponse({ description: "Ressources not exists" })
   @ApiInternalServerErrorResponse({ description: "Error server" })
   @Put(":id")
   async handleUpdateMovieDetail(
-    @Param("id")
     @Body()
     updateMovie: UpdateMovieDtoApplication,
   ): Promise<Partial<Movie>> {
     const updatedMovie: UpdateMovieDtoApplication = { ...updateMovie };
-    console.log(updatedMovie);
-
-    if (updatedMovie) {
-      throw new BadRequestException(`${updatedMovie} Data is missing`);
+    const validMovie = movieSchema.safeParse(updatedMovie);
+    if (!updatedMovie || !validMovie.success) {
+      throw new BadRequestException(
+        `${validMovie.error.issues.join(",")} Data is missing`,
+      );
     }
 
     return await this.updateMovieUsecase.execute(updatedMovie);
   }
 
-  @ApiResponse({ status: 201, description: "Delete Movie" })
+  @ApiResponse({ status: 200, description: "Delete Movie" })
   @ApiOperation({ summary: "Delete movie" })
   @ApiNotFoundResponse({ description: "Ressources not exists" })
   @ApiInternalServerErrorResponse({ description: "Error server" })

@@ -1,12 +1,13 @@
-import { ListMoviesDto } from "@domain/movies";
+import { ListMoviesDto, MovieEntity } from "@domain/movies";
 import { FindAllMoviesUsecase } from "@domain/movies/usecase/findall-movies-usecase.interface";
 import { MovieApplicationService } from "../movie-application.service";
 import { Injectable } from "@nestjs/common";
+import { PaginateQuery, Paginated } from "nestjs-paginate";
 
 @Injectable()
 export class FindAllMoviesUsecaseApplication implements FindAllMoviesUsecase {
   constructor(private readonly movieService: MovieApplicationService) {}
-  async execute(pagination): Promise<ListMoviesDto> {
+  async execute(pagination: PaginateQuery): Promise<Paginated<MovieEntity>> {
     return await this.movieService.findSavedMoviesList(pagination);
   }
 }

@@ -1,14 +1,11 @@
 import { ListMoviesDto, Movie } from "@domain/movies";
 import { ApiProperty } from "@nestjs/swagger";
+import { DirectorMovie, PosterMovie, TitleMovie } from "@shared/types";
 import { IsArray, IsNumber } from "class-validator";
 
 export class ListMoviesDtoApplication implements ListMoviesDto {
-  constructor() {}
-  @ApiProperty({ description: "List items movies", type: "Movie[]" })
-  @IsArray()
-  readonly itemsMovies: Movie[];
-
-  @ApiProperty({ description: "Count items pagination", type: "number" })
-  @IsNumber()
-  readonly itemsCount: number;
+  readonly id: number;
+  readonly title: TitleMovie;
+  readonly poster: PosterMovie;
+  readonly director: DirectorMovie;
 }

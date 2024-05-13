@@ -1,5 +1,6 @@
-import { ListMoviesDto } from "../dto/list-movies-dto.interface";
+import { Paginated, PaginateQuery } from "nestjs-paginate";
+import { MovieEntity } from "../Movies.entity";
 
 export interface FindAllMoviesUsecase {
-  execute(pagination): Promise<ListMoviesDto>;
+  execute(pagination: PaginateQuery): Promise<Paginated<MovieEntity>>;
 }

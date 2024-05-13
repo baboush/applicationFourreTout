@@ -8,6 +8,7 @@ import {
   MovieRepository,
   UpdateMovieDto,
 } from "@domain/movies";
+import { PaginateQuery, Paginated, paginate } from "nestjs-paginate";
 
 @Injectable()
 export class MovieRepositoryPersistence implements MovieRepository {
@@ -21,17 +22,15 @@ export class MovieRepositoryPersistence implements MovieRepository {
     return await this.moviesRepository.save(newMovie);
   }
 
-  async findAllMovie(pagination): Promise<ListMoviesDto> {
-    const limit = pagination.limit || 10;
-    const skip = pagination.skip;
-    const [itemsMovies, itemsCount] = await this.moviesRepository.findAndCount({
-      skip,
-      take: limit,
+  async findAllMovie(
+    pagination: PaginateQuery,
+  ): Promise<Paginated<MovieEntity>> {
+    return paginate(pagination, this.moviesRepository, {
+      sortableColumns: ["id", "title", "director", "poster"],
+      defaultSortBy: [["title", "DESC"]],
+      searchableColumns: ["title", "director"],
+      select: ["id", "title", "director", "poster"],
     });
-    return {
-      itemsMovies,
-      itemsCount,
-    };
   }
 
   async findOneMovie(id: number): Promise<Movie> {

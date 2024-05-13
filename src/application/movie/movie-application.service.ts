@@ -1,4 +1,4 @@
-import { MovieService, UpdateMovieDto } from "@domain/movies";
+import { MovieEntity, MovieService, UpdateMovieDto } from "@domain/movies";
 import { Movie } from "@domain/movies/movie.interface";
 import { MovieRepositoryPersistence } from "../../infrastructure/persistence/repositories/movie/movie-repository-persistence";
 import {
@@ -10,6 +10,7 @@ import { CreateMovieDtoApplication } from "./dto/create-movie-dto-application";
 import { ListMoviesDtoApplication } from "./dto/list-movies-dto-application";
 import { ReadMovieDtoApplication } from "./dto/read-movie-dto-application";
 import { UpdateMovieDtoApplication } from "./dto/update-movie-dto-application";
+import { PaginateQuery, Paginated } from "nestjs-paginate";
 
 @Injectable()
 export class MovieApplicationService implements MovieService {
@@ -27,7 +28,9 @@ export class MovieApplicationService implements MovieService {
     return await this.movieRepository.createMovie(newMovie);
   }
 
-  async findSavedMoviesList(pagination): Promise<ListMoviesDtoApplication> {
+  async findSavedMoviesList(
+    pagination: PaginateQuery,
+  ): Promise<Paginated<MovieEntity>> {
     return await this.movieRepository.findAllMovie(pagination);
   }
 
