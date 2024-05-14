@@ -32,6 +32,7 @@ import { movieSchema } from "@shared/types/movie-types";
 import { JwtGuard } from "@application/auth/jwt.guard";
 
 @ApiTags("Movie")
+@UseGuards(JwtGuard)
 @Controller("movie")
 export class MovieApplicationController implements MovieController {
   constructor(
@@ -47,7 +48,6 @@ export class MovieApplicationController implements MovieController {
   @ApiNotFoundResponse({ description: "Ressources not exists" })
   @ApiInternalServerErrorResponse({ description: "Error server" })
   @Post("create")
-  @UseGuards(JwtGuard)
   async handleCreateAndPublishMovie(
     @Body()
     createMovie: CreateMovieDtoApplication,
@@ -94,7 +94,6 @@ export class MovieApplicationController implements MovieController {
   @ApiOperation({ summary: "Update movie" })
   @ApiNotFoundResponse({ description: "Ressources not exists" })
   @ApiInternalServerErrorResponse({ description: "Error server" })
-  @UseGuards(JwtGuard)
   @Put(":id")
   async handleUpdateMovieDetail(
     @Body()
@@ -121,7 +120,6 @@ export class MovieApplicationController implements MovieController {
     type: "number",
     description: "The ID of the movie to delete",
   })
-  @UseGuards(JwtGuard)
   @Delete(":id")
   async handleDeleteSavedMovie(@Param("id") id: number): Promise<boolean> {
     const isDeleted = true;
