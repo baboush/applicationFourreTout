@@ -1,5 +1,9 @@
-import { UserLambdaService } from "./user-lambda-service.interface";
-import { UserLambdaRepostiory } from "./user-lambda-repostiory.interface";
-import { UserLambdaController } from "./user-lambda-controller.interface";
+import { ProfileLambdaService } from "./profile-lambda-service.interface";
+import { ProfileLambdaRepostiory } from "./profile-lambda-repostiory.interface";
+import { ProfileLambdaController } from "./profile-lambda-controller.interface";
 
-export { UserLambdaController, UserLambdaRepostiory, UserLambdaService };
+export {
+  ProfileLambdaController,
+  ProfileLambdaRepostiory,
+  ProfileLambdaService,
+};

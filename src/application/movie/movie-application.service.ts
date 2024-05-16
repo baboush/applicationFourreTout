@@ -7,7 +7,6 @@ import {
   NotFoundException,
 } from "@nestjs/common";
 import { CreateMovieDtoApplication } from "./dto/create-movie-dto-application";
-import { ListMoviesDtoApplication } from "./dto/list-movies-dto-application";
 import { ReadMovieDtoApplication } from "./dto/read-movie-dto-application";
 import { UpdateMovieDtoApplication } from "./dto/update-movie-dto-application";
 import { PaginateQuery, Paginated } from "nestjs-paginate";
@@ -41,7 +40,6 @@ export class MovieApplicationService implements MovieService {
     if (!ReadMovieDtoApplication) {
       throw new NotFoundException(`${movie} Does not exist in database`);
     }
-
     return movie;
   }
 

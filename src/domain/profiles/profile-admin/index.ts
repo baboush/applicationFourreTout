@@ -1,5 +1,5 @@
-import { UserAdminRepository } from "./user-admin-repository.interface";
-import { UserAdminService } from "./user-admin-service.interface";
-import { UserAdminController } from "./user-admin-controller.interface";
+import { ProfileAdminRepository } from "./profile-admin-repository.interface";
+import { ProfileAdminService } from "./profile-admin-service.interface";
+import { ProfileAdminController } from "./profile-admin-controller.interface";
 
-export { UserAdminController, UserAdminService, UserAdminRepository };
+export { ProfileAdminController, ProfileAdminService, ProfileAdminRepository };

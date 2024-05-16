@@ -18,7 +18,6 @@ import { AuthSignInUsecaseApplication } from "./usecases/auth-sign-in-usecase-ap
 import { CreateUserUsecaseApplcation } from "./usecases/create-user-usercase-applcation";
 import { CreateUserDtoApplication } from "./dto/create-user-dto-application";
 import { userSchema } from "@shared/schemas";
-import { AuthGuard } from "@nestjs/passport";
 import { AuthServiceApplication } from "./auth-application.service";
 import { AuthSignInDto } from "./dto/auth-sign-in.dto";
 import { LoginDtoApplication } from "./dto/login-dto-application";
@@ -61,7 +60,9 @@ export class AuthControllerApplication implements AuthController {
   @ApiInternalServerErrorResponse({ description: "Error server" })
   async signUp(@Body() createUserDto: CreateUserDtoApplication): Promise<User> {
     let newUser: CreateUserDtoApplication = { ...createUserDto };
-    userSchema.parse(newUser);
+    if (!userSchema.parse(newUser)) {
+      throw new BadRequestException(`Wrong data for create user`);
+    }
 
     return await this.authSignUp.execute(newUser);
   }
