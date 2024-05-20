@@ -9,6 +9,7 @@ import {
 import { BookEntity } from "@domain/books";
 import { ApiProperty } from "@nestjs/swagger";
 import { MovieEntity } from "@domain/movies";
+import { NameCategory } from "@shared/types";
 
 @Index("ck_name", ["name"], { unique: true })
 @Entity("Categories", { schema: "migration1" })
@@ -19,7 +20,7 @@ export class Categories {
 
   @Column("varchar", { name: "name", unique: true, length: 40 })
   @ApiProperty({ description: "name", type: "string" })
-  name: string;
+  name: NameCategory;
 
   @ManyToMany(() => BookEntity, (books) => books.categories)
   @ApiProperty({ description: "books", type: "Books[]" })
