@@ -99,16 +99,10 @@ export class MovieApplicationService implements MovieService {
    * @inheritdoc MovieService.deleteSavedMovie
    */
   async deleteSavedMovie(id: number): Promise<boolean> {
-    const movie = await this.movieRepository.findOneMovie(id);
-
-    if (!movie) {
-      throw new NotFoundException(`Movie width ID ${id} Not found`);
-    }
-
     const isDeleted = await this.movieRepository.deleteMovie(id);
 
-    if (isDeleted) {
-      throw new BadRequestException(`Movie width ID ${id} is not not delete`);
+    if (!isDeleted) {
+      throw new NotFoundException(`Movie width ID ${id} not found`);
     }
 
     return !!isDeleted;

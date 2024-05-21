@@ -155,16 +155,10 @@ export class MovieApplicationController implements MovieController {
   })
   @Delete(":id")
   async handleDeleteSavedMovie(@Param("id") id: number): Promise<boolean> {
-    const movie = await this.readOneMovieUsecase.execute(id);
-
-    if (!movie) {
-      throw new NotFoundException(`Movie with ID ${id} not found`);
-    }
-
     const isDelete = await this.deleteMovieUsecase.execute(id);
 
     if (!isDelete) {
-      throw new BadRequestException(`Movie with ID ${id} not deleted`);
+      throw new NotFoundException(`Movie with ID ${id} not deleted`);
     }
 
     return !!isDelete;

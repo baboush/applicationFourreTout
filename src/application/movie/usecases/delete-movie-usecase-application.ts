@@ -1,3 +1,4 @@
+import { DeleteMovieUsecase } from "@domain/movies/usecase";
 import { MovieApplicationService } from "../movie-application.service";
 import { Injectable } from "@nestjs/common";
 

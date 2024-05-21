@@ -76,7 +76,7 @@ export class MovieRepositoryPersistence implements MovieRepository {
   ): Promise<Partial<Movie>> {
     const movie = await this.moviesRepository.update(id, updateMovie);
 
-    if (!id) {
+    if (!updateMovie.id) {
       throw new NotFoundException(`Movie Update ${id} not found`);
     }
 
@@ -84,8 +84,7 @@ export class MovieRepositoryPersistence implements MovieRepository {
       throw new BadRequestException(`Update Movie ${movie} data is invalid`);
     }
 
-    const mergeMovie = movie.affected[0];
-    return mergeMovie;
+    return { id, ...movie };
   }
 
   /**

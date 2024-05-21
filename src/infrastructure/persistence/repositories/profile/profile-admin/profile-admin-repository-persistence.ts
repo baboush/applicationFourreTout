@@ -4,11 +4,11 @@ import {
   NotFoundException,
 } from "@nestjs/common";
 import { ProfileAdminRepository } from "@domain/profiles/profile-admin";
-import { UpdateProfileDto } from "@domain/profiles/dto/update-profile-dto/update-profile-dto.interface";
 import { Profile } from "@domain/profiles/Profile.entity";
 import { InjectRepository } from "@nestjs/typeorm";
-import { EntityNotFoundError, Repository } from "typeorm";
+import { Repository } from "typeorm";
 import { User } from "@domain/Auth/User.entity";
+import { UpdateProfileDto } from "@domain/profiles/dto/update-profile-dto.interface";
 
 /**
  * ProfileAdminRepositoryPersistence
@@ -31,33 +31,25 @@ export class ProfileAdminRepositoryPersistence
   ) {}
 
   /**
-   * Update Profile database
-   *
-   * @async
-   * @param {number} id - [id model]
-   * @param {UpdateProfileDto} updateProfile - [DTO update Profile]
-   * @throws {BadRequestException} - [BadRequestException invalide value]
-   * @returns {Promise<Partial<Profile>>} [return promise partial<Profile>]
+   * @inheritdoc ProfileAdminRepository.updateProfile
    */
   async updateProfile(
     id: number,
     updateProfile: UpdateProfileDto,
   ): Promise<Partial<Profile>> {
-    const updatedProfile: UpdateProfileDto =
-      await this.profileRepository.update(id, updateProfile);
+    const updatedProfile = await this.profileRepository.update(
+      id,
+      updateProfile,
+    );
+
     if (!updatedProfile) {
-      throw new BadRequestException(`Profile Error Update`);
+      throw new BadRequestException(`Profile bad data`);
     }
-    return updatedProfile;
+    return { id, ...updatedProfile };
   }
 
   /**
-   * Find Profile database
-   *
-   * @async
-   * @param {number} id - [id profile]
-   * @throws {NotFoundException} - [Profile not found]
-   * @returns {Promise<Profile>} - [Return promise Profile]
+   * @inheritdoc ProfileAdminRepository.findProfile
    */
   async findProfile(id: number): Promise<Profile> {
     const profile = await this.profileRepository.findOne({ where: { id: id } });
@@ -65,42 +57,33 @@ export class ProfileAdminRepositoryPersistence
     if (!profile) {
       throw new NotFoundException(`Profile not found`);
     }
+
     return profile;
   }
 
   /**
-   * Delete Profile
-   *
-   * @async
-   * @param {number} id - [Id Profile]
-   * @throws {EntityNotFoundError} - [Entity Profile not found]
-   * @returns {Promise<boolean>} [Return true if deleted]
+   * @ ProfileAdminRepository.deleteProfile
    */
   async deleteProfile(id: number): Promise<boolean> {
-    const isDeleted = false;
     const profileDelete = await this.profileRepository.delete(id);
 
     if (!profileDelete) {
-      throw new EntityNotFoundError(Profile, id);
+      throw new NotFoundException(`Profile with ID ${id} not found`);
     }
-    return !isDeleted;
+
+    return !!profileDelete;
   }
 
   /**
-   * Delete User
-   *
-   * @async
-   * @param {number} id - [Id User]
-   * @throws {EntityNotFoundError} [Entity User not found]
-   * @returns {Promise<boolean>} [Return true if deleted]
+   * @inheritdoc ProfileAdminRepository.deletedUserLambda
    */
   async deletedUserLambda(id: number): Promise<boolean> {
-    const isDeleted = false;
-    const user = await this.userRepository.delete(id);
+    const userDelete = await this.userRepository.delete(id);
 
-    if (!user) {
-      throw new EntityNotFoundError(Profile, id);
+    if (!userDelete) {
+      throw new NotFoundException(`User with ID ${id} not found`);
     }
-    return !isDeleted;
+
+    return !!userDelete;
   }
 }

@@ -1,6 +1,5 @@
 import { Profile } from "../Profile.entity";
-import { UpdateProfileDto } from "../dto/update-profile-dto/update-profile-dto.interface";
-
+import { UpdateProfileDto } from "../dto/update-profile-dto.interface";
 /**
  * Defines the base service contract for managing profile data.
  *

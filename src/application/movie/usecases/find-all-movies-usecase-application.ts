@@ -1,4 +1,4 @@
-import { ListMoviesDto, MovieEntity } from "@domain/movies";
+import { MovieEntity } from "@domain/movies";
 import { FindAllMoviesUsecase } from "@domain/movies/usecase/findall-movies-usecase.interface";
 import { MovieApplicationService } from "../movie-application.service";
 import { Injectable } from "@nestjs/common";
