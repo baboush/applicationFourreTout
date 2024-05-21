@@ -1,3 +1,4 @@
+import { JwtGuard } from "@application/auth/jwt.guard";
 import { Movie, MovieController, MovieEntity } from "@domain/movies";
 import {
   BadRequestException,
@@ -19,18 +20,24 @@ import {
   ApiResponse,
   ApiTags,
 } from "@nestjs/swagger";
+import { movieSchema } from "@shared/types/movie-types";
+import { Paginate, PaginateQuery, Paginated } from "nestjs-paginate";
 import { CreateMovieDtoApplication } from "./dto/create-movie-dto-application";
+import { ReadMovieDtoApplication } from "./dto/read-movie-dto-application";
 import { UpdateMovieDtoApplication } from "./dto/update-movie-dto-application";
 import { CreateMoviesUsecaseApplication } from "./usecases/create-movie-usecase-application";
+import { DeleteMovieUsecaseApplication } from "./usecases/delete-movie-usecase-application";
 import { FindAllMoviesUsecaseApplication } from "./usecases/find-all-movies-usecase-application";
 import { ReadMovieUsecaseApplication } from "./usecases/read-movie-usecase-application";
-import { ReadMovieDtoApplication } from "./dto/read-movie-dto-application";
 import { UpdateMovieUsecaseApplication } from "./usecases/update-movie-usecase-application";
-import { DeleteMovieUsecaseApplication } from "./usecases/delete-movie-usecase-application";
-import { Paginate, PaginateQuery, Paginated } from "nestjs-paginate";
-import { movieSchema } from "@shared/types/movie-types";
-import { JwtGuard } from "@application/auth/jwt.guard";
 
+/**
+ * Controller handling movie application logic.
+ * This controller interacts with injected use cases to manage movie CRUD operations
+ * and exposes them via API endpoints.
+ * It's tagged with `@ApiTags('Movie')` to group related API documentation.
+ * It requires JWT authentication (`@UseGuards(JwtGuard)`) for all endpoints.
+ */
 @ApiTags("Movie")
 @UseGuards(JwtGuard)
 @Controller("movie")
@@ -43,6 +50,9 @@ export class MovieApplicationController implements MovieController {
     private readonly deleteMovieUsecase: DeleteMovieUsecaseApplication,
   ) {}
 
+  /**
+   * @inheritdoc MovieController.handleCreateAndPublishMovie
+   */
   @ApiResponse({ status: 201, description: "Success Create Movie" })
   @ApiOperation({ summary: "Create Movie " })
   @ApiNotFoundResponse({ description: "Ressources not exists" })
@@ -55,6 +65,8 @@ export class MovieApplicationController implements MovieController {
     const newMovie: CreateMovieDtoApplication = { ...createMovie };
     const validMovie = movieSchema.safeParse(newMovie);
 
+    //TODO: Verify if movie exit in database
+
     if (!newMovie || !validMovie.success) {
       throw new BadRequestException(`${newMovie} Data is missing`);
     }
@@ -62,6 +74,9 @@ export class MovieApplicationController implements MovieController {
     return await this.createMovieUsecase.execute(newMovie);
   }
 
+  /**
+   * @inheritdoc MovieController.handleFindSavedMoviesListe
+   */
   @ApiResponse({ status: 200, description: "Find Movies list pagination" })
   @ApiOperation({ summary: "Find all movies" })
   @ApiNotFoundResponse({ description: "Ressources not exists" })
@@ -71,9 +86,18 @@ export class MovieApplicationController implements MovieController {
     @Paginate()
     pagination: PaginateQuery,
   ): Promise<Paginated<MovieEntity>> {
-    return await this.findAllMovieUsecase.execute(pagination);
+    const moviesPagination = await this.findAllMovieUsecase.execute(pagination);
+
+    if (!moviesPagination) {
+      throw new BadRequestException(`Movies with pagination error fetching`);
+    }
+
+    return moviesPagination;
   }
 
+  /**
+   * @inheritdoc MovieController.handleFindOneSavedMovie
+   */
   @ApiResponse({ status: 200, description: "Find One movie" })
   @ApiOperation({ summary: "Find movie" })
   @ApiNotFoundResponse({ description: "Ressources not exists" })
@@ -85,11 +109,14 @@ export class MovieApplicationController implements MovieController {
     const validMovie = movieSchema.safeParse(movie);
 
     if (!movie || !validMovie.success) {
-      throw new NotFoundException(`${movie} Doesn's exist in database`);
+      throw new NotFoundException(`Movie with ID ${id} not found`);
     }
     return movie;
   }
 
+  /**
+   * @inheritdoc MovieController.handleUpdateMovieDetail
+   */
   @ApiResponse({ status: 200, description: "Update Movie" })
   @ApiOperation({ summary: "Update movie" })
   @ApiNotFoundResponse({ description: "Ressources not exists" })
@@ -101,15 +128,21 @@ export class MovieApplicationController implements MovieController {
   ): Promise<Partial<Movie>> {
     const updatedMovie: UpdateMovieDtoApplication = { ...updateMovie };
     const validMovie = movieSchema.safeParse(updatedMovie);
+
+    if (!updatedMovie.id) {
+      throw new NotFoundException(`Movie with ID ${updatedMovie.id} not found`);
+    }
+
     if (!updatedMovie || !validMovie.success) {
-      throw new BadRequestException(
-        `${validMovie.error.issues.join(",")} Data is missing`,
-      );
+      throw new BadRequestException(`Movie update ${updatedMovie} is invalid`);
     }
 
     return await this.updateMovieUsecase.execute(updatedMovie);
   }
 
+  /**
+   * @inheritdoc MovieController.handleDeleteSavedMovie
+   */
   @ApiResponse({ status: 200, description: "Delete Movie" })
   @ApiOperation({ summary: "Delete movie" })
   @ApiNotFoundResponse({ description: "Ressources not exists" })
@@ -122,12 +155,18 @@ export class MovieApplicationController implements MovieController {
   })
   @Delete(":id")
   async handleDeleteSavedMovie(@Param("id") id: number): Promise<boolean> {
-    const isDeleted = true;
     const movie = await this.readOneMovieUsecase.execute(id);
+
     if (!movie) {
-      throw new NotFoundException(`${movie} Doesn't exist in database `);
+      throw new NotFoundException(`Movie with ID ${id} not found`);
     }
-    await this.deleteMovieUsecase.execute(id);
-    return isDeleted;
+
+    const isDelete = await this.deleteMovieUsecase.execute(id);
+
+    if (!isDelete) {
+      throw new BadRequestException(`Movie with ID ${id} not deleted`);
+    }
+
+    return !!isDelete;
   }
 }

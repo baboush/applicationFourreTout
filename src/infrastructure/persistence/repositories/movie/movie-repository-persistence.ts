@@ -1,15 +1,24 @@
-import { InjectRepository } from "@nestjs/typeorm";
-import { Injectable } from "@nestjs/common";
-import { Repository } from "typeorm";
-import { ListMoviesDto, Movie } from "@domain/movies";
-import { MovieEntity } from "@domain/movies";
 import {
   CreateMovieDto,
+  Movie,
+  MovieEntity,
   MovieRepository,
   UpdateMovieDto,
 } from "@domain/movies";
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from "@nestjs/common";
+import { InjectRepository } from "@nestjs/typeorm";
 import { PaginateQuery, Paginated, paginate } from "nestjs-paginate";
+import { Repository } from "typeorm";
 
+/**
+ * Injectable persistence implementation of the MovieRepository interface.
+ * This class interacts with a data store (likely a database) using TypeORM's Repository API
+ * to manage movie data.
+ */
 @Injectable()
 export class MovieRepositoryPersistence implements MovieRepository {
   constructor(
@@ -17,14 +26,26 @@ export class MovieRepositoryPersistence implements MovieRepository {
     private readonly moviesRepository: Repository<MovieEntity>,
   ) {}
 
+  /**
+   * @inheritdoc MovieRepository.createMovie
+   */
   async createMovie(createMovie: CreateMovieDto): Promise<Movie> {
+    if (!createMovie) {
+      throw new BadRequestException(`Movie ${createMovie} is Invalid`);
+    }
     const newMovie = this.moviesRepository.create(createMovie);
     return await this.moviesRepository.save(newMovie);
   }
 
+  /**
+   * @inheritdoc MovieRepository.findAllMovie
+   */
   async findAllMovie(
     pagination: PaginateQuery,
   ): Promise<Paginated<MovieEntity>> {
+    if (!pagination) {
+      throw new BadRequestException(`Error fetch paginate movie`);
+    }
     return paginate(pagination, this.moviesRepository, {
       sortableColumns: ["id", "title", "director", "poster"],
       defaultSortBy: [["title", "DESC"]],
@@ -33,26 +54,50 @@ export class MovieRepositoryPersistence implements MovieRepository {
     });
   }
 
+  /**
+   * @inheritdoc MovieRepository.findOneMovie
+   */
   async findOneMovie(id: number): Promise<Movie> {
     const movie = await this.moviesRepository.findOneBy({ id: id });
+
+    if (!movie) {
+      throw new NotFoundException(`Movie with ${id} not found`);
+    }
+
     return movie;
   }
 
+  /**
+   * @inheritdoc MovieRepository.updateMovie
+   */
   async updateMovie(
     id: number,
     updateMovie: UpdateMovieDto,
   ): Promise<Partial<Movie>> {
     const movie = await this.moviesRepository.update(id, updateMovie);
+
+    if (!id) {
+      throw new NotFoundException(`Movie Update ${id} not found`);
+    }
+
+    if (!movie) {
+      throw new BadRequestException(`Update Movie ${movie} data is invalid`);
+    }
+
     const mergeMovie = movie.affected[0];
     return mergeMovie;
   }
 
+  /**
+   * @inheritdoc MovieRepository.deleteMovie
+   */
   async deleteMovie(id: number): Promise<boolean> {
-    const isDelete = true;
     const deleteMovie = await this.moviesRepository.delete(id);
-    if (deleteMovie) {
-      return isDelete;
+
+    if (!deleteMovie) {
+      throw new NotFoundException(`Movie width ${id} not found`);
     }
-    return !isDelete;
+
+    return !!deleteMovie;
   }
 }
