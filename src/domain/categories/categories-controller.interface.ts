@@ -1,5 +1,5 @@
 import { CategoriesEntity } from ".";
-import { AddCategoryMovieDto, CreateCategoryDto } from "./dto";
+import { CreateCategoryDto } from "./dto";
 
 /**
  * @interface CategoriesController
@@ -13,9 +13,9 @@ export interface CategoriesController {
    * @returns {Promise<CategoriesEntity>} - A promise that resolves to the created category entity.
    * @throws {Error} - If there is an error creating or publishing the category.
    */
-  handlerCreateCategoryAndPublish(
+  handleCreateCategoryAndPublish(
     category: CreateCategoryDto,
-  ): Promise<CategoriesEntity>;
+  ): Promise<Partial<CategoriesEntity>>;
 
   /**
    * Handles adding a category to a movie association in the database.
@@ -25,10 +25,10 @@ export interface CategoriesController {
    * @returns {Promise<AddCategoryMovieDto>} - A promise that resolves to a DTO representing the updated association between movie and category.
    * @throws {Error} - If there is an error adding the category to the movie.
    */
-  handlerAddCategoryToMovieRelation(
+  handleAddCategoryToMovieRelation(
     idMovie: number,
     idCategory: number,
-  ): Promise<AddCategoryMovieDto>;
+  ): Promise<boolean>;
 
   /**
    * Handles removing a category association from a movie in the database (implementation-specific).
@@ -38,7 +38,7 @@ export interface CategoriesController {
    * @returns {Promise<boolean>} - A promise that resolves to `true` if the category was successfully removed, `false` otherwise.
    * @throws {Error} - If there is an error removing the category association.
    */
-  handlerRemoveCategoryMovieSaved(
+  handleRemoveCategoryMovieSaved(
     idMovie: number,
     idCategory: number,
   ): Promise<boolean>;
@@ -50,5 +50,5 @@ export interface CategoriesController {
    * @returns {Promise<boolean>} - A promise that resolves to `true` if the category was successfully removed, `false` otherwise.
    * @throws {Error} - If there is an error removing the category.
    */
-  handlerRemoveCategorySaved(id: number): Promise<Boolean>;
+  handleRemoveCategorySaved(id: number): Promise<Boolean>;
 }

@@ -15,7 +15,7 @@ export interface CategoriesService {
    */
   createCategoryAndPublish(
     category: CreateCategoryDto,
-  ): Promise<CategoriesEntity>;
+  ): Promise<Partial<CategoriesEntity>>;
 
   /**
    * Adds a category to a movie association in the database.
@@ -28,7 +28,7 @@ export interface CategoriesService {
   addCategoryToMovieRelation(
     idMovie: number,
     idCategory: number,
-  ): Promise<AddCategoryMovieDto>;
+  ): Promise<boolean>;
 
   /**
    * Removes a category association from a movie in the database (implementation-specific).

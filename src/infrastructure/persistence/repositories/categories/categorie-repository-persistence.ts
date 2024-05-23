@@ -1,5 +1,4 @@
 import {
-  AddCategoryMovieDto,
   CategoriesEntity,
   CategoriesRepository,
   CreateCategoryDto,
@@ -34,10 +33,12 @@ export class CategorieRepositoryPersistence implements CategoriesRepository {
    * @throws {BadRequestException} if the category already exists or has an invalid format.
    * @returns {Promise<CategoriesEntity>} The created category entity.
    */
-  async createCategory(category: CreateCategoryDto): Promise<CategoriesEntity> {
+  async createCategory(
+    category: CreateCategoryDto,
+  ): Promise<Partial<CategoriesEntity>> {
     const categoryResponse = { ...category };
-    const categoryExisiting = await this.categoriesRepository.findOne({
-      where: { id: categoryResponse.id },
+    const categoryExisiting = await this.categoriesRepository.findOneBy({
+      name: categoryResponse.name,
     });
 
     if (!!categoryExisiting) {
@@ -63,13 +64,16 @@ export class CategorieRepositoryPersistence implements CategoriesRepository {
   async addCategoryMovie(
     idMovie: number,
     idCategory: number,
-  ): Promise<AddCategoryMovieDto> {
+  ): Promise<boolean> {
+    console.log(idCategory);
     const movie = await this.moviesRepository.findOne({
       where: { id: idMovie },
     });
     const category = await this.categoriesRepository.findOne({
       where: { id: idCategory },
     });
+    console.log(category + ` category`);
+    console.log(movie + `movie`);
 
     if (!movie) {
       throw new NotFoundException(`Movie ${idMovie} not found`);
@@ -79,9 +83,16 @@ export class CategorieRepositoryPersistence implements CategoriesRepository {
       throw new NotFoundException(`Category ${idCategory} not found`);
     }
 
-    movie.categories.push(category);
+    if (!!movie.categories) {
+      movie.categories.push(category);
+    } else {
+      movie.categories = [];
+      movie.categories.push(category);
+    }
+    console.log(movie.categories);
+
     const saveCategoryToMovie = await this.moviesRepository.save(movie);
-    return saveCategoryToMovie;
+    return !!saveCategoryToMovie;
   }
 
   /**
@@ -93,9 +104,10 @@ export class CategorieRepositoryPersistence implements CategoriesRepository {
    * @returns {Promise<boolean>} True if the category was successfully removed, false otherwise.
    */
   async removeCategoryMovie(
-    movieId: number,
     categoryId: number,
+    movieId: number,
   ): Promise<boolean> {
+    console.log(`${movieId} movieId`);
     const movie = await this.moviesRepository.findOne({
       where: { id: movieId },
       relations: { categories: true },
@@ -105,12 +117,12 @@ export class CategorieRepositoryPersistence implements CategoriesRepository {
       throw new BadRequestException(`Movie with ${movieId} not found`);
     }
 
-    const removeCategoryInMovie = movie.categories.find((category) => {
-      category.id === categoryId;
-    });
+    const removeCategoryInMovie = movie.categories.find(
+      (category) => category.id === +categoryId,
+    );
 
     if (!removeCategoryInMovie) {
-      throw new BadRequestException(`Category with ${categoryId} not found`);
+      throw new BadRequestException(`Category with ID ${categoryId} not found`);
     }
 
     const indexCategory = movie.categories.indexOf(removeCategoryInMovie);
@@ -128,7 +140,12 @@ export class CategorieRepositoryPersistence implements CategoriesRepository {
    * @returns {Promise<boolean>} True if the category was successfully deleted, false otherwise.
    */
   async removeCategory(id: number): Promise<Boolean> {
+    const isExist = await this.categoriesRepository.findOneBy({ id: id });
     const isDelete = await this.categoriesRepository.delete(id);
+
+    if (!isExist) {
+      throw new NotFoundException(`Category with ${id} not found`);
+    }
 
     if (!isDelete) {
       throw new NotFoundException(`Category with ${id} not found`);

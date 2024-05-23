@@ -8,7 +8,8 @@ export interface CreateCategoryDto {
   /**
    * The id of the catgory.
    */
-  readonly id: number;
+  readonly id?: number;
+
   /**
    * The name of the category.
    */

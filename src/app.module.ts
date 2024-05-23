@@ -7,6 +7,7 @@ import configuration from "./infrastructure/config/configuration";
 import { DataSourceService } from "@infrastructure/persistence/data-access/data-source.service";
 import { AuthApplcationModule } from "@application/auth";
 import { MovieApplicationModule } from "@application/movie/movie-application.module";
+import { CategoriesApplicationModule } from "@application/categories/categories-application.module";
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { MovieApplicationModule } from "@application/movie/movie-application.mod
     }),
     AuthApplcationModule,
     MovieApplicationModule,
+    CategoriesApplicationModule,
   ],
   controllers: [],
   providers: [SwaggerService],

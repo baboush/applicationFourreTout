@@ -30,9 +30,21 @@ export class MovieRepositoryPersistence implements MovieRepository {
    * @inheritdoc MovieRepository.createMovie
    */
   async createMovie(createMovie: CreateMovieDto): Promise<Movie> {
+    const { title, director, poster } = { ...createMovie };
+    const ifExist = this.moviesRepository.findBy({
+      title: title,
+      director: director,
+      poster: poster,
+    });
+
     if (!createMovie) {
       throw new BadRequestException(`Movie ${createMovie} is Invalid`);
     }
+
+    if (!ifExist) {
+      throw new BadRequestException(`Movie ${createMovie} exist in database`);
+    }
+
     const newMovie = this.moviesRepository.create(createMovie);
     return await this.moviesRepository.save(newMovie);
   }

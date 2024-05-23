@@ -13,7 +13,9 @@ export interface CategoriesRepository {
    * @returns {Promise<CategoriesEntity>} - A promise that resolves to the created category entity.
    * @throws {Error} - If there is an error creating the category.
    */
-  createCategory(category: CreateCategoryDto): Promise<CategoriesEntity>;
+  createCategory(
+    category: CreateCategoryDto,
+  ): Promise<Partial<CategoriesEntity>>;
 
   /**
    * Adds a category to a movie in the database.
@@ -23,10 +25,7 @@ export interface CategoriesRepository {
    * @returns {Promise<AddCategoryMovieDto>} - A promise that resolves to a DTO representing the updated association between movie and category.
    * @throws {Error} - If there is an error adding the category to the movie.
    */
-  addCategoryMovie(
-    idMovie: number,
-    idCategory: number,
-  ): Promise<AddCategoryMovieDto>;
+  addCategoryMovie(idMovie: number, idCategory: number): Promise<boolean>;
 
   /**
    * Removes a category association from a movie in the database.

@@ -1,5 +1,5 @@
-import Joi from 'joi';
+import * as z from "zod";
 
-const nameCategorySchema = Joi.string().max(40).min(5).required();
+export const nameCategorySchema = z.string().max(40).min(5);
 
-export type NameCategory = Joi.Schema<typeof nameCategorySchema>;
+export type NameCategory = z.infer<typeof nameCategorySchema>;

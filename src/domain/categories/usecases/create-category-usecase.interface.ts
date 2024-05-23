@@ -13,5 +13,7 @@ export interface CreateCategoryUsecase {
    * @returns {Promise<CategoriesEntity>} - A promise that resolves to the newly created category entity.
    * @throws {Error} - If there is an error creating the category.
    */
-  execute(createCategory: CreateCategoryDto): Promise<CategoriesEntity>;
+  execute(
+    createCategory: CreateCategoryDto,
+  ): Promise<Partial<CategoriesEntity>>;
 }

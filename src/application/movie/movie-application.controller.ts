@@ -65,8 +65,6 @@ export class MovieApplicationController implements MovieController {
     const newMovie: CreateMovieDtoApplication = { ...createMovie };
     const validMovie = movieSchema.safeParse(newMovie);
 
-    //TODO: Verify if movie exit in database
-
     if (!newMovie || !validMovie.success) {
       throw new BadRequestException(`${newMovie} Data is missing`);
     }
