@@ -1,0 +1,45 @@
+@tailwind base;
+
+@layer base {
+  :root {
+    @apply m-0;
+    @apply p-0;
+  }
+  body {
+    @apply m-0;
+    @apply text-white;
+  }
+
+  main {
+    @apply block;
+    @apply bg-gradient-to-r from-indigo-500 from-10% via-sky-500 via-30% to-emerald-500 to-90%;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5 {
+    @apply p-2;
+  }
+
+  header,
+  footer,
+  div,
+  span,
+  section {
+    @apply p-4;
+  }
+
+  ul,
+  li {
+    @apply p-1;
+  }
+
+  a {
+    @apply p-1;
+    @apply border-0;
+    @apply hover:border-b-black;
+    @apply hover:border-b-2;
+  }
+}
