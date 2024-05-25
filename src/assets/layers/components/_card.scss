@@ -1,0 +1,42 @@
+@tailwind components;
+
+@layer components {
+  .card {
+    @apply m-2;
+    @apply sm:p-2;
+    @apply flex;
+    @apply flex-col;
+    @apply shadow-lg;
+    @apply max-w-96;
+    @apply transition hover:scale-110;
+    @apply ease-in-out;
+    @apply duration-500;
+  }
+
+  .back-card {
+    @apply bg-inherit;
+    @apply shadow-lg;
+    @apply backdrop-blur-sm bg-white/10;
+    header {
+      @apply text-2xl;
+      @apply font-semibold;
+      @apply flex;
+      @apply flex-row;
+      @apply justify-between;
+      @apply items-center;
+    }
+
+    footer {
+      @apply text-2xl;
+      @apply font-semibold;
+      @apply flex;
+      @apply flex-row;
+      @apply justify-between;
+      @apply items-center;
+      @apply flex;
+      @apply flex-col;
+      @apply shadow-lg;
+      @apply max-w-96;
+    }
+  }
+}

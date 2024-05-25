@@ -1,1 +1,8 @@
-/* You can add global styles to this file, and also import other style files */
+/* import layers base */
+@import "./assets/layers/base/base";
+@import "./assets/layers/base/typography";
+
+/* import layer component */
+@import "./assets/layers/components/card";
+@import "./assets/layers/components/button";
+@import "./assets/layers/components/table";

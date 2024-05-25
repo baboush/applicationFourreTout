@@ -1,0 +1,22 @@
+@tailwind components;
+
+@layer components {
+  .table-price {
+    @apply flex;
+    @apply flex-col;
+    @apply items-center;
+    @apply m-2;
+    @apply p-1;
+    @apply backdrop-opacity-90 bg-violet-700/30;
+    @apply shadow-lg;
+    @apply sm:w-1/3;
+    @apply rounded-xl;
+
+    td {
+      @apply w-full;
+      @apply border-b-white;
+      @apply border-b-2;
+      @apply border-opacity-20;
+    }
+  }
+}
