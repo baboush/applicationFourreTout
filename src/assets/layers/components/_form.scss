@@ -1,0 +1,53 @@
+@tailwind components;
+
+@layer components {
+  .form {
+    @apply p-2;
+    @apply flex;
+    @apply flex-col;
+    @apply items-center;
+
+    .form-container {
+      @apply relative;
+      @apply w-full;
+      @apply p-2;
+
+      .item-form {
+        @apply p-2;
+        @apply flex;
+        @apply flex-col;
+        @apply items-center;
+        @apply w-full;
+
+        .label-form {
+          @apply text-3xl;
+          @apply font-semibold;
+        }
+
+        .input-form {
+          @apply bg-inherit;
+          @apply rounded-2xl;
+          @apply text-xl;
+          @apply border-l-2 border-r-2 border-b-2 border-white;
+          @apply p-4;
+        }
+
+        .input-form::placeholder {
+          @apply text-white;
+          @apply opacity-100;
+        }
+
+        .left-corner:after {
+          content: "";
+          @apply absolute;
+          @apply w-4;
+          @apply h-4;
+          @apply bg-white;
+          @apply -ml-[8.8rem];
+          @apply mt-[3.2rem];
+          @apply rounded-xl;
+        }
+      }
+    }
+  }
+}

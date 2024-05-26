@@ -6,8 +6,9 @@
     @apply p-4;
     @apply text-center;
     @apply rounded-xl;
+  }
+  .btn-action {
     @apply backdrop-blur-sm bg-white/30;
-
     :hover {
       @apply animate-bounce;
       @apply border-none;
