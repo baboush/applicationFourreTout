@@ -1,0 +1,90 @@
+@tailwinds components;
+
+@layer components {
+  .toolbar {
+    @apply flex;
+    @apply flex-row;
+    @apply items-center;
+    @apply justify-between;
+    @apply p-4;
+
+    .is-desktop {
+      @apply hidden;
+      @apply md:block;
+      @apply w-2/4;
+      .nav-list {
+        @apply flex;
+        @apply flex-row;
+        @apply w-full;
+        @apply justify-between;
+      }
+    }
+
+    .burger-menu {
+      @apply md:hidden;
+      @apply z-50;
+      .burger-btn {
+        @apply flex;
+        @apply flex-col;
+        @apply justify-between;
+        @apply gap-3;
+        @apply h-full;
+        @apply w-full;
+        .line-1 {
+          @apply p-0;
+          @apply bg-white;
+          @apply h-2;
+          @apply w-14;
+          @apply rounded;
+        }
+        .line-2 {
+          @apply p-0;
+          @apply bg-white;
+          @apply h-2;
+          @apply w-10;
+          @apply rounded;
+        }
+        .line-3 {
+          @apply p-0;
+          @apply w-14;
+          @apply h-2;
+          @apply bg-white;
+          @apply rounded;
+        }
+      }
+    }
+
+    .menu-mobile {
+      @apply fixed;
+      @apply top-0;
+      @apply left-0;
+      @apply h-screen;
+      @apply w-screen;
+      @apply backdrop-blur-2xl bg-emerald-900/30;
+      @apply p-0;
+      @apply z-40;
+
+      .nav-mobile {
+        @apply h-full;
+        @apply p-4;
+
+        .nav-list-mobile {
+          @apply h-full;
+          @apply flex;
+          @apply flex-col;
+          @apply items-center;
+          @apply justify-center;
+          @apply gap-8;
+        }
+      }
+    }
+
+    .is-hidden {
+      @apply invisible;
+    }
+
+    .is-visible {
+      @apply visible;
+    }
+  }
+}

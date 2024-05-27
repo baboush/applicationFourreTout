@@ -1,51 +1,62 @@
 @tailwind components;
 
 @layer components {
-  .form {
-    @apply p-2;
-    @apply flex;
-    @apply flex-col;
-    @apply items-center;
-
-    .form-container {
-      @apply relative;
-      @apply w-full;
+  .form-container {
+    @apply md:w-1/3;
+    .form {
       @apply p-2;
-
-      .item-form {
+      @apply flex;
+      @apply flex-col;
+      @apply items-center;
+      @apply backdrop-blur-2xl bg-white/30;
+      @apply rounded-2xl;
+      .form-list {
+        @apply relative;
         @apply p-2;
-        @apply flex;
-        @apply flex-col;
-        @apply items-center;
-        @apply w-full;
 
-        .label-form {
-          @apply text-3xl;
-          @apply font-semibold;
-        }
+        .item-form {
+          @apply p-2;
+          @apply flex;
+          @apply flex-col;
+          @apply items-center;
 
-        .input-form {
-          @apply bg-inherit;
-          @apply rounded-2xl;
-          @apply text-xl;
-          @apply border-l-2 border-r-2 border-b-2 border-white;
-          @apply p-4;
-        }
+          .label-form {
+            @apply text-3xl;
+            @apply font-semibold;
+          }
 
-        .input-form::placeholder {
-          @apply text-white;
-          @apply opacity-100;
-        }
+          .input-form {
+            @apply bg-inherit;
+            @apply rounded-2xl;
+            @apply text-xl;
+            @apply p-4;
+            @apply w-full;
+          }
 
-        .left-corner:after {
-          content: "";
-          @apply absolute;
-          @apply w-4;
-          @apply h-4;
-          @apply bg-white;
-          @apply -ml-[8.8rem];
-          @apply mt-[3.2rem];
-          @apply rounded-xl;
+          .input-contact {
+            @apply border-l-2 border-r-2 border-b-2 border-white;
+          }
+
+          .input-newsletter {
+            @apply border-2 border-white;
+          }
+
+          .input-form::placeholder {
+            @apply text-white;
+            @apply opacity-100;
+          }
+
+          .input-form:focus {
+            outline: none;
+          }
+          .left-corner:after {
+            content: "";
+            @apply absolute;
+            @apply w-4;
+            @apply h-4;
+            @apply bg-white;
+            @apply rounded-xl;
+          }
         }
       }
     }
