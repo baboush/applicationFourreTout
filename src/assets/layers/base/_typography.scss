@@ -6,8 +6,7 @@
   }
 
   h2 {
-    @apply text-6xl #{!important};
-    @apply sm:text-8xl #{!important};
+    @apply text-3xl #{!important};
     @apply font-semibold #{!important};
   }
 
@@ -29,7 +28,6 @@
 
   a {
     @apply text-2xl #{!important};
-    @apply sm:text-5xl #{!important};
     @apply font-medium #{!important};
   }
 

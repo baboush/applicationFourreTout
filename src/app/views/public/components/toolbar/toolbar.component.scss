@@ -1,0 +1,213 @@
+@tailwind components;
+@layer components {
+  .toolbar {
+    @apply flex;
+    @apply flex-row;
+    @apply items-center;
+    @apply justify-between;
+    @apply p-4;
+
+    .is-desktop {
+      @apply hidden;
+      @apply md:block;
+      @apply w-2/4;
+      .nav-list {
+        @apply flex;
+        @apply flex-row;
+        @apply w-full;
+        @apply justify-between;
+      }
+    }
+
+    .burger-menu {
+      @apply md:hidden;
+      @apply z-50;
+      .burger-btn {
+        @apply flex;
+        @apply flex-col;
+        @apply justify-between;
+        @apply gap-3;
+        @apply h-full;
+        @apply w-full;
+        .line-1 {
+          @apply p-0;
+          @apply bg-white;
+          @apply h-1;
+          @apply w-12;
+          @apply rounded;
+        }
+        .line-2 {
+          @apply p-0;
+          @apply bg-white;
+          @apply h-1;
+          @apply w-10;
+          @apply rounded;
+        }
+        .line-3 {
+          @apply p-0;
+          @apply w-12;
+          @apply h-1;
+          @apply bg-white;
+          @apply rounded;
+        }
+      }
+    }
+
+    .menu-mobile {
+      @apply fixed;
+      @apply top-0;
+      @apply left-0;
+      @apply h-screen;
+      @apply w-screen;
+      @apply backdrop-blur-2xl bg-emerald-900/30;
+      @apply p-0;
+      @apply z-40;
+
+      .nav-mobile {
+        @apply h-full;
+        @apply p-4;
+
+        .nav-list-mobile {
+          @apply h-full;
+          @apply flex;
+          @apply flex-col;
+          @apply items-center;
+          @apply justify-center;
+          @apply gap-8;
+        }
+      }
+    }
+
+    .is-hidden {
+      @apply invisible;
+      animation-name: close-menu;
+      animation-duration: 600ms;
+      transition: ease-in-out;
+      animation-fill-mode: forwards;
+    }
+
+    .is-visible {
+      @apply visible;
+      animation-name: open-menu;
+      animation-duration: 600ms;
+      transition: ease-in-out;
+      animation-fill-mode: forwards;
+    }
+
+    .animate-menu-in {
+      .line-1 {
+        animation-name: rotate-bottom;
+        animation-duration: 600ms;
+        animation-fill-mode: forwards;
+        @apply origin-center;
+        transition: ease-in-out;
+      }
+      .line-2 {
+        animation-name: fade-out-left;
+        animation-duration: 600ms;
+        animation-fill-mode: forwards;
+        transition: ease-in-out;
+      }
+      .line-3 {
+        animation-name: rotate-top;
+        animation-duration: 600ms;
+        animation-fill-mode: forwards;
+        transition: ease-in-out;
+      }
+    }
+
+    @keyframes fade-out-left {
+      from {
+        @apply opacity-100;
+      }
+      to {
+        @apply -translate-x-9;
+        @apply opacity-0;
+      }
+    }
+    @keyframes rotate-bottom {
+      from {
+        transform: rotate(0deg);
+      }
+      to {
+        transform: rotate(90deg);
+      }
+    }
+    @keyframes rotate-top {
+      from {
+        @apply opacity-100;
+      }
+      to {
+        @apply -translate-y-8;
+      }
+    }
+    .animate-close-menu {
+      .line-1 {
+        animation-name: rotate-back;
+        animation-duration: 600ms;
+        animation-fill-mode: forwards;
+        @apply origin-center;
+        transition: ease-in-out;
+      }
+      .line-2 {
+        animation-name: fade-in-left;
+        animation-duration: 800ms;
+        animation-fill-mode: forwards;
+        transition: ease-in-out;
+      }
+      .line-3 {
+        animation-name: down;
+        animation-duration: 600ms;
+        animation-fill-mode: forwards;
+        transition: ease-in-out;
+      }
+    }
+
+    @keyframes fade-in-left {
+      from {
+        @apply opacity-0;
+        @apply -translate-x-9;
+      }
+      to {
+        @apply opacity-100;
+      }
+    }
+    @keyframes rotate-back {
+      from {
+        transform: rotate(90deg);
+      }
+      to {
+        transform: rotate(0deg);
+      }
+    }
+    @keyframes down {
+      from {
+        @apply opacity-100;
+        @apply -translate-y-8;
+      }
+      to {
+        @apply opacity-100;
+      }
+    }
+    @keyframes open-menu {
+      from {
+        @apply opacity-0;
+        @apply h-0;
+      }
+      to {
+        @apply opacity-100;
+        @apply h-screen;
+      }
+    }
+    @keyframes close-menu {
+      from {
+        @apply opacity-100;
+        @apply h-screen;
+      }
+      to {
+        @apply opacity-0;
+        @apply h-0;
+      }
+    }
+  }
+}

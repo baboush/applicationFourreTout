@@ -11,17 +11,17 @@
   </div>
 
   <div class="burger-menu">
-    <button class="burger-btn btn">
+    <button class="burger-btn btn" #btnBurger (click)="handleShowMenu()">
       <span class="line-1"></span>
       <span class="line-2"></span>
       <span class="line-3"></span>
     </button>
   </div>
-  <div class="menu-mobile is-hidden">
+  <div class="menu-mobile is-hidden" #menuMobile>
     <nav class="nav-mobile">
       <ul class="nav-list-mobile">
         <li><a href="">Home</a></li>
-        <li><a href="">Price</a></li>
+        <li class="fade-out-left"><a href="">Price</a></li>
         <li><a href="">SignIn/SignUp</a></li>
       </ul>
     </nav>

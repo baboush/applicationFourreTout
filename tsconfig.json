@@ -1,4 +1,4 @@
-/* To learn more about this file see: https://angular.io/config/tsconfig. */
+/* To learn more about this file see: httph://angular.io/config/tsconfig. */
 {
   "compileOnSave": false,
   "compilerOptions": {
@@ -18,10 +18,21 @@
     "target": "ES2022",
     "module": "ES2022",
     "useDefineForClassFields": false,
-    "lib": [
-      "ES2022",
-      "dom"
-    ]
+    "lib": ["ES2022", "dom"],
+    "paths": {
+      "@modelesViews/*": ["./src/app/modelsViews/*"],
+      "@models/*": ["./src/app/models/*"],
+      "@views/*": ["./src/app/views/*"],
+      "@public/components/toolbar": [
+        "./src/app/views/public/components/toolbar/toolbar.component.ts"
+      ],
+      "@public/components/paragraphe": [
+        "./src/app/views/public/components/paragraphe/paragraphe.component.ts"
+      ],
+      "@public/components/card-image": [
+        "./src/app/views/public/components/card-image/card-image.component.ts"
+      ]
+    }
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
