@@ -1,0 +1,16 @@
+@tailwind components;
+
+@layer paragraphe {
+  .container {
+    @apply p-2;
+    @apply backdrop-blur-3xl bg-white/30;
+    @apply flex;
+    @apply flex-col;
+    @apply items-start;
+    @apply justify-start;
+
+    .p-content {
+      @apply p-2;
+    }
+  }
+}
