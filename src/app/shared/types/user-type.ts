@@ -6,8 +6,7 @@ import {
   promiseUserSchema,
   roleSchema,
   usernameSchema,
-} from '../schemas';
-
+} from '../schemas/user-schema';
 export type Username = z.infer<typeof usernameSchema>;
 
 export type Password = z.infer<typeof passwordSchema>;
