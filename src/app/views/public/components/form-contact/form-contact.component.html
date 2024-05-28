@@ -1,1 +1,56 @@
-<p>form-contact works!</p>
+<form [formGroup]="form" class="form">
+  <label class="label-form">Nom</label>
+  <input
+    class="input-form"
+    placeholder="Nom*"
+    type="text"
+    [formControl]="nameCheck"
+  />
+  @if (nameCheck.invalid && (nameCheck.dirty || nameCheck.touched)) {
+    @if (nameCheck.hasError("required")) {
+      <div class="error">Le champ est requis</div>
+    }
+    @if (nameCheck.hasError("maxlength")) {
+      <div class="error">Le champ doit contenir 40 caractère maximum</div>
+    }
+    @if (nameCheck.hasError("minlength")) {
+      <div class="error">Le champ doit contenir 3 caractères minimun</div>
+    }
+  }
+  <label class="label-form">Email</label>
+  <input
+    class="input-form"
+    placeholder="Email*"
+    type="text"
+    [formControl]="emailCheck"
+  />
+  @if (emailCheck.invalid && (emailCheck.dirty || emailCheck.touched)) {
+    @if (emailCheck.hasError("required")) {
+      <div class="error">Le champ est requis</div>
+    }
+    @if (emailCheck.hasError("email")) {
+      <div class="error">Le champ requière une addresse mail valide</div>
+    }
+  }
+
+  <label class="label-form">Message</label>
+  <textarea
+    class="input-form"
+    placeholder="Message*"
+    rows=""
+    cols=""
+    [formControl]="messageCheck"
+  ></textarea>
+  @if (messageCheck.invalid && (messageCheck.dirty || messageCheck.touched)) {
+    @if (messageCheck.hasError("required")) {
+      <div class="error">Le champ est requis</div>
+    }
+    @if (messageCheck.hasError("maxlength")) {
+      <div class="error">Le champ doit contenir 400 caractère maximum</div>
+    }
+    @if (messageCheck.hasError("minlength")) {
+      <div class="error">Le champ doit contenir 50 caractères minimun</div>
+    }
+  }
+  <button type="submit" class="btn btn-action">Envoyer</button>
+</form>

@@ -2,11 +2,17 @@ import { Component } from '@angular/core';
 import { ToolbarComponent } from '@public/components/toolbar';
 import { ParagrapheComponent } from '@public/components/paragraphe';
 import { CardImageComponent } from '@public/components/card-image';
+import { FormContactComponent } from '@views/public/components/form-contact/form-contact.component';
 
 @Component({
   selector: 'app-home-page',
   standalone: true,
-  imports: [ToolbarComponent, ParagrapheComponent, CardImageComponent],
+  imports: [
+    ToolbarComponent,
+    ParagrapheComponent,
+    CardImageComponent,
+    FormContactComponent,
+  ],
   templateUrl: './home-page.component.html',
   styleUrl: './home-page.component.scss',
 })

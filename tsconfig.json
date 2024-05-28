@@ -31,6 +31,9 @@
       ],
       "@public/components/card-image": [
         "./src/app/views/public/components/card-image/card-image.component.ts"
+      ],
+      "@public/components/form": [
+        "./src/app/views/public/components/form-contact/form-contact.component.ts"
       ]
     }
   },
