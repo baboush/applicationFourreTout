@@ -1,7 +1,7 @@
 .footer {
   @apply backdrop-blur-2xl bg-black/70;
 
-  .footer-block {
+  .block-footer {
     @apply flex;
     @apply flex-row;
     @apply flex-wrap;
@@ -21,16 +21,21 @@
       .items-block {
         @apply flex;
         @apply flex-col;
-        @apply flex-nowrap;
         @apply gap-2;
       }
-
-      .newsletter {
+    }
+    .newsletter {
+      @apply mb-0;
+      .form-field-newsletter {
         @apply flex;
         @apply flex-row;
-        @apply flex-nowrap;
-        @apply justify-center;
-        @apply items-center;
+        @apply flex-wrap;
+        .input-form {
+          @apply text-xs;
+        }
+        .btn {
+          @apply text-xs;
+        }
       }
     }
   }

@@ -1,5 +1,5 @@
 <footer class="footer">
-  <div class="footer-block">
+  <div class="block-footer">
     <div class="block">
       <div class="title">RESSOURCES</div>
       <ul class="items-block">
@@ -17,17 +17,33 @@
       </ul>
     </div>
     <div class="block">
-      <div class="title">Newsletter</div>
-      <div>
-        <form class="newsletter" action="">
-          <input
-            class="input input-form"
-            type="text"
-            placeholder="Newsletter"
-          />
-          <button class="btn btn-action">Insctiption</button>
-        </form>
-      </div>
+      <div class="title">NEWSLETTER</div>
+      <form
+        #newsLetterForm="ngForm"
+        class="newsletter form"
+        (ngSubmit)="onSubmit()"
+      >
+        <div class="form-field-newsletter">
+          <div class="form-field">
+            <input
+              class="input-form"
+              type="email"
+              name="email"
+              placeholder="Email"
+              [(ngModel)]="email"
+              email
+              required
+            />
+            @if (
+              newsLetterForm.invalid &&
+              (newsLetterForm.touched || newsLetterForm.dirty)
+            ) {
+              <div class="error-tooltip">Veuillez entrer une Email valide</div>
+            }
+          </div>
+          <button type="submit" class="btn btn-action">Insctiption</button>
+        </div>
+      </form>
     </div>
   </div>
 
