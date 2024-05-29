@@ -5,9 +5,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-//TODO: import parse issue tsconfig language server
-import { Email } from '../../../../shared/types/user-type';
-import { Name } from '../../../../shared/types/profile-types';
+import { Email, Name } from '@shared/types';
 
 @Component({
   selector: 'app-form-contact',
@@ -19,7 +17,7 @@ import { Name } from '../../../../shared/types/profile-types';
 export class FormContactComponent {
   private formBuilder = inject(FormBuilder);
   nameCheck = new FormControl<Name>('', {
-    updateOn: 'blur',
+    updateOn: 'change',
     validators: [
       Validators.minLength(3),
       Validators.maxLength(40),
@@ -27,15 +25,18 @@ export class FormContactComponent {
       Validators.pattern('[a-zA-Z]+$'),
     ],
   });
-  emailCheck = new FormControl<Email>('', [
-    Validators.required,
-    Validators.email,
-  ]);
-  messageCheck = new FormControl<string>('', [
-    Validators.required,
-    Validators.minLength(50),
-    Validators.maxLength(400),
-  ]);
+  emailCheck = new FormControl<Email>('', {
+    updateOn: 'change',
+    validators: [Validators.required, Validators.email],
+  });
+  messageCheck = new FormControl<string>('', {
+    updateOn: 'change',
+    validators: [
+      Validators.required,
+      Validators.minLength(50),
+      Validators.maxLength(400),
+    ],
+  });
 
   form = this.formBuilder.group({
     name: this.nameCheck,

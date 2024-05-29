@@ -3,6 +3,7 @@
 @layer components {
   .form {
     @apply md:w-1/3;
+    @apply m-2;
     @apply p-4;
     @apply flex;
     @apply flex-col;

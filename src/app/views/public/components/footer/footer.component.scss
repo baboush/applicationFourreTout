@@ -1,0 +1,44 @@
+.footer {
+  @apply backdrop-blur-2xl bg-black/70;
+
+  .footer-block {
+    @apply flex;
+    @apply flex-row;
+    @apply flex-wrap;
+    @apply justify-between;
+
+    .block {
+      @apply flex;
+      @apply flex-col;
+      @apply gap-3;
+      .title {
+        @apply text-xl;
+        @apply font-black;
+        @apply p-0;
+        @apply md:text-4xl;
+      }
+
+      .items-block {
+        @apply flex;
+        @apply flex-col;
+        @apply flex-nowrap;
+        @apply gap-2;
+      }
+
+      .newsletter {
+        @apply flex;
+        @apply flex-row;
+        @apply flex-nowrap;
+        @apply justify-center;
+        @apply items-center;
+      }
+    }
+  }
+  .licences {
+    @apply flex;
+    @apply flex-row;
+    @apply flex-nowrap;
+    @apply justify-between;
+    @apply p-4;
+  }
+}

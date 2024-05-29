@@ -20,21 +20,9 @@
     "useDefineForClassFields": false,
     "lib": ["ES2022", "dom"],
     "paths": {
-      "@modelesViews/*": ["./src/app/modelsViews/*"],
-      "@models/*": ["./src/app/models/*"],
-      "@views/*": ["./src/app/views/*"],
-      "@public/components/toolbar": [
-        "./src/app/views/public/components/toolbar/toolbar.component.ts"
-      ],
-      "@public/components/paragraphe": [
-        "./src/app/views/public/components/paragraphe/paragraphe.component.ts"
-      ],
-      "@public/components/card-image": [
-        "./src/app/views/public/components/card-image/card-image.component.ts"
-      ],
-      "@public/components/form": [
-        "./src/app/views/public/components/form-contact/form-contact.component.ts"
-      ]
+      "@view/public/components": ["./src/app/views/public/components/index.ts"],
+      "@shared/types": ["./src/app/shared/types/index.ts"],
+      "@shared/schemas": ["./src/app/shared/schemas/index.ts"]
     }
   },
   "angularCompilerOptions": {

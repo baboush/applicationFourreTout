@@ -1,8 +1,12 @@
 import { Component } from '@angular/core';
-import { ToolbarComponent } from '@public/components/toolbar';
-import { ParagrapheComponent } from '@public/components/paragraphe';
-import { CardImageComponent } from '@public/components/card-image';
-import { FormContactComponent } from '@views/public/components/form-contact/form-contact.component';
+import {
+  FormContactComponent,
+  HeroHeaderComponent,
+} from '@view/public/components';
+import { FooterComponent } from '@view/public/components';
+import { CardImageComponent } from '@view/public/components';
+import { ParagrapheComponent } from '@view/public/components';
+import { ToolbarComponent } from '@view/public/components';
 
 @Component({
   selector: 'app-home-page',
@@ -12,6 +16,8 @@ import { FormContactComponent } from '@views/public/components/form-contact/form
     ParagrapheComponent,
     CardImageComponent,
     FormContactComponent,
+    FooterComponent,
+    HeroHeaderComponent,
   ],
   templateUrl: './home-page.component.html',
   styleUrl: './home-page.component.scss',
