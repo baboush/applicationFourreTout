@@ -1,0 +1,13 @@
+.sec-card-price {
+  @apply flex;
+  @apply flex-col;
+  @apply items-center;
+  @apply p-2;
+  .container-card {
+    @apply flex;
+    @apply flex-row;
+    @apply flex-wrap;
+    @apply justify-between;
+    @apply gap-28;
+  }
+}

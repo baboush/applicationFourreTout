@@ -1,0 +1,43 @@
+.card-price {
+  @apply backdrop-blur-xl bg-black/60;
+  @apply p-4;
+  @apply flex;
+  @apply flex-col;
+  @apply rounded-xl;
+  @apply gap-8;
+
+  .header-card {
+    @apply p-2;
+    .title {
+      @apply text-center;
+    }
+  }
+
+  .content-card {
+    @apply p-4;
+    @apply flex;
+    @apply flex-col;
+    @apply gap-8;
+
+    .item-card {
+      @apply p-2;
+      @apply flex;
+      @apply flex-row;
+      @apply flex-nowrap;
+      @apply items-start;
+      @apply justify-between;
+      @apply gap-8;
+
+      .icon-card {
+        @apply w-8;
+        @apply h-8;
+      }
+
+      .icon-card-none {
+        @apply w-8;
+        @apply h-8;
+        @apply opacity-30;
+      }
+    }
+  }
+}

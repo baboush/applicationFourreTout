@@ -1,0 +1,19 @@
+<main>
+  <app-toolbar />
+  <section>
+    <h1>Obtenir un accès complet</h1>
+    <p>
+      L'abonnement premium vous donne un accès complet à toutes les
+      fonctionnalités.
+    </p>
+  </section>
+  <section class="sec-card-price">
+    <h2>Trois offres disponibles</h2>
+    <div class="container-card">
+      <app-price-card [card]="free" />
+      <app-price-card [card]="premium" />
+      <app-price-card [card]="premiumMore" />
+    </div>
+  </section>
+  <app-footer />
+</main>

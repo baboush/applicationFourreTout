@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
 import {
+  CardImageComponent,
+  FooterComponent,
   FormContactComponent,
   HeroHeaderComponent,
-} from '@view/public/components';
-import { FooterComponent } from '@view/public/components';
-import { CardImageComponent } from '@view/public/components';
-import { ParagrapheComponent } from '@view/public/components';
-import { ToolbarComponent } from '@view/public/components';
+  ParagrapheComponent,
+  ToolbarComponent,
+} from '@application/public/components';
 
 @Component({
   selector: 'app-home-page',
