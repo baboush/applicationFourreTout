@@ -1,7 +1,7 @@
 @layer typography {
   h1 {
-    @apply text-7xl #{!important};
-    @apply sm:text-9xl #{!important};
+    @apply text-4xl #{!important};
+    @apply sm:text-6xl #{!important};
     @apply font-bold #{!important};
   }
 
@@ -27,7 +27,6 @@
   }
 
   a {
-    @apply text-2xl #{!important};
     @apply font-medium #{!important};
   }
 

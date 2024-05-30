@@ -3,9 +3,25 @@
   <div class="is-desktop">
     <nav class="nav">
       <ul class="nav-list">
-        <li><a href="">Home</a></li>
-        <li><a href="">Price</a></li>
-        <li><a href="">SignIn/SignUp</a></li>
+        <li>
+          <a
+            [routerLink]="['/']"
+            routerLinkActive="active"
+            ariaCurrentWhenActive="page"
+            class="link-item"
+            >Accueil</a
+          >
+        </li>
+        <li>
+          <a
+            routerLink="/prices"
+            routerLinkActive="active"
+            ariaCurrentWhenActive="page"
+            class="link-item"
+            >Plans</a
+          >
+        </li>
+        <li><a class="link-item" href="">SignIn/SignUp</a></li>
       </ul>
     </nav>
   </div>

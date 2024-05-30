@@ -16,6 +16,9 @@
         @apply flex-row;
         @apply w-full;
         @apply justify-between;
+        .link-item {
+          @apply text-4xl;
+        }
       }
     }
 

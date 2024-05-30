@@ -22,6 +22,11 @@
         @apply flex;
         @apply flex-col;
         @apply gap-2;
+        .list-item {
+          a {
+            @apply text-2xl;
+          }
+        }
       }
     }
     .newsletter {
