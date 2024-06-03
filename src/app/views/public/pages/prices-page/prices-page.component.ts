@@ -3,7 +3,7 @@ import {
   FooterComponent,
   PriceCardComponent,
   ToolbarComponent,
-} from '@application/public/components';
+} from '@view/public/components';
 import { Card } from '../../../../shared/interfaces/card';
 
 @Component({

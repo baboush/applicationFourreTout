@@ -1,13 +1,13 @@
-import Joi from 'joi';
+import z from 'zod';
 
-const titleBookSchema = Joi.string().max(80).min(3).required();
+const titleBookSchema = z.string().max(80).min(3);
 
-export type TitleBook = Joi.Schema<typeof titleBookSchema>;
+export type TitleBook = z.infer<typeof titleBookSchema>;
 
-const posterBookSchema = Joi.string().max(250).min(50).required();
+const posterBookSchema = z.string().max(250).min(50);
 
-export type PosterBook = Joi.Schema<typeof posterBookSchema>;
+export type PosterBook = z.infer<typeof posterBookSchema>;
 
-const authorBookSchema = Joi.string().max(250).min(10).required();
+const authorBookSchema = z.string().max(250).min(10);
 
-export type AuthorBook = Joi.Schema<typeof authorBookSchema>;
+export type AuthorBook = z.Schema<typeof authorBookSchema>;

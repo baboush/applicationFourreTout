@@ -1,0 +1,5 @@
+<div class="container">
+  @for (item of movies(); track item.id) {
+    <app-card-presenter [poster]="item.poster" />
+  }
+</div>

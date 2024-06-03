@@ -1,0 +1,541 @@
+{
+  "openapi": "3.0.0",
+  "paths": {
+    "/auth/login": {
+      "post": {
+        "operationId": "AuthControllerApplication_signIn",
+        "summary": "Description de signIn",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/LoginDtoApplication" }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Réponse réussie" },
+          "404": { "description": "Ressource non trouvée" },
+          "500": { "description": "Erreur interne du serveur" }
+        },
+        "tags": ["Authentification"]
+      }
+    },
+    "/auth/signUp": {
+      "post": {
+        "operationId": "AuthControllerApplication_signUp",
+        "summary": "Create User ",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateUserDtoApplication"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Success Create User" },
+          "404": { "description": "Ressources not exists" },
+          "500": { "description": "Error server" }
+        },
+        "tags": ["Authentification"]
+      }
+    },
+    "/auth/logOut": {
+      "get": {
+        "operationId": "AuthControllerApplication_logOut",
+        "parameters": [],
+        "responses": { "201": { "description": "Success Create User" } },
+        "tags": ["Authentification"]
+      }
+    },
+    "/movie/create": {
+      "post": {
+        "operationId": "MovieApplicationController_handleCreateAndPublishMovie",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateMovieApplicationDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "type": "object" } }
+            }
+          }
+        },
+        "tags": ["Movie"]
+      }
+    },
+    "/movie/list": {
+      "get": {
+        "operationId": "MovieApplicationController_handleFindSavedMoviesList",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/MovieEntity" }
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Movie"]
+      }
+    },
+    "/movie/{id}": {
+      "get": {
+        "operationId": "MovieApplicationController_handleFindOneSavedMovie",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": { "type": "number" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "type": "object" } }
+            }
+          }
+        },
+        "tags": ["Movie"]
+      }
+    },
+    "/movie/update": {
+      "put": {
+        "operationId": "MovieApplicationController_handleUpdateMovieDetail",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": { "type": "number" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateMovieApplicationDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "type": "object" } }
+            }
+          }
+        },
+        "tags": ["Movie"]
+      }
+    },
+    "/movie/delet/{id}": {
+      "delete": {
+        "operationId": "MovieApplicationController_handleDeleteSavedMovie",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": { "type": "number" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "type": "boolean" } }
+            }
+          }
+        },
+        "tags": ["Movie"]
+      }
+    },
+    "/movies/sse": {
+      "get": {
+        "operationId": "MoviesControllerSse_sse",
+        "parameters": [],
+        "responses": { "200": { "description": "" } }
+      }
+    },
+    "/categories": {
+      "post": {
+        "operationId": "CategoriesApplicationController_handleCreateCategoryAndPublish",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateCategoryDtoApplication"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Categories" }
+              }
+            }
+          },
+          "400": { "description": "Invalid category data" },
+          "409": { "description": "Category with the same name already exists" }
+        },
+        "tags": ["Categories"]
+      }
+    },
+    "/categories/{id}": {
+      "delete": {
+        "operationId": "CategoriesApplicationController_handleRemoveCategorySaved",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": { "type": "number" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "type": "object" } }
+            }
+          }
+        },
+        "tags": ["Categories"]
+      }
+    },
+    "/categories/{idCategory}/movie/{idMovie}": {
+      "post": {
+        "operationId": "CategoriesApplicationController_handleAddCategoryToMovieRelation",
+        "parameters": [
+          {
+            "name": "idCategory",
+            "required": true,
+            "in": "path",
+            "schema": { "type": "number" }
+          },
+          {
+            "name": "idMovie",
+            "required": true,
+            "in": "path",
+            "schema": { "type": "number" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Category removed successfully from the movie."
+          },
+          "404": { "description": "Movie or category not found." }
+        },
+        "tags": ["Categories"]
+      },
+      "delete": {
+        "operationId": "CategoriesApplicationController_handleRemoveCategoryMovieSaved",
+        "parameters": [
+          {
+            "name": "idCategory",
+            "required": true,
+            "in": "path",
+            "schema": { "type": "number" }
+          },
+          {
+            "name": "idMovie",
+            "required": true,
+            "in": "path",
+            "schema": { "type": "number" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Category removed successfully from the movie."
+          },
+          "404": { "description": "Movie or category not found." }
+        },
+        "tags": ["Categories"]
+      }
+    }
+  },
+  "info": {
+    "title": "Application Fourre Tout",
+    "description": "Api Rest pour ajouter, supprimer, des rendez-vous, des films, des livres, des taches",
+    "version": "1.0.0",
+    "contact": {}
+  },
+  "tags": [],
+  "servers": [],
+  "components": {
+    "securitySchemes": {
+      "JWT": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "Authorization",
+        "in": "header"
+      }
+    },
+    "schemas": {
+      "LoginDtoApplication": {
+        "type": "object",
+        "properties": {
+          "username": { "type": "Username", "description": "Username login" },
+          "password": { "type": "Password", "description": "Password login" }
+        },
+        "required": ["username", "password"]
+      },
+      "CreateUserDtoApplication": {
+        "type": "object",
+        "properties": {
+          "username": { "type": "string", "description": "username" },
+          "password": { "type": "string", "description": "password" },
+          "email": { "type": "string", "description": "email" },
+          "role": {
+            "type": "string",
+            "description": "role",
+            "enum": ["USER", "ADMIN", "CONTRIBUTEUR"]
+          }
+        },
+        "required": ["username", "password", "email", "role"]
+      },
+      "CreateMovieApplicationDto": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "number" },
+          "title": { "type": "string", "minLength": 3, "maxLength": 80 },
+          "poster": { "type": "string", "minLength": 50, "maxLength": 250 },
+          "director": { "type": "string", "minLength": 3, "maxLength": 80 }
+        },
+        "required": ["title", "poster", "director"]
+      },
+      "Appointment": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "number" },
+          "title": { "type": "string" },
+          "content": { "type": "string" },
+          "etat": { "type": "string", "enum": ["EN", "AN", "FI"] },
+          "dateAppointment": { "format": "date-time", "type": "string" },
+          "profiles": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/Profile" }
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "content",
+          "etat",
+          "dateAppointment",
+          "profiles"
+        ]
+      },
+      "Tasks": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "number", "description": "id" },
+          "title": { "type": "string", "description": "title" },
+          "content": { "type": "string", "description": "content" },
+          "dateFinish": { "type": "string", "description": "dateFinish" },
+          "etat": {
+            "enum": ["en", "ea", "fi"],
+            "type": "EC\" | \"EA\" | \"F\"",
+            "description": "etat"
+          },
+          "profiles": { "type": "Profile[]", "description": "profiles" }
+        },
+        "required": ["id", "title", "content", "dateFinish", "etat", "profiles"]
+      },
+      "Profile": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "number" },
+          "name": { "type": "string", "nullable": true },
+          "surname": { "type": "string", "nullable": true },
+          "favories": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/Favories" }
+          },
+          "appointments": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/Appointment" }
+          },
+          "books": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/Books" }
+          },
+          "movies": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/MovieEntity" }
+          },
+          "tasks": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/Tasks" }
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "surname",
+          "favories",
+          "appointments",
+          "books",
+          "movies",
+          "tasks"
+        ]
+      },
+      "MovieEntity": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "number" },
+          "title": { "type": "string" },
+          "poster": { "type": "string" },
+          "director": { "type": "string" },
+          "favories": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/Favories" }
+          },
+          "categories": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/Categories" }
+          },
+          "profiles": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/Profile" }
+          },
+          "createAt": { "format": "date-time", "type": "string" },
+          "updateAt": { "format": "date-time", "type": "string" },
+          "deleteAt": { "format": "date-time", "type": "string" }
+        },
+        "required": [
+          "id",
+          "title",
+          "poster",
+          "director",
+          "favories",
+          "categories",
+          "profiles",
+          "createAt",
+          "updateAt",
+          "deleteAt"
+        ]
+      },
+      "Categories": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "number" },
+          "name": { "type": "string" },
+          "books": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/Books" }
+          },
+          "movies": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/MovieEntity" }
+          }
+        },
+        "required": ["id", "name", "books", "movies"]
+      },
+      "Books": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "number" },
+          "title": { "type": "object" },
+          "author": { "type": "object" },
+          "poster": { "type": "object", "nullable": true },
+          "categories": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/Categories" }
+          },
+          "favories": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/Favories" }
+          },
+          "profiles": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/Profile" }
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "author",
+          "poster",
+          "categories",
+          "favories",
+          "profiles"
+        ]
+      },
+      "Favories": {
+        "type": "object",
+        "properties": {
+          "bookId": { "type": "number" },
+          "movieId": { "type": "number" },
+          "profileId": { "type": "number" },
+          "book": { "$ref": "#/components/schemas/Books" },
+          "movie": { "$ref": "#/components/schemas/MovieEntity" },
+          "profile": { "$ref": "#/components/schemas/Profile" }
+        },
+        "required": [
+          "bookId",
+          "movieId",
+          "profileId",
+          "book",
+          "movie",
+          "profile"
+        ]
+      },
+      "UpdateMovieApplicationDto": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "number" },
+          "title": { "type": "string", "minLength": 3, "maxLength": 80 },
+          "poster": { "type": "string", "minLength": 50, "maxLength": 250 },
+          "director": { "type": "string", "minLength": 3, "maxLength": 80 }
+        },
+        "required": ["id", "title", "poster", "director"]
+      },
+      "CreateCategoryDtoApplication": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number",
+            "description": "The unique identifier of the category"
+          },
+          "name": {
+            "type": "object",
+            "description": "The name of the category",
+            "minLength": 5,
+            "maxLength": 40
+          }
+        },
+        "required": ["id", "name"]
+      }
+    }
+  }
+}

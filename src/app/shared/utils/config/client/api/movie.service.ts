@@ -22,7 +22,7 @@ import {
   HttpContext,
 } from '@angular/common/http';
 import { CustomHttpParameterCodec } from '../encoder';
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 
 // @ts-ignore
 import { CreateMovieApplicationDto } from '../model/createMovieApplicationDto';
@@ -545,10 +545,8 @@ export class MovieService {
     }
 
     let localVarPath = `/movie/list`;
-    return this.httpClient.request<any>(
-      'get',
-      `${this.configuration.basePath}${localVarPath}`,
-      {
+    return this.httpClient
+      .request<any>('get', `${this.configuration.basePath}${localVarPath}`, {
         context: localVarHttpContext,
         responseType: <any>responseType_,
         withCredentials: this.configuration.withCredentials,
@@ -556,8 +554,8 @@ export class MovieService {
         observe: observe,
         transferCache: localVarTransferCache,
         reportProgress: reportProgress,
-      },
-    );
+      })
+      .pipe(tap(() => console.log('new value')));
   }
 
   /**
