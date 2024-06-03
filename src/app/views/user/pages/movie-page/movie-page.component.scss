@@ -1,5 +1,32 @@
-.container {
-  @apply flex;
-  @apply flex-row;
-  @apply flex-wrap;
+.last-movie {
+  @apply h-max;
+  @apply w-full;
+  @apply overflow-x-hidden;
+  @apply whitespace-nowrap;
+  @apply relative;
+  @apply scroll-smooth;
+
+  .scroll-content {
+    @apply inline-flex;
+    @apply w-[400vw];
+    @apply overflow-x-scroll;
+  }
+  .btn {
+    @apply flex;
+    @apply flex-row;
+    @apply flex-nowrap;
+    @apply justify-between;
+    @apply sticky;
+    @apply top-2/4;
+    @apply left-3;
+    @apply w-full;
+    @apply z-10;
+
+    .svg-btn {
+      @apply text-black;
+      @apply fill-white;
+      @apply stroke-white;
+      @apply w-16;
+    }
+  }
 }

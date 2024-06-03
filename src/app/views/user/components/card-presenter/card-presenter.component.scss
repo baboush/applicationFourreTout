@@ -8,4 +8,9 @@
   img {
     @apply min-w-full;
   }
+
+  figure:hover {
+    @apply scale-110;
+    @apply;
+  }
 }
