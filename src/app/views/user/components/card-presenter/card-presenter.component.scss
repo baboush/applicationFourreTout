@@ -2,11 +2,11 @@
   @apply backdrop-blur-2xl bg-black/60;
   @apply p-2;
   @apply m-2;
-  @apply w-4/12;
+  @apply md:w-4/12;
 
   figure,
   img {
-    @apply min-w-full;
+    @apply w-full;
   }
 
   figure:hover {
