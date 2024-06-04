@@ -2,16 +2,31 @@
   <app-toolbar />
   <section>
     <app-hero-header />
-    <button (click)="addData()">Add data</button>
   </section>
 
   <section>
-    <app-paragraphe
-      [titleParagraphe]="presentation.title"
-      [paragraphe]="presentation.paragraphe"
-    />
+    <div class="box-paragraphe">
+      <app-paragraphe
+        [titleParagraphe]="presentation.title"
+        [paragraphe]="presentation.paragraphe"
+      />
+      <app-button-action [title]="details.title" [link]="details.link" />
+    </div>
+    <app-card-image />
+  </section>
+  <section>
+    <app-card-image />
+    <div class="box-paragraphe">
+      <app-paragraphe
+        [titleParagraphe]="presentation.title"
+        [paragraphe]="presentation.paragraphe"
+      />
+      <app-button-action [title]="details.title" [link]="details.link" />
+    </div>
+  </section>
+  <section>
+    <app-form-contact (submitFormContact)="submitFormContact($event)" />
   </section>
 
-  <app-form-contact (submitFormContact)="submitFormContact($event)" />
   <app-footer />
 </main>

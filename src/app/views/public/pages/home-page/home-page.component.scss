@@ -1,0 +1,17 @@
+:host {
+  section {
+    @apply flex;
+    @apply flex-wrap;
+    @apply justify-between;
+    @apply xl:p-40;
+  }
+
+  .box-paragraphe {
+    @apply items-start;
+    @apply flex;
+    @apply flex-col;
+    @apply justify-between;
+    @apply rounded-xl;
+    @apply md:w-1/2;
+  }
+}

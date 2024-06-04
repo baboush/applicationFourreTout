@@ -1,17 +1,12 @@
-@tailwind components;
+:host {
+  @apply p-4;
+  @apply flex;
+  @apply flex-col;
+  @apply items-start;
+  @apply justify-start;
+  @apply rounded-xl;
 
-@layer paragraphe {
-  .container {
+  .p-content {
     @apply p-2;
-    @apply backdrop-blur-3xl bg-white/30;
-    @apply flex;
-    @apply flex-col;
-    @apply items-start;
-    @apply justify-start;
-    @apply rounded-xl;
-
-    .p-content {
-      @apply p-2;
-    }
   }
 }

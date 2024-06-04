@@ -1,0 +1,7 @@
+:host {
+  @apply p-2;
+  button {
+    @apply backdrop-blur-xl bg-white/10;
+    @apply text-center;
+  }
+}
