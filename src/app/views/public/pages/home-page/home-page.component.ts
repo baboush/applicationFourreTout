@@ -8,6 +8,12 @@ import {
   ToolbarComponent,
 } from '@view/public/components';
 import { MovieService } from '../../../../shared/utils/config/client';
+import { ContactFormData } from '@shared/interfaces';
+import {
+  emailContactSchema,
+  messageContactSchema,
+  nameContactSchema,
+} from '@shared/schemas';
 
 @Component({
   selector: 'app-home-page',
@@ -43,5 +49,18 @@ export class HomePageComponent {
         })
         .subscribe();
     }
+  }
+
+  submitFormContact(formData: ContactFormData) {
+    const data = { ...formData };
+    const isValid =
+      !nameContactSchema.safeParse(data.name) ||
+      !emailContactSchema.safeParse(data.email) ||
+      !messageContactSchema.safeParse(data.message) ||
+      !data;
+    if (!isValid) {
+      console.log('error');
+    }
+    console.log(formData);
   }
 }

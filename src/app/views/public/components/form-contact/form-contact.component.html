@@ -1,5 +1,5 @@
-<form [formGroup]="form" class="form">
-  <label class="label-form">Nom</label>
+<form [formGroup]="form" class="form" (ngSubmit)="onSubmit()">
+  <label for="nameCheck" class="label-form">Nom</label>
   <div class="form-field">
     <input
       class="input-form"
@@ -23,7 +23,7 @@
       }
     }
   </div>
-  <label class="label-form">Email</label>
+  <label for="emailCheck" class="label-form">Email</label>
   <div class="form-field">
     <input
       class="input-form"
@@ -42,7 +42,7 @@
       }
     }
   </div>
-  <label class="label-form error-tooltip">Message</label>
+  <label for="messageCheck" class="label-form">Message</label>
   <div class="form-field">
     <textarea
       class="input-form"
@@ -67,5 +67,11 @@
       }
     }
   </div>
-  <button type="submit" class="btn btn-action">Envoyer</button>
+  <button
+    type="submit"
+    [disabled]="!form.valid"
+    class="btn btn-submit btn-action"
+  >
+    Envoyer
+  </button>
 </form>

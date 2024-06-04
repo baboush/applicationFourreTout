@@ -1,6 +1,4 @@
-@tailwind components;
-
-@layer components {
+:host {
   .form {
     @apply max-w-min;
     @apply flex;
@@ -11,8 +9,12 @@
       @apply p-0;
       @apply text-2xl;
     }
-    .btn {
-      @apply m-auto;
+    @apply m-auto;
+    .btn-submit:disabled {
+      @apply backdrop-blur-xl bg-white/30;
+    }
+    .btn-submit {
+      @apply backdrop-blur-xl bg-black/60;
     }
   }
 }

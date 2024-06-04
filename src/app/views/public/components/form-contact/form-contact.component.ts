@@ -1,11 +1,13 @@
-import { Component, inject } from '@angular/core';
+import { Component, EventEmitter, Output, inject } from '@angular/core';
 import {
   FormBuilder,
   FormControl,
+  FormGroup,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { Email, Name } from '@shared/types';
+import { ContactFormData } from '@shared/interfaces';
+import { EmailContact, MessageContact, NameContact } from '@shared/types';
 
 @Component({
   selector: 'app-form-contact',
@@ -15,8 +17,12 @@ import { Email, Name } from '@shared/types';
   styleUrl: './form-contact.component.scss',
 })
 export class FormContactComponent {
+  @Output() submitFormContact: EventEmitter<ContactFormData> =
+    new EventEmitter<ContactFormData>();
+
   private formBuilder = inject(FormBuilder);
-  nameCheck = new FormControl<Name>('', {
+
+  nameCheck = new FormControl<NameContact>('', {
     updateOn: 'change',
     validators: [
       Validators.minLength(3),
@@ -25,11 +31,13 @@ export class FormContactComponent {
       Validators.pattern('[a-zA-Z]+$'),
     ],
   });
-  emailCheck = new FormControl<Email>('', {
+
+  emailCheck = new FormControl<EmailContact>('', {
     updateOn: 'change',
     validators: [Validators.required, Validators.email],
   });
-  messageCheck = new FormControl<string>('', {
+
+  messageCheck = new FormControl<MessageContact>('', {
     updateOn: 'change',
     validators: [
       Validators.required,
@@ -38,9 +46,13 @@ export class FormContactComponent {
     ],
   });
 
-  form = this.formBuilder.group({
+  form: FormGroup = this.formBuilder.group({
     name: this.nameCheck,
     email: this.emailCheck,
     message: this.messageCheck,
   });
+
+  onSubmit() {
+    this.submitFormContact.emit(this.form.getRawValue());
+  }
 }

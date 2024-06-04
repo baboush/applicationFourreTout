@@ -22,7 +22,8 @@
     "paths": {
       "@view/public/components": ["./src/app/views/public/components/index.ts"],
       "@shared/types": ["./src/app/shared/types/index.ts"],
-      "@shared/schemas": ["./src/app/shared/schemas/index.ts"]
+      "@shared/schemas": ["./src/app/shared/schemas/index.ts"],
+      "@shared/interfaces": ["./src/app/shared/interfaces/index.ts"]
     }
   },
   "angularCompilerOptions": {
