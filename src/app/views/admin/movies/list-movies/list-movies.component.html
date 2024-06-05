@@ -16,17 +16,24 @@
             <button class="btn btn-action" (click)="deleteModal(movie.id)">
               Delete
             </button>
-            <button>Update</button>
+            <button (click)="updateModal(movie.id)">Update</button>
           </td>
         </tr>
       }
     </tbody>
   </table>
 
-  @if (isVisible) {
+  @if (modalDeleteIsVisible) {
     <app-modal-delete
-      [isVisible]="isVisible"
-      (isVisibleChange)="isVisible = $event"
+      [isVisible]="modalDeleteIsVisible"
+      (isVisibleChange)="modalDeleteIsVisible = $event"
+      [idMovie]="idMovie"
+    />
+  }
+  @if (modalUpdateIsVisible()) {
+    <app-modal-update
+      [isVisible]="modalUpdateIsVisible"
+      (isHidden)="modalUpdateIsVisible = $event"
       [idMovie]="idMovie"
     />
   }

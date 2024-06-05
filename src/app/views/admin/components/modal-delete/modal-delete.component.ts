@@ -19,14 +19,12 @@ import { MovieService } from '../../../../shared/utils/config/client';
 export class ModalDeleteComponent {
   private readonly movieService = inject(MovieService);
 
+  idMovie = input(0);
   isVisibleSignal = signal(false);
   @Input() set isVisible(value: boolean) {
     this.isVisibleSignal.set(value);
   }
-  idMovie = input(0);
   @Output() isVisibleChange = new EventEmitter();
-
-  message = input<string>('');
 
   removeItem() {
     this.movieService

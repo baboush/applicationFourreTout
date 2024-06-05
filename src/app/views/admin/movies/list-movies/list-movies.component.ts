@@ -1,4 +1,4 @@
-import { Component, Signal, inject } from '@angular/core';
+import { Component, Signal, inject, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import {
   MovieEntity,
@@ -6,17 +6,19 @@ import {
 } from '../../../../shared/utils/config/client';
 import { switchMap, map, interval } from 'rxjs';
 import { ModalDeleteComponent } from '../../components/modal-delete/modal-delete.component';
+import { ModalUpdateComponent } from '../../components/modal-update/modal-update.component';
 
 @Component({
   selector: 'app-list-movies',
   standalone: true,
-  imports: [ModalDeleteComponent],
+  imports: [ModalDeleteComponent, ModalUpdateComponent],
   templateUrl: './list-movies.component.html',
   styleUrl: './list-movies.component.scss',
 })
 export class ListMoviesComponent {
   private readonly movieService = inject(MovieService);
-  isVisible = false;
+  modalDeleteIsVisible = false;
+  modalUpdateIsVisible = signal(false);
   idMovie: number = 0;
 
   allMovies: Signal<MovieEntity[]> = toSignal(
@@ -32,7 +34,12 @@ export class ListMoviesComponent {
   );
 
   deleteModal(id: number) {
-    this.isVisible = !this.isVisible;
+    this.modalDeleteIsVisible = !this.modalDeleteIsVisible;
+    this.idMovie = id;
+  }
+
+  updateModal(id: number) {
+    this.modalDeleteIsVisible = !this.modalDeleteIsVisible;
     this.idMovie = id;
   }
 }
