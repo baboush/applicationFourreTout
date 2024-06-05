@@ -1,0 +1,33 @@
+:host {
+  @apply flex;
+  @apply flex-row;
+  @apply w-full;
+  @apply p-2;
+
+  .table-box {
+    @apply w-full;
+    @apply justify-between;
+
+    .table-header {
+      th[scope="col"] {
+        @apply shadow-2xl;
+        @apply bg-cyan-50;
+        @apply text-2xl;
+        @apply items-start;
+      }
+    }
+    .table-row {
+      @apply shadow-2xl;
+      @apply bg-white;
+    }
+
+    .item-table {
+      @apply p-4;
+    }
+
+    .btn {
+      @apply m-2;
+      @apply p-2;
+    }
+  }
+}

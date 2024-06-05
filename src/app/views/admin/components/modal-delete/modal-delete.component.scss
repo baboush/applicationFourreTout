@@ -1,0 +1,45 @@
+:host {
+  @apply absolute;
+  @apply z-50;
+  @apply shadow-2xl;
+  @apply flex;
+  @apply flex-col;
+  @apply w-2/4;
+  @apply h-2/4;
+  @apply bg-white;
+  @apply rounded-xl;
+  @apply items-center;
+  @apply justify-between;
+  @apply translate-y-1/2;
+  @apply translate-x-1/2;
+  @apply p-4;
+
+  .box-btn {
+    @apply flex;
+    @apply flex-row;
+    @apply flex-nowrap;
+    @apply justify-between;
+    @apply items-center;
+    @apply w-full;
+    @apply p-4;
+    .btn {
+      @apply w-full;
+      @apply p-2;
+      @apply rounded-xl;
+      @apply m-2;
+
+      .svg-icon {
+        @apply text-white;
+        @apply w-10;
+        @apply m-auto;
+      }
+    }
+    .btn-valid {
+      @apply bg-green-600;
+    }
+
+    .btn-cancel {
+      @apply bg-red-600;
+    }
+  }
+}

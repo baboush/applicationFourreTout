@@ -1,0 +1,33 @@
+@if (allMovies().length) {
+  <table class="table-box">
+    <thead>
+      <tr class="table-header">
+        <th scope="col">Nom du film</th>
+        <th scope="col">Rèalisateur</th>
+        <th scope="col">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (movie of allMovies(); track movie.id) {
+        <tr class="table-row">
+          <td class="item-table">{{ movie.title }}</td>
+          <td class="item-table">{{ movie.director }}</td>
+          <td class="item-table">
+            <button class="btn btn-action" (click)="deleteModal(movie.id)">
+              Delete
+            </button>
+            <button>Update</button>
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+
+  @if (isVisible) {
+    <app-modal-delete
+      [isVisible]="isVisible"
+      (isVisibleChange)="isVisible = $event"
+      [idMovie]="idMovie"
+    />
+  }
+}

@@ -12,7 +12,15 @@
 /* tslint:disable:no-unused-variable member-ordering */
 
 import { Inject, Injectable, Optional } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams, HttpResponse, HttpEvent, HttpParameterCodec, HttpContext } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpHeaders,
+  HttpParams,
+  HttpResponse,
+  HttpEvent,
+  HttpParameterCodec,
+  HttpContext,
+} from '@angular/common/http';
 import { CustomHttpParameterCodec } from '../encoder';
 import { Observable, tap } from 'rxjs';
 
@@ -537,8 +545,10 @@ export class MovieService {
     }
 
     let localVarPath = `/movie/list`;
-    return this.httpClient
-      .request<any>('get', `${this.configuration.basePath}${localVarPath}`, {
+    return this.httpClient.request<any>(
+      'get',
+      `${this.configuration.basePath}${localVarPath}`,
+      {
         context: localVarHttpContext,
         responseType: <any>responseType_,
         withCredentials: this.configuration.withCredentials,
@@ -546,8 +556,8 @@ export class MovieService {
         observe: observe,
         transferCache: localVarTransferCache,
         reportProgress: reportProgress,
-      })
-      .pipe(tap(() => console.log('new value')));
+      },
+    );
   }
 
   /**
