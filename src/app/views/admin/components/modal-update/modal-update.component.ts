@@ -1,14 +1,10 @@
 import {
-  AfterViewInit,
+  ChangeDetectionStrategy,
   Component,
-  EventEmitter,
-  Input,
-  Output,
-  WritableSignal,
+  OnInit,
   inject,
   input,
-  numberAttribute,
-  signal,
+  model,
 } from '@angular/core';
 import {
   MovieEntity,
@@ -26,16 +22,14 @@ import {
   standalone: true,
   imports: [ReactiveFormsModule],
   templateUrl: './modal-update.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrl: './modal-update.component.scss',
 })
-export class ModalUpdateComponent implements AfterViewInit {
+export class ModalUpdateComponent implements OnInit {
   private readonly movieService = inject(MovieService);
   private formNonNullable = inject(NonNullableFormBuilder);
 
-  @Output() isHidden: EventEmitter<WritableSignal<boolean>> =
-    new EventEmitter();
-  @Input() isVisible: WritableSignal<boolean> = signal(false);
-
+  isVisible = model(false);
   idMovie = input<MovieEntity>();
 
   updateFormMovie: FormGroup = this.formNonNullable.group({
@@ -74,17 +68,19 @@ export class ModalUpdateComponent implements AfterViewInit {
     ],
   });
 
-  ngAfterViewInit(): void {
-    console.log(this.idMovie());
+  ngOnInit(): void {
+    this.updateFormMovie.patchValue({
+      titleControl: this.idMovie()?.title,
+      posterControl: this.idMovie()?.poster,
+      directorControl: this.idMovie()?.director,
+    });
   }
 
   closeModal() {
-    console.log(this.idMovie());
-    this.isVisible.set(!this.isVisible());
-    this.isHidden.emit(this.isVisible);
+    this.isVisible.set(false);
   }
 
   onSubmit() {
-    console.log('test');
+    console.log(this.updateFormMovie.getRawValue());
   }
 }

@@ -25,18 +25,13 @@
     </tbody>
   </table>
 
-  @if (modalDeleteIsVisible) {
+  @if (modalDeleteIsVisible()) {
     <app-modal-delete
-      [isVisible]="modalDeleteIsVisible"
-      (isVisibleChange)="modalDeleteIsVisible = $event"
+      [(isVisible)]="modalDeleteIsVisible"
       [idMovie]="idMovie"
     />
   }
   @if (modalUpdateIsVisible()) {
-    <app-modal-update
-      [isVisible]="modalUpdateIsVisible"
-      (isHidden)="modalUpdateIsVisible = $event"
-      [idMovie]="movie"
-    />
+    <app-modal-update [(isVisible)]="modalUpdateIsVisible" [idMovie]="movie" />
   }
 }
