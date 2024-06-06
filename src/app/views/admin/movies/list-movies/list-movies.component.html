@@ -16,7 +16,9 @@
             <button class="btn btn-action" (click)="deleteModal(movie.id)">
               Delete
             </button>
-            <button (click)="updateModal(movie.id)">Update</button>
+            <button class="btn btn-action" (click)="updateModal(movie)">
+              Update
+            </button>
           </td>
         </tr>
       }
@@ -34,7 +36,7 @@
     <app-modal-update
       [isVisible]="modalUpdateIsVisible"
       (isHidden)="modalUpdateIsVisible = $event"
-      [idMovie]="idMovie"
+      [idMovie]="movie"
     />
   }
 }

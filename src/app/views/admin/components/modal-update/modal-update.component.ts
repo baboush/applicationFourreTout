@@ -1,4 +1,5 @@
 import {
+  AfterViewInit,
   Component,
   EventEmitter,
   Input,
@@ -6,50 +7,84 @@ import {
   WritableSignal,
   inject,
   input,
+  numberAttribute,
   signal,
 } from '@angular/core';
-import { MovieService } from '../../../../shared/utils/config/client';
-import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import {
-  DirectorMovie,
-  PosterMovie,
-  TitleMovie,
-} from '../../../../shared/types/movie-types';
+  MovieEntity,
+  MovieService,
+} from '../../../../shared/utils/config/client';
+import {
+  FormGroup,
+  NonNullableFormBuilder,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 
 @Component({
   selector: 'app-modal-update',
   standalone: true,
-  imports: [],
+  imports: [ReactiveFormsModule],
   templateUrl: './modal-update.component.html',
   styleUrl: './modal-update.component.scss',
 })
-export class ModalUpdateComponent {
-  private readonly = inject(MovieService);
-  private formUpdate = inject(FormBuilder);
+export class ModalUpdateComponent implements AfterViewInit {
+  private readonly movieService = inject(MovieService);
+  private formNonNullable = inject(NonNullableFormBuilder);
 
-  idMovie = input(0);
-  @Input() isVisible: WritableSignal<boolean> = signal(false);
   @Output() isHidden: EventEmitter<WritableSignal<boolean>> =
     new EventEmitter();
+  @Input() isVisible: WritableSignal<boolean> = signal(false);
 
-  titleControl = new FormControl<TitleMovie>('', {
-    updateOn: 'blur',
-    validators: [Validators.required, Validators.max(40), Validators.min(4)],
+  idMovie = input<MovieEntity>();
+
+  updateFormMovie: FormGroup = this.formNonNullable.group({
+    titleControl: [
+      '',
+      {
+        updateOn: 'blur',
+        validators: [
+          Validators.required,
+          Validators.max(40),
+          Validators.min(4),
+        ],
+      },
+    ],
+    posterControl: [
+      '',
+      {
+        updateOn: 'blur',
+        validators: [
+          Validators.required,
+          Validators.max(255),
+          Validators.min(4),
+        ],
+      },
+    ],
+    directorControl: [
+      '',
+      {
+        updateOn: 'blur',
+        validators: [
+          Validators.required,
+          Validators.max(40),
+          Validators.min(4),
+        ],
+      },
+    ],
   });
 
-  posterControl = new FormControl<PosterMovie>('', {
-    updateOn: 'blur',
-    validators: [Validators.required, Validators.max(255), Validators.min(4)],
-  });
-
-  directorControl = new FormControl<DirectorMovie>('', {
-    updateOn: 'blur',
-    validators: [Validators.required, Validators.max(40), Validators.min(4)],
-  });
+  ngAfterViewInit(): void {
+    console.log(this.idMovie());
+  }
 
   closeModal() {
     console.log(this.idMovie());
     this.isVisible.set(!this.isVisible());
     this.isHidden.emit(this.isVisible);
+  }
+
+  onSubmit() {
+    console.log('test');
   }
 }

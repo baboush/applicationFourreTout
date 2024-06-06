@@ -1,4 +1,10 @@
-import { Component, Signal, inject, signal } from '@angular/core';
+import {
+  Component,
+  Signal,
+  WritableSignal,
+  inject,
+  signal,
+} from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import {
   MovieEntity,
@@ -18,8 +24,9 @@ import { ModalUpdateComponent } from '../../components/modal-update/modal-update
 export class ListMoviesComponent {
   private readonly movieService = inject(MovieService);
   modalDeleteIsVisible = false;
-  modalUpdateIsVisible = signal(false);
+  modalUpdateIsVisible: WritableSignal<boolean> = signal(false);
   idMovie: number = 0;
+  movie!: MovieEntity;
 
   allMovies: Signal<MovieEntity[]> = toSignal(
     interval(1000).pipe(
@@ -38,8 +45,8 @@ export class ListMoviesComponent {
     this.idMovie = id;
   }
 
-  updateModal(id: number) {
-    this.modalDeleteIsVisible = !this.modalDeleteIsVisible;
-    this.idMovie = id;
+  updateModal(id: MovieEntity) {
+    this.modalUpdateIsVisible.set(!this.modalUpdateIsVisible());
+    this.movie = id;
   }
 }
