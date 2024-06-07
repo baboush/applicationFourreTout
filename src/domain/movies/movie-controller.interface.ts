@@ -1,7 +1,5 @@
-import { PaginateQuery, Paginated } from "nestjs-paginate";
 import { CreateMovieDto } from "./dto/create-movie-dto.interface";
 import { UpdateMovieDto } from "./dto/update-movie-dto.interface";
-import { Movie } from "./movie.interface";
 import { MovieEntity } from "./Movies.entity";
 
 /**
@@ -18,18 +16,15 @@ export interface MovieController {
    */
   handleCreateAndPublishMovie(
     createMovie: CreateMovieDto,
-  ): Promise<Partial<Movie>>;
+  ): Promise<Partial<MovieEntity>>;
 
   /**
    * Handles the logic for finding a list of saved movies with pagination.
    *
-   * @param pagination A query object containing pagination options.
-   * @returns A Promise that resolves to a paginated list of MovieEntity objects,
+   * @returns A Promise that resolves to a  list of MovieEntity objects,
    *          or rejects with an error if retrieval fails.
    */
-  handleFindSavedMoviesList(
-    pagination: PaginateQuery,
-  ): Promise<Paginated<MovieEntity>>;
+  handleFindSavedMoviesList(): Promise<MovieEntity[]>;
 
   /**
    * Handles the logic for finding a single saved movie by its ID.
@@ -38,7 +33,7 @@ export interface MovieController {
    * @returns A Promise that resolves to a complete Movie object,
    *          or rejects with an error if retrieval fails.
    */
-  handleFindOneSavedMovie(id: number): Promise<Movie>;
+  handleFindOneSavedMovie(id: number): Promise<Partial<MovieEntity>>;
 
   /**
    * Handles the logic for updating the details of a saved movie.
@@ -47,7 +42,9 @@ export interface MovieController {
    * @returns A Promise that resolves to a partially populated Movie object
    *          reflecting the update, or rejects with an error if the update fails.
    */
-  handleUpdateMovieDetail(updateMovie: UpdateMovieDto): Promise<Partial<Movie>>;
+  handleUpdateMovieDetail(
+    updateMovie: UpdateMovieDto,
+  ): Promise<Partial<MovieEntity>>;
 
   /**
    * Handles the logic for deleting a saved movie by its ID.

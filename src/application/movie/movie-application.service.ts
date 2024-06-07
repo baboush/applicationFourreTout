@@ -6,11 +6,13 @@ import {
   Injectable,
   NotFoundException,
 } from "@nestjs/common";
-import { CreateMovieDtoApplication } from "./dto/create-movie-dto-application";
-import { ReadMovieDtoApplication } from "./dto/read-movie-dto-application";
-import { UpdateMovieDtoApplication } from "./dto/update-movie-dto-application";
 import { PaginateQuery, Paginated } from "nestjs-paginate";
 import { movieSchema } from "@shared/types/movie-types";
+import {
+  CreateMovieApplicationDto,
+  ReadMovieApplicationDto,
+  UpdateMovieApplicationDto,
+} from "./dto";
 
 /**
  * Injectable application service implementation of the MovieService interface.
@@ -33,7 +35,7 @@ export class MovieApplicationService implements MovieService {
    * @inheritdoc MovieService.createAndPublishMovie
    */
   async createAndPublishMovie(
-    createMovie: CreateMovieDtoApplication,
+    createMovie: CreateMovieApplicationDto,
   ): Promise<Partial<Movie>> {
     const newMovie = { ...createMovie };
 
@@ -47,22 +49,15 @@ export class MovieApplicationService implements MovieService {
   /**
    * @inheritdoc MovieService.findSavedMoviesList
    */
-  async findSavedMoviesList(
-    pagination: PaginateQuery,
-  ): Promise<Paginated<MovieEntity>> {
-    const paginationMovies = { ...pagination };
-
-    if (!paginationMovies) {
-      throw new BadRequestException(`Moivies with pagination fetch error`);
-    }
-    return await this.movieRepository.findAllMovie(pagination);
+  async findSavedMoviesList(): Promise<MovieEntity[]> {
+    return await this.movieRepository.findAllMovie();
   }
 
   /**
    * @inheritdoc MovieService.findOneSavedMovie
    */
   async findOneSavedMovie(id: number): Promise<Movie> {
-    const movie: ReadMovieDtoApplication =
+    const movie: ReadMovieApplicationDto =
       await this.movieRepository.findOneMovie(id);
 
     if (!movie && !movieSchema.parse(movie)) {
@@ -77,7 +72,7 @@ export class MovieApplicationService implements MovieService {
   async updateMovieDetail(
     updateMovie: UpdateMovieDto,
   ): Promise<Partial<Movie>> {
-    const updatedMovie: UpdateMovieDtoApplication = { ...updateMovie };
+    const updatedMovie: UpdateMovieApplicationDto = { ...updateMovie };
 
     if (!updatedMovie.id) {
       throw new NotFoundException(

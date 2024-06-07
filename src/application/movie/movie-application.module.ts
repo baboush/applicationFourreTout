@@ -9,6 +9,7 @@ import {
   ReadMovieUsecaseApplication,
   UpdateMovieUsecaseApplication,
 } from "./usecases";
+import { MoviesControllerSse } from "./movies-application-sse.controllers";
 
 @Module({
   imports: [forwardRef(() => MovieRepositoryModule)],
@@ -20,6 +21,6 @@ import {
     ReadMovieUsecaseApplication,
     FindAllMoviesUsecaseApplication,
   ],
-  controllers: [MovieApplicationController],
+  controllers: [MovieApplicationController, MoviesControllerSse],
 })
 export class MovieApplicationModule {}

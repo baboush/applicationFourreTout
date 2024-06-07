@@ -1,17 +1,14 @@
-import {
-  AddCategoryMovieDto,
-  CategoriesController,
-  CategoriesEntity,
-  CreateCategoryDto,
-} from "@domain/categories";
+import { CategoriesController, CategoriesEntity } from "@domain/categories";
 import {
   BadRequestException,
   Body,
   Controller,
   Delete,
+  Get,
   NotFoundException,
   Param,
   Post,
+  UseGuards,
 } from "@nestjs/common";
 import { CreateCategoryUsecaseApplication } from "./usecases/create-category-usecase-application";
 import { CreateCategoryDtoApplication } from "./dto/create-category-dto-application";
@@ -22,18 +19,20 @@ import {
   ApiBody,
   ApiConflictResponse,
   ApiCreatedResponse,
-  ApiParam,
   ApiNotFoundResponse,
   ApiOkResponse,
 } from "@nestjs/swagger";
 import { DeleteCategoryMovieUsecaseApplication } from "./usecases/movies-usecase/delete-category-movie-usecase-application";
 import { DeleteCategoryUsecaseApplication } from "./usecases/delete-category-usecase-application";
 import { AddCategoryMovieUsecaseApplication } from "./usecases/movies-usecase/add-category-movie-usecase-application";
+import { JwtGuard } from "@application/auth/jwt.guard";
+import { FindCategoriesUsecaseApplication } from "./usecases/find-categories-usecase-application";
 
 /**
  * @inheritdoc CategoryiesApplication
  */
 @ApiTags("Categories")
+//@UseGuards(JwtGuard)
 @Controller("categories")
 export class CategoriesApplicationController implements CategoriesController {
   constructor(
@@ -41,6 +40,7 @@ export class CategoriesApplicationController implements CategoriesController {
     private readonly deleteCategoryUsecase: DeleteCategoryUsecaseApplication,
     private readonly addCategoryMovieUsecase: AddCategoryMovieUsecaseApplication,
     private readonly deleteCategoryMovieUsecase: DeleteCategoryMovieUsecaseApplication,
+    private readonly findAllCategorySavedUsecase: FindCategoriesUsecaseApplication,
   ) {}
 
   /**
@@ -48,11 +48,6 @@ export class CategoriesApplicationController implements CategoriesController {
    */
   @Post()
   @ApiBody({ type: CreateCategoryDtoApplication })
-  @ApiCreatedResponse({ type: CategoriesEntity })
-  @ApiConflictResponse({
-    description: "Category with the same name already exists",
-  })
-  @ApiBadRequestResponse({ description: "Invalid category data" })
   async handleCreateCategoryAndPublish(
     @Body() category: CreateCategoryDtoApplication,
   ): Promise<Partial<CategoriesEntity>> {
@@ -85,10 +80,6 @@ export class CategoriesApplicationController implements CategoriesController {
   /**
    * @inheritdoc CategoriesController.handleAddCategoryToMovieRelation
    */
-  @ApiOkResponse({
-    description: "Category removed successfully from the movie.",
-  })
-  @ApiNotFoundResponse({ description: "Movie or category not found." })
   @Post("/:idCategory/movie/:idMovie")
   async handleAddCategoryToMovieRelation(
     @Param("idCategory") idCategory: number,
@@ -112,10 +103,6 @@ export class CategoriesApplicationController implements CategoriesController {
   /**
    * @inheritdoc CategoriesController.handleRemoveCategorySaved
    */
-  @ApiOkResponse({
-    description: "Category removed successfully from the movie.",
-  })
-  @ApiNotFoundResponse({ description: "Movie or category not found." })
   @Delete(":idCategory/movie/:idMovie")
   async handleRemoveCategoryMovieSaved(
     @Param("idCategory") idCategory: number,
@@ -133,5 +120,14 @@ export class CategoriesApplicationController implements CategoriesController {
     }
 
     return !!isDelete;
+  }
+
+  /**
+   * @inheritdoc.CategoriesController.handleFindAllCategorySaved
+   */
+  @Get("list")
+  async handleFindAllCategorySaved(): Promise<CategoriesEntity[]> {
+    const result = await this.findAllCategorySavedUsecase.execute();
+    return result;
   }
 }

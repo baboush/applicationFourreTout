@@ -1,5 +1,11 @@
-import { Column, Entity, Index, JoinColumn, ManyToOne } from "typeorm";
-import { ApiProperty } from "@nestjs/swagger";
+import {
+  Column,
+  Entity,
+  Index,
+  JoinColumn,
+  ManyToOne,
+  Relation,
+} from "typeorm";
 import { BookEntity } from "@domain/books";
 import { MovieEntity } from "@domain/movies";
 import { ProfileEntity } from "@domain/profiles";
@@ -9,15 +15,12 @@ import { ProfileEntity } from "@domain/profiles";
 @Entity("Favories", { schema: "migration1" })
 export class Favories {
   @Column("int", { primary: true, name: "book_id" })
-  @ApiProperty({ description: "bookId", type: "number" })
   bookId: number;
 
   @Column("int", { primary: true, name: "movie_id" })
-  @ApiProperty({ description: "movieId", type: "number" })
   movieId: number;
 
   @Column("int", { primary: true, name: "profile_id" })
-  @ApiProperty({ description: "profileId", type: "number" })
   profileId: number;
 
   @ManyToOne(() => BookEntity, (books) => books.favories, {
@@ -25,7 +28,6 @@ export class Favories {
     onUpdate: "NO ACTION",
   })
   @JoinColumn([{ name: "book_id", referencedColumnName: "id" }])
-  @ApiProperty({ description: "book", type: "Books" })
   book: BookEntity;
 
   @ManyToOne(() => MovieEntity, (movies) => movies.favories, {
@@ -33,7 +35,6 @@ export class Favories {
     onUpdate: "NO ACTION",
   })
   @JoinColumn([{ name: "movie_id", referencedColumnName: "id" }])
-  @ApiProperty({ description: "movie", type: "Movies" })
   movie: MovieEntity;
 
   @ManyToOne(() => ProfileEntity, (profile) => profile.favories, {
@@ -41,6 +42,5 @@ export class Favories {
     onUpdate: "NO ACTION",
   })
   @JoinColumn([{ name: "profile_id", referencedColumnName: "id" }])
-  @ApiProperty({ description: "profile", type: "Profile" })
-  profile: ProfileEntity;
+  profile: Relation<ProfileEntity>;
 }

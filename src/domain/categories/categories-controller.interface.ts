@@ -51,4 +51,12 @@ export interface CategoriesController {
    * @throws {Error} - If there is an error removing the category.
    */
   handleRemoveCategorySaved(id: number): Promise<Boolean>;
+
+  /**
+   * Handles find all categories from the database (implementation-specific).
+   *
+   * @returns {Promise<boolean>} - A promise that resolves to list CategoriesEntity.
+   * @throws {Error} - If there is an error removing the category.
+   */
+  handleFindAllCategorySaved(): Promise<CategoriesEntity[]>;
 }

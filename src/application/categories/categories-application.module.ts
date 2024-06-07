@@ -6,6 +6,7 @@ import { DeleteCategoryUsecaseApplication } from "./usecases/delete-category-use
 import { AddCategoryMovieUsecaseApplication } from "./usecases/movies-usecase/add-category-movie-usecase-application";
 import { CategoriesApplicationController } from "./categories-application.controller";
 import { CategoryiesApplicationService } from "./categories-application.service";
+import { FindCategoriesUsecaseApplication } from "./usecases/find-categories-usecase-application";
 
 @Module({
   imports: [forwardRef(() => CategoriePersistenceModule)],
@@ -16,6 +17,7 @@ import { CategoryiesApplicationService } from "./categories-application.service"
     AddCategoryMovieUsecaseApplication,
     DeleteCategoryMovieUsecaseApplication,
     DeleteCategoryUsecaseApplication,
+    FindCategoriesUsecaseApplication,
   ],
 })
 export class CategoriesApplicationModule {}

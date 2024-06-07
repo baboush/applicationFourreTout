@@ -85,4 +85,17 @@ export class CategoryiesApplicationService implements CategoriesService {
 
     return !!isDelete;
   }
+
+  /**
+   * @inheritdoc CategoriesService.findAllCategorySaved
+   */
+  async findAllCategorySaved(): Promise<CategoriesEntity[]> {
+    const result = await this.categoriesRepository.findCategories();
+
+    if (!result) {
+      throw new NotFoundException(`Ressources not found`);
+    }
+
+    return result;
+  }
 }

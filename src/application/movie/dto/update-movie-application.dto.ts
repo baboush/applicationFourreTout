@@ -1,6 +1,5 @@
 import { DirectorMovie, PosterMovie, TitleMovie } from "@shared/types";
 import { UpdateMovieDto } from "@domain/movies";
-import { ApiProperty, ApiTags } from "@nestjs/swagger";
 import { IsNotEmpty, IsNumber, IsString, Length } from "class-validator";
 
 /**
@@ -9,12 +8,10 @@ import { IsNotEmpty, IsNumber, IsString, Length } from "class-validator";
  * and adds presentation logic or validation rules.
  * It targets the "Movie" endpoint group within a NestJS application.
  */
-@ApiTags("Movie")
-export class UpdateMovieDtoApplication implements UpdateMovieDto {
+export class UpdateMovieApplicationDto implements UpdateMovieDto {
   /**
    * @inheritdoc.UpdateMovieDto.id
    */
-  @ApiProperty({ description: "id", type: "number" })
   @IsNumber()
   @IsNotEmpty()
   readonly id: number;
@@ -22,16 +19,14 @@ export class UpdateMovieDtoApplication implements UpdateMovieDto {
   /**
    * @inheritdoc.UpdateMovieDto.title
    */
-  @ApiProperty({ description: "Title Movie", type: "string" })
   @IsString()
   @Length(3, 80)
   @IsNotEmpty()
-  readonly title: string;
+  readonly title: TitleMovie;
 
   /**
    * @inheritdoc.UpdateMovieDto.poster
    */
-  @ApiProperty({ description: "Poster Movie", type: "string" })
   @IsString()
   @Length(50, 250)
   @IsNotEmpty()
@@ -40,7 +35,6 @@ export class UpdateMovieDtoApplication implements UpdateMovieDto {
   /**
    * @inheritdoc.UpdateMovieDto.director
    */
-  @ApiProperty({ description: "Director Movie", type: "string" })
   @IsString()
   @Length(3, 80)
   @IsNotEmpty()

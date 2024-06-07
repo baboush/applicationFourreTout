@@ -153,4 +153,15 @@ export class CategorieRepositoryPersistence implements CategoriesRepository {
 
     return !!isDelete;
   }
+
+  /**
+   * @inheritdoc.categoriesRepository.findCategorie
+   */
+  async findCategories(): Promise<CategoriesEntity[]> {
+    const result = await this.categoriesRepository.find();
+    if (!result) {
+      throw new NotFoundException(`Ressources not found`);
+    }
+    return result;
+  }
 }

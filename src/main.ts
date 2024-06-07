@@ -4,6 +4,8 @@ import helmet from "helmet";
 import * as compression from "compression";
 import { SwaggerService } from "@shared/swagger/swagger.service";
 import { CatchAllExceptionFilterFilter } from "@shared/filter/catch-all-exception.filter";
+import { SwaggerModule } from "@nestjs/swagger";
+import metadata from "./metadata";
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {});
@@ -12,7 +14,7 @@ async function bootstrap() {
 
   app.enableCors();
   app.use(helmet());
-  app.use(compression());
+  await SwaggerModule.loadPluginMetadata(metadata);
   swaggerService.createDocumentSwagger(app);
   app.useGlobalFilters(new CatchAllExceptionFilterFilter({ httpAdapter }));
 

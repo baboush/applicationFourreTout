@@ -1,5 +1,5 @@
 import { CategoriesEntity } from ".";
-import { AddCategoryMovieDto, CreateCategoryDto } from "./dto";
+import { CreateCategoryDto } from "./dto";
 
 /**
  * @interface CategoriesService
@@ -51,4 +51,12 @@ export interface CategoriesService {
    * @throws {Error} - If there is an error removing the category.
    */
   removeCategorySaved(id: number): Promise<Boolean>;
+
+  /**
+   * Find all categories (implementation-specific).
+   *
+   * @returns {Promise<CategoriesEntity[]>} - A promise that resolves to list CategoriesEntity.
+   * @throws {Error} - If there is an error removing the category.
+   */
+  findAllCategorySaved(): Promise<CategoriesEntity[]>;
 }

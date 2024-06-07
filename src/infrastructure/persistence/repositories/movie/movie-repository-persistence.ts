@@ -11,7 +11,6 @@ import {
   NotFoundException,
 } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { PaginateQuery, Paginated, paginate } from "nestjs-paginate";
 import { Repository } from "typeorm";
 
 /**
@@ -52,18 +51,8 @@ export class MovieRepositoryPersistence implements MovieRepository {
   /**
    * @inheritdoc MovieRepository.findAllMovie
    */
-  async findAllMovie(
-    pagination: PaginateQuery,
-  ): Promise<Paginated<MovieEntity>> {
-    if (!pagination) {
-      throw new BadRequestException(`Error fetch paginate movie`);
-    }
-    return paginate(pagination, this.moviesRepository, {
-      sortableColumns: ["id", "title", "director", "poster"],
-      defaultSortBy: [["title", "DESC"]],
-      searchableColumns: ["title", "director"],
-      select: ["id", "title", "director", "poster"],
-    });
+  async findAllMovie(): Promise<MovieEntity[]> {
+    return await this.moviesRepository.find();
   }
 
   /**

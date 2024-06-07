@@ -17,15 +17,12 @@ export enum etat {
 @Entity("Appointment", { schema: "migration1" })
 export class Appointment {
   @PrimaryGeneratedColumn({ type: "int", name: "id" })
-  @ApiProperty({ description: "id", type: "number" })
   id: number;
 
   @Column("varchar", { name: "title", length: 50 })
-  @ApiProperty({ description: "title", type: "string" })
   title: string;
 
   @Column("varchar", { name: "content", length: 250 })
-  @ApiProperty({ description: "content", type: "string" })
   content: string;
 
   @Column({
@@ -33,11 +30,9 @@ export class Appointment {
     enum: etat,
     default: etat.ENCOUR,
   })
-  @ApiProperty({ description: "etat", type: 'EN" | "AN" | "F"' })
   etat: etat;
 
   @Column("date", { name: "date_appointment" })
-  @ApiProperty({ description: "dateAppointment", type: "Date" })
   dateAppointment: Date;
 
   @ManyToMany(() => ProfileEntity, (profile) => profile.appointments)
@@ -47,6 +42,5 @@ export class Appointment {
     inverseJoinColumns: [{ name: "profile_id", referencedColumnName: "id" }],
     schema: "migration1",
   })
-  @ApiProperty({ description: "profiles", type: "Profile" })
   profiles: ProfileEntity[];
 }

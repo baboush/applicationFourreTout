@@ -1,7 +1,7 @@
 import { Movie, UpdateMovieUsecase } from "@domain/movies";
 import { Injectable } from "@nestjs/common";
-import { UpdateMovieDtoApplication } from "../dto/update-movie-dto-application";
 import { MovieApplicationService } from "../movie-application.service";
+import { UpdateMovieApplicationDto } from "../dto";
 
 /**
  * Injectable use case implementation of the UpdateMovieUsecase interface.
@@ -15,7 +15,7 @@ export class UpdateMovieUsecaseApplication implements UpdateMovieUsecase {
    * @inheritdoc UpdateMovieUsecase.execute
    */
   async execute(
-    updateMovie: UpdateMovieDtoApplication,
+    updateMovie: UpdateMovieApplicationDto,
   ): Promise<Partial<Movie>> {
     return this.movieService.updateMovieDetail(updateMovie);
   }

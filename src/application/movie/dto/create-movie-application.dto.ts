@@ -3,18 +3,13 @@ import { IsNotEmpty, IsNumber, IsString, Length } from "class-validator";
 import { TitleMovie, PosterMovie, DirectorMovie } from "@shared/types";
 import { CreateMovieDto } from "@domain/movies";
 
-/**
- * Application-specific DTO class representing data for creating a new movie.
- * This DTO likely extends a domain-specific `CreateMovieDto` class
- * and adds presentation logic or validation rules.
- * It targets the "Movie" endpoint group within a NestJS application.
+/*
+ * @inheritdoc CreateMovieDto
  */
-@ApiTags("Movie")
-export class CreateMovieDtoApplication implements CreateMovieDto {
+export class CreateMovieApplicationDto implements CreateMovieDto {
   /**
    * @inheritdoc CreateMovieDto.id
    */
-  @ApiProperty({ description: "id", type: "Number" })
   @IsNumber()
   @IsNotEmpty()
   readonly id?: number;
@@ -22,7 +17,6 @@ export class CreateMovieDtoApplication implements CreateMovieDto {
   /**
    * @inheritdoc CreateMovieDto.title
    */
-  @ApiProperty({ description: "Title book", type: "TitleBook" })
   @IsString()
   @Length(3, 80)
   @IsNotEmpty()
@@ -31,7 +25,6 @@ export class CreateMovieDtoApplication implements CreateMovieDto {
   /**
    * @inheritdoc CreateMovieDto.poster
    */
-  @ApiProperty({ description: "Title book", type: "TitleBook" })
   @IsString()
   @Length(50, 250)
   @IsNotEmpty()
@@ -40,7 +33,6 @@ export class CreateMovieDtoApplication implements CreateMovieDto {
   /**
    * @inheritdoc CreateMovieDto.director
    */
-  @ApiProperty({ description: "Title book", type: "TitleBook" })
   @IsString()
   @Length(3, 80)
   @IsNotEmpty()

@@ -1,4 +1,4 @@
-import { CreateMovieDtoApplication } from "@application/movie/dto/create-movie-dto-application";
 import { AddCategoryMovieDtoApplication } from "./add-category-movie-dto-application";
+import { CreateMovieApplicationDto } from "@application/movie/dto";
 
-export { CreateMovieDtoApplication, AddCategoryMovieDtoApplication };
+export { CreateMovieApplicationDto, AddCategoryMovieDtoApplication };

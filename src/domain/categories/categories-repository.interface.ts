@@ -1,5 +1,5 @@
 import { CategoriesEntity } from ".";
-import { AddCategoryMovieDto, CreateCategoryDto } from "./dto";
+import { CreateCategoryDto } from "./dto";
 
 /**
  * @interface CategoriesRepository
@@ -45,4 +45,12 @@ export interface CategoriesRepository {
    * @throws {Error} - If there is an error removing the category.
    */
   removeCategory(id: number): Promise<Boolean>;
+
+  /**
+   * Find all category from the database.
+   *
+   * @returns {Promise<CategoriesEntity[]>} - A promise that resolve to a list CategoriesEntity
+   * @throws {Error} - If there is an error find all categories.
+   */
+  findCategories(): Promise<CategoriesEntity[]>;
 }

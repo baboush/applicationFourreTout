@@ -7,7 +7,6 @@ import {
   PrimaryGeneratedColumn,
 } from "typeorm";
 import { BookEntity } from "@domain/books";
-import { ApiProperty } from "@nestjs/swagger";
 import { MovieEntity } from "@domain/movies";
 import { NameCategory } from "@shared/types";
 
@@ -15,15 +14,12 @@ import { NameCategory } from "@shared/types";
 @Entity("Categories", { schema: "migration1" })
 export class Categories {
   @PrimaryGeneratedColumn({ type: "int", name: "id" })
-  @ApiProperty({ description: "id", type: "number" })
   id: number;
 
   @Column("varchar", { name: "name", unique: true, length: 40 })
-  @ApiProperty({ description: "name", type: "string" })
   name: NameCategory;
 
   @ManyToMany(() => BookEntity, (books) => books.categories)
-  @ApiProperty({ description: "books", type: "Books[]" })
   books: BookEntity[];
 
   @ManyToMany(() => MovieEntity, (movies) => movies.categories)
@@ -33,6 +29,5 @@ export class Categories {
     inverseJoinColumns: [{ name: "movie_id", referencedColumnName: "id" }],
     schema: "migration1",
   })
-  @ApiProperty({ description: "movies", type: "Movies[]" })
   movies: MovieEntity[];
 }

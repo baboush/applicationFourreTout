@@ -1,4 +1,3 @@
-import { PaginateQuery, Paginated } from "nestjs-paginate";
 import { CreateMovieDto } from "./dto/create-movie-dto.interface";
 import { UpdateMovieDto } from "./dto/update-movie-dto.interface";
 import { Movie } from "./movie.interface";
@@ -19,13 +18,11 @@ export interface MovieRepository {
   createMovie(createMovie: CreateMovieDto): Promise<Movie>;
 
   /**
-   * Retrieves a paginated list of movies from the data source.
    *
-   * @param pagination A query object containing pagination options.
-   * @returns A Promise that resolves to a paginated list of MovieEntity objects,
+   * @returns A Promise that resolves to a list of MovieEntity objects,
    *          or rejects with an error if retrieval fails.
    */
-  findAllMovie(pagination: PaginateQuery): Promise<Paginated<MovieEntity>>;
+  findAllMovie(): Promise<MovieEntity[]>;
 
   /**
    * Finds a single movie by its ID from the data source.
