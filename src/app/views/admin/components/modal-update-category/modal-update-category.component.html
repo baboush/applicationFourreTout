@@ -1,0 +1,10 @@
+@if (categories().length > 0) {
+  <form [formGroup]="formGroup()" (ngSubmit)="onSubmit()">
+    @for (item of categoriesExist; track item) {
+      <label for="">{{ item.name }}</label>
+      <input type="checkbox" [formControlName]="item.name" `` />
+    }
+
+    <button type="submit">Add Categories</button>
+  </form>
+}

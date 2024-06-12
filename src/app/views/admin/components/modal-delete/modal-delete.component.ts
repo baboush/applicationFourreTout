@@ -1,5 +1,5 @@
 import { Component, inject, input, model } from '@angular/core';
-import { MovieService } from '../../../../shared/utils/config/client';
+import { MovieService } from '@core/http';
 
 @Component({
   selector: 'app-modal-delete',
@@ -11,15 +11,16 @@ import { MovieService } from '../../../../shared/utils/config/client';
 export class ModalDeleteComponent {
   private readonly movieService = inject(MovieService);
 
-  idMovie = input(0);
+  id = input(0);
   isVisible = model(false);
 
   removeItem() {
     this.movieService
-      .movieApplicationControllerHandleDeleteSavedMovie(this.idMovie())
+      .movieApplicationControllerHandleDeleteSavedMovie(this.id())
       .subscribe(() => {
         console.log('supression');
       });
+    this.isVisible.set(false);
   }
 
   closeModal() {

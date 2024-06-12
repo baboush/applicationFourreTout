@@ -1,51 +1,40 @@
-@if (!!isVisible()) {
-  <div class="box-btn">
-    <form [formGroup]="updateFormMovie" (submit)="onSubmit()">
-      <div>
-        <label for="TitleControl">Title</label>
-        <input type="text" value="test" formControlName="titleControl" />
-      </div>
-      <div>
-        <label for="posterControl">Affiche</label>
-        <input type="text" formControlName="posterControl" />
-      </div>
-      <div>
-        <label for="directorControl">Rèalisateur</label>
-        <input type="text" formControlName="directorControl" />
-      </div>
-      <div><button type="submit">Mettre À Jour</button></div>
-    </form>
-    <button class="btn btn-valid">
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke-width="1.5"
-        stroke="currentColor"
-        class="svg-icon"
-      >
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          d="m4.5 12.75 6 6 9-13.5"
-        />
-      </svg>
-    </button>
-    <button class="btn btn-cancel" (click)="closeModal()">
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke-width="1.5"
-        stroke="currentColor"
-        class="svg-icon"
-      >
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          d="M6 18 18 6M6 6l12 12"
-        />
-      </svg>
-    </button>
-  </div>
+@if (isVisible()) {
+  @defer {
+    <div class="box-btn">
+      <form [formGroup]="formGroup" (submit)="onSubmit()">
+        @for (item of entityProps; track item) {
+          <div>
+            <label for="item">
+              {{ item }}
+              <input type="text" [formControlName]="item" />
+            </label>
+          </div>
+        }
+        <div><button type="submit">Mettre À Jour</button></div>
+      </form>
+      <app-modal-update-category />
+      <button class="btn btn-cancel" (click)="closeModal()">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="1.5"
+          stroke="currentColor"
+          class="svg-icon"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M6 18 18 6M6 6l12 12"
+          />
+        </svg>
+      </button>
+    </div>
+  } @placeholder (minimum 500ms) {
+    <div>E attente</div>
+  } @error {
+    <div>Error Data fetching</div>
+  } @loading {
+    <div>En attente de la donnee</div>
+  }
 }

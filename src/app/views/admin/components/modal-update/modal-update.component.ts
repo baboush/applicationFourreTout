@@ -1,86 +1,46 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  OnInit,
-  inject,
   input,
+  Input,
   model,
+  OnInit,
+  output,
 } from '@angular/core';
-import {
-  MovieEntity,
-  MovieService,
-} from '../../../../shared/utils/config/client';
-import {
-  FormGroup,
-  NonNullableFormBuilder,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { ModalUpdateCategoryComponent } from '../modal-update-category/modal-update-category.component';
 
 @Component({
   selector: 'app-modal-update',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, ModalUpdateCategoryComponent],
   templateUrl: './modal-update.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrl: './modal-update.component.scss',
 })
 export class ModalUpdateComponent implements OnInit {
-  private readonly movieService = inject(MovieService);
-  private formNonNullable = inject(NonNullableFormBuilder);
-
   isVisible = model(false);
-  idMovie = input<MovieEntity>();
-
-  updateFormMovie: FormGroup = this.formNonNullable.group({
-    titleControl: [
-      '',
-      {
-        updateOn: 'blur',
-        validators: [
-          Validators.required,
-          Validators.max(40),
-          Validators.min(4),
-        ],
-      },
-    ],
-    posterControl: [
-      '',
-      {
-        updateOn: 'blur',
-        validators: [
-          Validators.required,
-          Validators.max(255),
-          Validators.min(4),
-        ],
-      },
-    ],
-    directorControl: [
-      '',
-      {
-        updateOn: 'blur',
-        validators: [
-          Validators.required,
-          Validators.max(40),
-          Validators.min(4),
-        ],
-      },
-    ],
-  });
+  entity = input<any>();
+  updateData = output<any>();
+  @Input() formGroup!: FormGroup;
+  entityProps: any = [];
 
   ngOnInit(): void {
-    this.updateFormMovie.patchValue({
-      titleControl: this.idMovie()?.title,
-      posterControl: this.idMovie()?.poster,
-      directorControl: this.idMovie()?.director,
+    this.entityProps = Object.keys(this.entity()).filter(
+      (prop) => prop !== 'id',
+    );
+    this.formGroup.patchValue(this.entity());
+  }
+
+  onSubmit() {
+    this.updateData.emit({
+      ...this.entity(),
+      ...this.formGroup.getRawValue(),
     });
+    this.isVisible.set(false);
   }
 
   closeModal() {
     this.isVisible.set(false);
-  }
-
-  onSubmit() {
-    console.log(this.updateFormMovie.getRawValue());
   }
 }
