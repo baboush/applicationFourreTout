@@ -8,27 +8,37 @@ import {
   output,
 } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { ModalUpdateCategoryComponent } from '../modal-update-category/modal-update-category.component';
+import {
+  ModalPendingComponent,
+  ModalUpdateCategoryComponent,
+} from '@view/admin/components';
+import { ModalErrorFetchComponent } from '../modal-error-fetch/modal-error-fetch.component';
 
 @Component({
   selector: 'app-modal-update',
   standalone: true,
-  imports: [ReactiveFormsModule, ModalUpdateCategoryComponent],
+  imports: [
+    ReactiveFormsModule,
+    ModalUpdateCategoryComponent,
+    ModalPendingComponent,
+    ModalErrorFetchComponent,
+  ],
   templateUrl: './modal-update.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrl: './modal-update.component.scss',
 })
 export class ModalUpdateComponent implements OnInit {
   isVisible = model(false);
+  isCategoryVisible = model(false);
   entity = input<any>();
   updateData = output<any>();
   @Input() formGroup!: FormGroup;
-  entityProps: any = [];
+  entityProps: string[] = [];
 
   ngOnInit(): void {
-    this.entityProps = Object.keys(this.entity()).filter(
-      (prop) => prop !== 'id',
-    );
+    this.entityProps = Object.keys(this.entity()).filter((prop) => {
+      return prop !== 'id' && prop !== 'categories';
+    });
     this.formGroup.patchValue(this.entity());
   }
 
@@ -42,5 +52,9 @@ export class ModalUpdateComponent implements OnInit {
 
   closeModal() {
     this.isVisible.set(false);
+  }
+
+  addCategories() {
+    this.isCategoryVisible.set(true);
   }
 }

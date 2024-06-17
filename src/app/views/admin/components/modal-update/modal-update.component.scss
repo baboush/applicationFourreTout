@@ -1,45 +1,84 @@
 :host {
-  @apply fixed;
-  @apply z-50;
-  @apply shadow-2xl;
-  @apply flex;
-  @apply flex-col;
-  @apply w-2/4;
-  @apply h-2/4;
-  @apply bg-white;
-  @apply rounded-xl;
-  @apply items-center;
-  @apply justify-between;
-  @apply translate-y-1/2;
-  @apply translate-x-1/2;
-  @apply p-4;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  padding: 4px;
+  background: white;
+  border-radius: 1rem;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  top: 50%;
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5);
+  font-size: calc(0.8rem + 1vw);
 
-  .box-btn {
-    @apply flex;
-    @apply flex-row;
-    @apply flex-nowrap;
-    @apply justify-between;
-    @apply items-center;
-    @apply w-full;
-    @apply p-4;
-    .btn {
-      @apply w-full;
-      @apply p-2;
-      @apply rounded-xl;
-      @apply m-2;
-
-      .svg-icon {
-        @apply text-white;
-        @apply w-10;
-        @apply m-auto;
-      }
-    }
-    .btn-valid {
-      @apply bg-green-600;
-    }
+  .modal-update-header {
+    display: flex;
+    padding: 10px;
+    flex-direction: row-reverse;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
 
     .btn-cancel {
-      @apply bg-red-600;
+      width: 48px;
+      height: 48px;
+      background: red;
     }
+  }
+  .modal-update {
+    display: flex;
+    flex-direction: row;
+    gap: 1wv;
+    flex-wrap: nowrap;
+    .form-update {
+      display: flex;
+      flex-direction: column;
+      padding: 4px;
+
+      .form-update-field {
+        display: flex;
+        flex-direction: column;
+        gap: 1vh;
+        .field-label {
+          padding: 4px;
+
+          .field-input {
+            border-bottom: 2px solid black;
+            outline: none;
+          }
+        }
+      }
+
+      .form-update-btn {
+        background: green;
+        :hover {
+          transform: scale(1.5);
+        }
+      }
+    }
+  }
+
+  .btn {
+    padding: 4px;
+    border-radius: 10px;
+    padding: 4px;
+    color: white;
+    .btn-icon {
+      width: 48px;
+      height: 48px;
+      color: black;
+    }
+  }
+
+  .btn-category {
+    font-size: calc(0.8rem + 0.6vw);
+    color: black;
+    display: inline-flex;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
   }
 }
