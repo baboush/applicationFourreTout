@@ -1,15 +1,39 @@
 /* import layers base */
-@tailwind base;
-@tailwind components;
-@import "./assets/layers/base/base";
-@import "./assets/layers/base/typography";
 
 /* import layer component */
-@import "./assets/layers/components/card";
-@import "./assets/layers/components/button";
-@import "./assets/layers/components/table";
-@import "./assets/layers/components/form";
-@import "./assets/layers/base/router-transition";
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+
+  .snack-success {
+    color: white;
+
+    .mdc-snackbar__surface {
+      background: green;
+      width: 80vw;
+      height: 80px;
+      border-radius: 10px;
+      .mdc-snackbar__label {
+        font-size: calc(0.6rem + 1vw) !important;
+      }
+    }
+  }
+
+  .snack-error {
+    color: white;
+    .mdc-snackbar__surface {
+      background: red;
+      width: 80vw;
+      height: 80px;
+      border-radius: 10px;
+      .mdc-snackbar__label {
+        font-size: calc(0.6rem + 1vw) !important;
+      }
+    }
+  }
+}

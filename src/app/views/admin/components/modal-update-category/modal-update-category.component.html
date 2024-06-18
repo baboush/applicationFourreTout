@@ -1,10 +1,15 @@
 @if (categories().length > 0 && isVisible()) {
-  <form [formGroup]="formGroup()" (ngSubmit)="onSubmit()">
-    @for (item of categoriesExist; track item) {
-      <label for="">{{ item.name }}</label>
-      <input type="checkbox" [formControlName]="item.name" `` />
-    }
-
-    <button type="submit">Add Categories</button>
-  </form>
+  @for (category of categoriesExist; track category.id) {
+    <div class="toggle">
+      {{ category.name }}
+      <mat-slide-toggle
+        labelPosition="before"
+        [checked]="category.checked"
+        color="primary"
+        [(ngModel)]="category.checked"
+        (change)="addOrRemoveCategory($event, category.id)"
+      >
+      </mat-slide-toggle>
+    </div>
+  }
 }

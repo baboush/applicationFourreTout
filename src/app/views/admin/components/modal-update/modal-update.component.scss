@@ -12,6 +12,7 @@
   top: 50%;
   box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5);
   font-size: calc(0.8rem + 1vw);
+  z-index: 50;
 
   .modal-update-header {
     display: flex;
@@ -71,14 +72,5 @@
       height: 48px;
       color: black;
     }
-  }
-
-  .btn-category {
-    font-size: calc(0.8rem + 0.6vw);
-    color: black;
-    display: inline-flex;
-    gap: 10px;
-    justify-content: center;
-    align-items: center;
   }
 }

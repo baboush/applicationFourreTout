@@ -1,0 +1,27 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  z-index: 50;
+  border-radius: 10px;
+  box-shadow: 5px 5px 10px rgba($color: #000000, $alpha: 0.4);
+  margin: auto;
+  padding: 15px;
+
+  .toggle {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 5vw;
+    padding: 4px;
+    border-bottom: 2px solid lightgrey;
+    font-size: calc(0.8rem + 1vw);
+  }
+
+  .snak-bar {
+  }
+}

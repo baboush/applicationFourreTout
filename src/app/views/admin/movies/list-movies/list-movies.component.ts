@@ -1,12 +1,25 @@
 import { Component, Signal, inject, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { MovieEntity, MovieService } from '@core/http';
+import { Categories, MovieEntity, MovieService } from '@core/http';
 import { switchMap, map, interval } from 'rxjs';
 import { ModalDeleteComponent } from '../../components/modal-delete/modal-delete.component';
 import { ModalUpdateComponent } from '../../components/modal-update/modal-update.component';
 import { MatButtonModule } from '@angular/material/button';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { ModalUpdateCategoryComponent } from '../../components/modal-update-category/modal-update-category.component';
+import {
+  DirectorMovie,
+  PosterMovie,
+  TitleMovie,
+} from '../../../../shared/types/movie-types';
+
+export interface Movie {
+  readonly id: number;
+  readonly title: TitleMovie;
+  readonly director: DirectorMovie;
+  readonly poster: PosterMovie;
+  readonly categories: Categories[];
+}
 
 @Component({
   selector: 'app-list-movies',
@@ -26,9 +39,9 @@ export class ListMoviesComponent {
   modalDeleteIsVisible = signal(false);
   modalUpdateIsVisible = signal(false);
   modalCategoryIsVisible = signal(false);
-
   idMovie: number = 0;
-  movie!: Partial<MovieEntity>;
+  movie!: Partial<Movie>;
+
   formMovie: FormGroup = this.formBuilder.group({
     title: new FormControl(''),
     director: new FormControl(''),
@@ -52,7 +65,7 @@ export class ListMoviesComponent {
     this.idMovie = id;
   }
 
-  updateModal(movie: MovieEntity) {
+  updateModal(movie: Movie) {
     this.modalUpdateIsVisible.set(true);
     this.movie = {
       id: movie.id,
@@ -63,7 +76,12 @@ export class ListMoviesComponent {
     };
   }
 
-  categoriesModal() {
+  categoriesModal(movie: Partial<Movie>) {
+    const movieProps = { ...movie };
     this.modalCategoryIsVisible.set(true);
+    this.movie = {
+      id: movieProps.id,
+      categories: movieProps.categories,
+    };
   }
 }
