@@ -22,10 +22,12 @@ import {
   HttpContext,
 } from '@angular/common/http';
 import { CustomHttpParameterCodec } from '../encoder';
-import { Observable, tap } from 'rxjs';
+import { Observable } from 'rxjs';
 
 // @ts-ignore
 import { CreateMovieApplicationDto } from '../model/createMovieApplicationDto';
+// @ts-ignore
+import { MovieEntity } from '../model/movieEntity';
 // @ts-ignore
 import { UpdateMovieApplicationDto } from '../model/updateMovieApplicationDto';
 
@@ -470,34 +472,34 @@ export class MovieService {
     observe?: 'body',
     reportProgress?: boolean,
     options?: {
-      httpHeaderAccept?: undefined;
+      httpHeaderAccept?: 'application/json';
       context?: HttpContext;
       transferCache?: boolean;
     },
-  ): Observable<any>;
+  ): Observable<Array<MovieEntity>>;
   public movieApplicationControllerHandleFindSavedMoviesList(
     observe?: 'response',
     reportProgress?: boolean,
     options?: {
-      httpHeaderAccept?: undefined;
+      httpHeaderAccept?: 'application/json';
       context?: HttpContext;
       transferCache?: boolean;
     },
-  ): Observable<HttpResponse<any>>;
+  ): Observable<HttpResponse<Array<MovieEntity>>>;
   public movieApplicationControllerHandleFindSavedMoviesList(
     observe?: 'events',
     reportProgress?: boolean,
     options?: {
-      httpHeaderAccept?: undefined;
+      httpHeaderAccept?: 'application/json';
       context?: HttpContext;
       transferCache?: boolean;
     },
-  ): Observable<HttpEvent<any>>;
+  ): Observable<HttpEvent<Array<MovieEntity>>>;
   public movieApplicationControllerHandleFindSavedMoviesList(
     observe: any = 'body',
     reportProgress: boolean = false,
     options?: {
-      httpHeaderAccept?: undefined;
+      httpHeaderAccept?: 'application/json';
       context?: HttpContext;
       transferCache?: boolean;
     },
@@ -508,7 +510,7 @@ export class MovieService {
       options && options.httpHeaderAccept;
     if (localVarHttpHeaderAcceptSelected === undefined) {
       // to determine the Accept header
-      const httpHeaderAccepts: string[] = [];
+      const httpHeaderAccepts: string[] = ['application/json'];
       localVarHttpHeaderAcceptSelected =
         this.configuration.selectHeaderAccept(httpHeaderAccepts);
     }
@@ -545,7 +547,7 @@ export class MovieService {
     }
 
     let localVarPath = `/movie/list`;
-    return this.httpClient.request<any>(
+    return this.httpClient.request<Array<MovieEntity>>(
       'get',
       `${this.configuration.basePath}${localVarPath}`,
       {

@@ -13,11 +13,23 @@
           <td class="item-table">{{ movie.title }}</td>
           <td class="item-table">{{ movie.director }}</td>
           <td class="item-table">
-            <button class="btn btn-action" (click)="deleteModal(movie.id)">
-              Delete
+            <button
+              mat-raised-button
+              color="warn"
+              class="btn btn-action"
+              (click)="deleteModal(movie.id)"
+            >
+              Supprimer
             </button>
-            <button class="btn btn-action" (click)="updateModal(movie)">
-              Update
+            <button
+              mat-raised-button
+              class="btn btn-action"
+              (click)="updateModal(movie)"
+            >
+              Modifier
+            </button>
+            <button mat-raised-button (click)="categoriesModal()">
+              Catègories
             </button>
           </td>
         </tr>
@@ -26,12 +38,19 @@
   </table>
 
   @if (modalDeleteIsVisible()) {
-    <app-modal-delete
-      [(isVisible)]="modalDeleteIsVisible"
-      [idMovie]="idMovie"
-    />
+    <app-modal-delete [(isVisible)]="modalDeleteIsVisible" [id]="idMovie" />
   }
   @if (modalUpdateIsVisible()) {
-    <app-modal-update [(isVisible)]="modalUpdateIsVisible" [idMovie]="movie" />
+    <app-modal-update
+      [(isVisible)]="modalUpdateIsVisible"
+      [entity]="movie"
+      [formGroup]="formMovie"
+    />
+  }
+  @if (modalCategoryIsVisible()) {
+    <app-modal-update-category
+      [(isVisible)]="modalCategoryIsVisible"
+      [entity]="movie"
+    />
   }
 }

@@ -5,6 +5,7 @@ api.module.ts
 api/api.ts
 api/authentification.service.ts
 api/categories.service.ts
+api/default.service.ts
 api/movie.service.ts
 configuration.ts
 encoder.ts

@@ -8,21 +8,12 @@ import {
   output,
 } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
-import {
-  ModalPendingComponent,
-  ModalUpdateCategoryComponent,
-} from '@view/admin/components';
-import { ModalErrorFetchComponent } from '../modal-error-fetch/modal-error-fetch.component';
+import { ModalUpdateCategoryComponent } from '@view/admin/components';
 
 @Component({
   selector: 'app-modal-update',
   standalone: true,
-  imports: [
-    ReactiveFormsModule,
-    ModalUpdateCategoryComponent,
-    ModalPendingComponent,
-    ModalErrorFetchComponent,
-  ],
+  imports: [ReactiveFormsModule, ModalUpdateCategoryComponent],
   templateUrl: './modal-update.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrl: './modal-update.component.scss',

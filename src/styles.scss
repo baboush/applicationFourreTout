@@ -10,3 +10,6 @@
 @import "./assets/layers/components/table";
 @import "./assets/layers/components/form";
 @import "./assets/layers/base/router-transition";
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

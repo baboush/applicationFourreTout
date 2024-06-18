@@ -6,10 +6,7 @@ import {
   ViewChild,
   inject,
 } from '@angular/core';
-import {
-  MovieEntity,
-  MovieService,
-} from '../../../../../../shared/utils/config/client';
+import { MovieEntity, MovieService } from '@core/http';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { interval, map, switchMap } from 'rxjs';
 import { CardPresenterComponent } from '../../../../components/card-presenter/card-presenter.component';

@@ -1,4 +1,3 @@
-"use strict";
 /**
  * Application Fourre Tout
  * Api Rest pour ajouter, supprimer, des rendez-vous, des films, des livres, des taches
@@ -10,4 +9,16 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-Object.defineProperty(exports, "__esModule", { value: true });
+
+import { Password, Username } from '../../../shared/types/user-type';
+
+export interface LoginDtoApplication {
+  /**
+   * Username login
+   */
+  username: Username;
+  /**
+   * Password login
+   */
+  password: Password;
+}

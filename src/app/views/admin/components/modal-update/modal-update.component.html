@@ -51,13 +51,6 @@
       </svg>
       Ajouter Catègories
     </button>
-
-    <app-modal-update-category
-      [isVisible]="isCategoryVisible()"
-      [entityCategories]="entity()"
-    />
   } @placeholder (minimum 1s) {
-  } @error {
-    <app-modal-error-fetch />
-  }
+  } @error {}
 }

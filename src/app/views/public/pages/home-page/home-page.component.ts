@@ -7,7 +7,7 @@ import {
   ParagrapheComponent,
   ToolbarComponent,
 } from '@view/public/components';
-import { MovieService } from '../../../../shared/utils/config/client';
+import { MovieService } from '@core/http';
 import { ContactFormData } from '@shared/interfaces';
 import {
   emailContactSchema,

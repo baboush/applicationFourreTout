@@ -1,4 +1,4 @@
-@if (categories().length > 0) {
+@if (categories().length > 0 && isVisible()) {
   <form [formGroup]="formGroup()" (ngSubmit)="onSubmit()">
     @for (item of categoriesExist; track item) {
       <label for="">{{ item.name }}</label>

@@ -1,15 +1,14 @@
 import {
-  AfterViewInit,
   ChangeDetectionStrategy,
   Component,
-  OnDestroy,
   Signal,
   computed,
   inject,
+  input,
+  model,
 } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import {
-  FormBuilder,
   FormControl,
   FormGroup,
   ReactiveFormsModule,
@@ -27,6 +26,9 @@ import { interval, map, pipe, switchMap } from 'rxjs';
   styleUrl: './modal-update-category.component.scss',
 })
 export class ModalUpdateCategoryComponent {
+  isVisible = model(false);
+  entity = model({});
+
   formCategories: FormGroup = new FormGroup({});
   private readonly categoryService = inject(CategoriesService);
 
