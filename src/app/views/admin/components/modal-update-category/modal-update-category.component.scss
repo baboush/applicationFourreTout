@@ -11,6 +11,7 @@
   box-shadow: 5px 5px 10px rgba($color: #000000, $alpha: 0.4);
   margin: auto;
   padding: 15px;
+  gap: 20px;
 
   .toggle {
     display: flex;
@@ -19,9 +20,6 @@
     gap: 5vw;
     padding: 4px;
     border-bottom: 2px solid lightgrey;
-    font-size: calc(0.8rem + 1vw);
-  }
-
-  .snak-bar {
+    font-size: calc(0.6rem + 1vw);
   }
 }

@@ -1,56 +1,78 @@
-@if (allMovies().length) {
-  <table class="table-box">
-    <thead>
-      <tr class="table-header">
-        <th scope="col">Nom du film</th>
-        <th scope="col">Rèalisateur</th>
-        <th scope="col">Action</th>
-      </tr>
-    </thead>
-    <tbody>
-      @for (movie of allMovies(); track movie.id) {
-        <tr class="table-row">
-          <td class="item-table">{{ movie.title }}</td>
-          <td class="item-table">{{ movie.director }}</td>
-          <td class="item-table">
-            <button
-              mat-raised-button
-              color="warn"
-              class="btn btn-action"
-              (click)="deleteModal(movie.id)"
-            >
-              Supprimer
-            </button>
-            <button
-              mat-raised-button
-              class="btn btn-action"
-              (click)="updateModal(movie)"
-            >
-              Modifier
-            </button>
-            <button mat-raised-button (click)="categoriesModal(movie)">
-              Catègories
-            </button>
-          </td>
-        </tr>
-      }
-    </tbody>
-  </table>
+@if (allMovies().length == moviesList.data.length) {
 
-  @if (modalDeleteIsVisible()) {
-    <app-modal-delete [(isVisible)]="modalDeleteIsVisible" [id]="idMovie" />
-  }
-  @if (modalUpdateIsVisible()) {
-    <app-modal-update
-      [(isVisible)]="modalUpdateIsVisible"
-      [entity]="movie"
-      [formGroup]="formMovie"
-    />
-  }
-  @if (modalCategoryIsVisible()) {
-    <app-modal-update-category
-      [(isVisible)]="modalCategoryIsVisible"
-      [entity]="movie"
-    />
-  }
+<mat-form-field
+    appearance="outline"
+>
+  <mat-label>Trouver un film</mat-label>
+  <input matInput
+    (keyup)="searchMovie($event)"
+    placeholder="Ex. Star Wars"
+    #input>
+</mat-form-field>
+
+<div>
+  <table mat-table [dataSource]="moviesList" matSort>
+    <ng-container matColumnDef="title">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Titre </th>
+      <td mat-cell *matCellDef="let movie"> {{ movie.title }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="director">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Rèalistateur </th>
+      <td mat-cell *matCellDef="let movie"> {{ movie.director }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="manage">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Manage </th>
+      <td mat-cell *matCellDef="let movie">
+        <button
+          mat-raised-button
+          color="warn"
+          class="btn btn-action"
+          (click)="deleteModal(movie.id)"
+        >
+          Supprimer
+        </button>
+        <button
+          mat-raised-button
+          class="btn btn-action"
+          (click)="updateModal(movie)"
+        >
+          Modifier
+        </button>
+        <button mat-raised-button (click)="categoriesModal(movie)">
+          Catègories
+        </button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns:displayColumns"></tr>
+
+  </table>
+  <mat-paginator
+    [pageSizeOptions]="[ 10, 20]"
+    [pageSize]="20"
+    [showFirstLastButtons]="true"
+    panelClass="pagination">
+  </mat-paginator>
+</div>
 }
+
+@if (modalDeleteIsVisible()) {
+<app-modal-delete [(isVisible)]="modalDeleteIsVisible" [id]="idMovie" />
+}
+@if (modalUpdateIsVisible()) {
+<app-modal-update
+  [(isVisible)]="modalUpdateIsVisible"
+  [entity]="movie"
+  [formGroup]="formMovie"
+/>
+}
+@if (modalCategoryIsVisible()) {
+<app-modal-update-category
+  [(isVisible)]="modalCategoryIsVisible"
+  [entity]="categoriesMovie"
+/>
+}
+

@@ -1,33 +1,25 @@
 :host {
-  @apply flex;
-  @apply flex-row;
-  @apply w-full;
-  @apply p-2;
+  width: 100%;
 
-  .table-box {
-    @apply w-full;
-    @apply justify-between;
+  mat-form-field {
+    padding: 20px;
+  }
 
-    .table-header {
-      th[scope="col"] {
-        @apply shadow-2xl;
-        @apply bg-cyan-50;
-        @apply text-2xl;
-        @apply items-start;
+  table {
+    padding: 20px;
+    height: 100%;
+    background-color: white;
+    th {
+      font-size: calc(0.8rem + 1vmin);
+    }
+    td {
+      font-size: calc(0.8rem + 1vmin);
+      padding: 10px;
+      button {
+        font-size: calc(0.8rem + 1vmin);
+        margin: 1em;
+        padding: 0.5em 1em;
       }
-    }
-    .table-row {
-      @apply shadow-2xl;
-      @apply bg-white;
-    }
-
-    .item-table {
-      @apply p-4;
-    }
-
-    .btn {
-      @apply m-2;
-      @apply p-2;
     }
   }
 }

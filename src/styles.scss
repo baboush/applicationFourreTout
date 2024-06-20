@@ -10,7 +10,7 @@ body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
 
-  .snack-success {
+  .snackbar-success {
     color: white;
 
     .mdc-snackbar__surface {
@@ -24,7 +24,7 @@ body {
     }
   }
 
-  .snack-error {
+  .snackbar-error {
     color: white;
     .mdc-snackbar__surface {
       background: red;
@@ -35,5 +35,9 @@ body {
         font-size: calc(0.6rem + 1vw) !important;
       }
     }
+  }
+
+  .pagination {
+    background: red !important;
   }
 }

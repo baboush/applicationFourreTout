@@ -8,25 +8,17 @@ import {
 import { toSignal } from '@angular/core/rxjs-interop';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatButtonModule } from '@angular/material/button';
 import { Categories, CategoriesService } from '@core/http';
-import { catchError, of, tap } from 'rxjs';
-import { Snackbar } from '../../../../shared/classes/snackbar';
+import { tap } from 'rxjs';
+import { CategoriesEntity, CategoriesChecked } from '@core/interfaces';
+import { CategoryAdministerImpService } from '../../services';
 
-export interface CategoriesExist {
-  readonly id: number;
-  readonly name: string;
-  readonly checked: boolean;
-}
-
-export interface CategoriesEntity {
-  readonly id: number;
-  readonly categories: Categories[];
-}
 
 @Component({
   selector: 'app-modal-update-category',
   standalone: true,
-  imports: [ReactiveFormsModule, MatSlideToggleModule, FormsModule],
+  imports: [ReactiveFormsModule, MatSlideToggleModule, FormsModule, MatButtonModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './modal-update-category.component.html',
   styleUrl: './modal-update-category.component.scss',
@@ -38,11 +30,6 @@ export class ModalUpdateCategoryComponent {
   isVisible = model(false);
 
   /**
-  *@property checked - A boolean that represents the checked state of the component. Default is false.
-  */
-  checked = false;
-
-  /**
   * @property entity - A model that represents the entity associated with the category. Default is an object with an id of 0 and an empty categories array.
   */
   entity = model<CategoriesEntity>({ id: 0, categories: [] });
@@ -50,20 +37,14 @@ export class ModalUpdateCategoryComponent {
   /**
   * @property categoriesExist - An array that holds the existing categories. Default is an empty array.
   */
-  categoriesExist: CategoriesExist[] = [];
+  categoriesExist: CategoriesChecked[] = [];
 
   /**
   * @property categoryService - An instance of the CategoriesService.
   * This service provides methods for handling operations related to categories.
   */
   private readonly categoryService = inject(CategoriesService);
-
-  /**
-  * @property snackBar - An instance of the Snackbar service.
-  * This service provides methods for showing snack bar notifications.
-  */
-  private readonly snackBar = inject(Snackbar);
-
+  private readonly categoriesAdministerService = inject(CategoryAdministerImpService);
 
   /**
   * @property categories - A Signal that emits an array of Categories.
@@ -93,7 +74,8 @@ export class ModalUpdateCategoryComponent {
   * It then returns a new array of categories, where each category is extended with a 'checked' property.
   * The 'checked' property is true if the category exists in the entity's categories, and false otherwise.
   */
-  checkCategoriesIsExist = (categories: Categories[]) => {
+  checkCategoriesIsExist = (data: Categories[]) => {
+    const categories = [...data];
     this.categoriesExist = categories.map((category: Categories) => {
       const isChecked = this.entity().categories?.some(
         (categoryEntity) => categoryEntity.name === category.name,
@@ -112,45 +94,18 @@ export class ModalUpdateCategoryComponent {
   * Otherwise, it calls the 'removeRelationCategoryWithEntity' method.
   * Both methods are called with 'idCategory' and the ID of the current entity as arguments.
   */
-  addOrRemoveCategory(event: any, idCategory: number) {
-    if (event.checked) {
-      this.addRelationCategoryWithEntity(idCategory, Number(this.entity().id));
+  addOrRemoveCategory(event: any, id: number) {
+    const idCategory = id;
+    const checked = event.checked;
+    if (!!checked) {
+      this.categoriesAdministerService.addCategoryRelationMovie(idCategory, Number(this.entity().id));
     } else {
-      this.removeRelationCategoryWithEntity(idCategory, Number(this.entity().id));
+      this.categoriesAdministerService.removeCategoryRelationMovie(idCategory, Number(this.entity().id));
     }
   }
 
 
-  /**
-   * This method is used to add a relation between a category and a movie.
-   * It makes a request to the categoriesApplicationControllerHandleAddCategoryToMovieRelation service,
-   * passing the id of the category and the id of the movie as parameters.
-   * If the request is successful, it shows a success message.
-   * If the request fails, it shows an error message.
-   *
-   * @param {number} idCategory - The id of the category to be related to the movie.
-   * @param {number} idMovie - The id of the movie to be related to the category.
-  */
   addRelationCategoryWithEntity(idCategory: number, idMovie: number) {
-    this.categoryService
-      .categoriesApplicationControllerHandleAddCategoryToMovieRelation(
-        idCategory,
-        idMovie,
-      )
-      .pipe(
-        tap(() =>
-          this.snackBar.showSuccessSnackBar(
-            'Votre catègorie a bien ètè ajoutè',
-          ),
-        ),
-        catchError((error: any) => {
-          this.snackBar.showErrorSnackBar(
-            "Une erreur est survenue lors de l'ajout de la catègorie",
-          );
-          return of(null);
-        }),
-      )
-      .subscribe();
   }
 
   /**
@@ -164,24 +119,13 @@ export class ModalUpdateCategoryComponent {
   * If an error occurs, it shows an error message using the 'snackBar' service and returns an Observable of null.
   */
   removeRelationCategoryWithEntity(idCategory: number, idMovie: number) {
-    this.categoryService
-      .categoriesApplicationControllerHandleRemoveCategoryMovieSaved(
-        idCategory,
-        idMovie,
-      )
-      .pipe(
-        tap(() =>
-          this.snackBar.showSuccessSnackBar(
-            'Votre catègorie a bien ètè supprimè',
-          ),
-        ),
-        catchError((error: any) => {
-          this.snackBar.showErrorSnackBar(
-            "Une erreur est survenue lors de la suppression de la catègorie",
-          );
-          return of(null);
-        }),
-      )
-      .subscribe();
+  }
+
+
+  /**
+  * Close modal category
+  */
+  closeModal() {
+    this.isVisible.set(false);
   }
 }
