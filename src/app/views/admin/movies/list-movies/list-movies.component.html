@@ -1,4 +1,4 @@
-@if (allMovies().length == moviesList.data.length) {
+@if (movies().length == moviesList.data.length) {
 
 <mat-form-field
     appearance="outline"
@@ -28,19 +28,19 @@
         <button
           mat-raised-button
           color="warn"
-          class="btn btn-action"
-          (click)="deleteModal(movie.id)"
+          (click)="showModalDelete(movie.id)"
         >
           Supprimer
         </button>
         <button
           mat-raised-button
-          class="btn btn-action"
-          (click)="updateModal(movie)"
+          (click)="showModalUpdate(movie)"
         >
           Modifier
         </button>
-        <button mat-raised-button (click)="categoriesModal(movie)">
+        <button mat-raised-button
+          (click)="showModalCategories(movie)"
+        >
           Catègories
         </button>
       </td>
@@ -59,20 +59,25 @@
 </div>
 }
 
-@if (modalDeleteIsVisible()) {
-<app-modal-delete [(isVisible)]="modalDeleteIsVisible" [id]="idMovie" />
+@if (modalDeleteIsVisible()){
+<app-modal-delete
+  [(isVisible)]="modalDeleteIsVisible"
+  (acceptRemoveItem)="deleteMovie($event)"/>
 }
-@if (modalUpdateIsVisible()) {
+
+@if (modalUpdateIsVisible()){
 <app-modal-update
   [(isVisible)]="modalUpdateIsVisible"
-  [entity]="movie"
-  [formGroup]="formMovie"
-/>
-}
-@if (modalCategoryIsVisible()) {
-<app-modal-update-category
-  [(isVisible)]="modalCategoryIsVisible"
-  [entity]="categoriesMovie"
+  [entity]="movie()"
+  [formGroup]="formGroup"
+  (updateData)="updateMovie($event)"
 />
 }
 
+@if (modalCategoriesIsVisible()) {
+<app-modal-update-category
+  [(isVisible)]="modalCategoriesIsVisible"
+  [entity]="categories()"
+  (checkedOrNotCategory)="updateCategoryMovie($event)"
+/>
+}

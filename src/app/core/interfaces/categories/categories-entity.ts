@@ -1,4 +1,4 @@
-import { Categories } from "../http/model/categories";
+import { Categories } from "../../http/model/categories";
 
 /**
  * Interface for CategoriesEntity.

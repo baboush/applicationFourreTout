@@ -25,8 +25,10 @@
       "@shared/types": ["./src/app/shared/types/index.ts"],
       "@shared/schemas": ["./src/app/shared/schemas/index.ts"],
       "@shared/interfaces": ["./src/app/shared/interfaces/index.ts"],
+      "@shared/classes": ["./src/app/shared/classes/index.ts"],
       "@core/http": ["./src/app/core/http/index.ts"],
-      "@core/interfaces": ["./src/app/core/interfaces/index.ts"]
+      "@core/interfaces/categories": ["./src/app/core/interfaces/categories/index.ts"],
+      "@core/interfaces/movies": ["./src/app/core/interfaces/movies/index.ts"],
     }
   },
   "angularCompilerOptions": {

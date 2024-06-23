@@ -1,21 +1,25 @@
 @if (categories().length > 0 && isVisible()) {
+
 <h3 class="title-modal-category">Ajouter des catègories</h3>
-  @for (category of categoriesExist; track category.id) {
-    <div class="toggle">
-      {{ category.name }}
-      <mat-slide-toggle
-        labelPosition="before"
-        [checked]="category.checked"
-        color="primary"
-        [(ngModel)]="category.checked"
-        (change)="addOrRemoveCategory($event, category.id)"
-      >
-      </mat-slide-toggle>
-    </div>
-  }
+
+@for (category of categoriesExist; track category.id) {
+<div class="toggle">
+  {{ category.name }}
+  <mat-slide-toggle
+    labelPosition="before"
+    [checked]="category.checked"
+    color="primary"
+    [(ngModel)]="category.checked"
+    (change)="addOrRemoveCategory($event, category.id)"
+  >
+  </mat-slide-toggle>
+</div>
+}
 <button
   mat-raised-button
   color="primary"
   (click)="closeModal()"
-  >Fermer</button>
+>
+  Fermer
+</button>
 }

@@ -1,10 +1,9 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  input,
   Input,
   model,
-  OnInit,
+  input,
   output,
 } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
@@ -18,20 +17,16 @@ import { ModalUpdateCategoryComponent } from '@view/admin/components';
   changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrl: './modal-update.component.scss',
 })
-export class ModalUpdateComponent implements OnInit {
+export class ModalUpdateComponent   {
   isVisible = model(false);
   isCategoryVisible = model(false);
   entity = input<any>();
   updateData = output<any>();
   @Input() formGroup!: FormGroup;
-  entityProps: string[] = [];
 
-  ngOnInit(): void {
-    this.entityProps = Object.keys(this.entity()).filter((prop) => {
+  entityProps = () => Object.keys(this.entity()).filter((prop) => {
       return prop !== 'id' && prop !== 'categories';
-    });
-    this.formGroup.patchValue(this.entity());
-  }
+    }, [] as string[])
 
   onSubmit() {
     this.updateData.emit({
@@ -43,9 +38,5 @@ export class ModalUpdateComponent implements OnInit {
 
   closeModal() {
     this.isVisible.set(false);
-  }
-
-  addCategories() {
-    this.isCategoryVisible.set(true);
   }
 }
