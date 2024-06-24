@@ -13,15 +13,7 @@ import {
 import { CreateCategoryUsecaseApplication } from "./usecases/create-category-usecase-application";
 import { CreateCategoryDtoApplication } from "./dto/create-category-dto-application";
 import { nameCategorySchema } from "@shared/types/category-types";
-import {
-  ApiTags,
-  ApiBadRequestResponse,
-  ApiBody,
-  ApiConflictResponse,
-  ApiCreatedResponse,
-  ApiNotFoundResponse,
-  ApiOkResponse,
-} from "@nestjs/swagger";
+import { ApiTags, ApiBody } from "@nestjs/swagger";
 import { DeleteCategoryMovieUsecaseApplication } from "./usecases/movies-usecase/delete-category-movie-usecase-application";
 import { DeleteCategoryUsecaseApplication } from "./usecases/delete-category-usecase-application";
 import { AddCategoryMovieUsecaseApplication } from "./usecases/movies-usecase/add-category-movie-usecase-application";
@@ -85,17 +77,15 @@ export class CategoriesApplicationController implements CategoriesController {
     @Param("idCategory") idCategory: number,
     @Param("idMovie") idMovie: number,
   ): Promise<boolean> {
-    console.log(idCategory + `controller`);
     const addCategoryToMovie = await this.addCategoryMovieUsecase.execute(
       idMovie,
       idCategory,
     );
 
-    if (!addCategoryToMovie) {
+    if (!addCategoryToMovie)
       throw new NotFoundException(
         `Category with ID ${idMovie} or Movie with ID ${idCategory} not found`,
       );
-    }
 
     return !!addCategoryToMovie;
   }

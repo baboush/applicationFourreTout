@@ -65,15 +65,13 @@ export class CategorieRepositoryPersistence implements CategoriesRepository {
     idMovie: number,
     idCategory: number,
   ): Promise<boolean> {
-    console.log(idCategory);
     const movie = await this.moviesRepository.findOne({
       where: { id: idMovie },
+      relations: { categories: true },
     });
     const category = await this.categoriesRepository.findOne({
       where: { id: idCategory },
     });
-    console.log(category + ` category`);
-    console.log(movie + `movie`);
 
     if (!movie) {
       throw new NotFoundException(`Movie ${idMovie} not found`);
@@ -83,13 +81,14 @@ export class CategorieRepositoryPersistence implements CategoriesRepository {
       throw new NotFoundException(`Category ${idCategory} not found`);
     }
 
-    if (!!movie.categories) {
-      movie.categories.push(category);
-    } else {
-      movie.categories = [];
-      movie.categories.push(category);
+    const existingCategory = [...movie.categories].find(
+      (c) => c.id === category.id,
+    );
+    if (!!existingCategory) {
+      throw new BadRequestException(`Category and Movie relationship is on`);
     }
-    console.log(movie.categories);
+
+    movie.categories.push(category);
 
     const saveCategoryToMovie = await this.moviesRepository.save(movie);
     return !!saveCategoryToMovie;

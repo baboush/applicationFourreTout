@@ -13,8 +13,6 @@ import {
   Sse,
   UseGuards,
 } from "@nestjs/common";
-import { movieSchema } from "@shared/types/movie-types";
-import { Paginate, PaginateQuery, Paginated } from "nestjs-paginate";
 import { CreateMoviesUsecaseApplication } from "./usecases/create-movie-usecase-application";
 import { DeleteMovieUsecaseApplication } from "./usecases/delete-movie-usecase-application";
 import { FindAllMoviesUsecaseApplication } from "./usecases/find-all-movies-usecase-application";
@@ -68,13 +66,13 @@ export class MovieApplicationController implements MovieController {
    */
   @Get("list")
   async handleFindSavedMoviesList(): Promise<MovieEntity[]> {
-    const moviesPagination = await this.findAllMovieUsecase.execute();
+    const movies = await this.findAllMovieUsecase.execute();
 
-    if (!moviesPagination) {
+    if (!movies) {
       throw new BadRequestException(`Movies with pagination error fetching`);
     }
 
-    return moviesPagination;
+    return movies;
   }
 
   /**

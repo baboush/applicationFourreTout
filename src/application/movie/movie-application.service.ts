@@ -6,7 +6,6 @@ import {
   Injectable,
   NotFoundException,
 } from "@nestjs/common";
-import { PaginateQuery, Paginated } from "nestjs-paginate";
 import { movieSchema } from "@shared/types/movie-types";
 import {
   CreateMovieApplicationDto,

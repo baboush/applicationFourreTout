@@ -52,7 +52,10 @@ export class MovieRepositoryPersistence implements MovieRepository {
    * @inheritdoc MovieRepository.findAllMovie
    */
   async findAllMovie(): Promise<MovieEntity[]> {
-    return await this.moviesRepository.find();
+    return await this.moviesRepository
+      .createQueryBuilder("movie")
+      .leftJoinAndSelect("movie.categories", "categories")
+      .getMany();
   }
 
   /**
