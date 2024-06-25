@@ -13,11 +13,6 @@ import {
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 
-/**
- * Injectable persistence implementation of the MovieRepository interface.
- * This class interacts with a data store (likely a database) using TypeORM's Repository API
- * to manage movie data.
- */
 @Injectable()
 export class MovieRepositoryPersistence implements MovieRepository {
   constructor(
@@ -29,23 +24,21 @@ export class MovieRepositoryPersistence implements MovieRepository {
    * @inheritdoc MovieRepository.createMovie
    */
   async createMovie(createMovie: CreateMovieDto): Promise<Movie> {
-    const { title, director, poster } = { ...createMovie };
-    const ifExist = this.moviesRepository.findBy({
-      title: title,
-      director: director,
-      poster: poster,
+
+
+    if (!createMovie)
+      throw new BadRequestException(`Movie data is Invalid`);
+
+    const existingMovie = await this.moviesRepository.findBy({
+      title: createMovie.title,
+      director: createMovie.director,
+      poster: createMovie.poster,
     });
 
-    if (!createMovie) {
-      throw new BadRequestException(`Movie ${createMovie} is Invalid`);
-    }
+    if (existingMovie)
+      throw new BadRequestException(`Movie exist in database`);
 
-    if (!ifExist) {
-      throw new BadRequestException(`Movie ${createMovie} exist in database`);
-    }
-
-    const newMovie = this.moviesRepository.create(createMovie);
-    return await this.moviesRepository.save(newMovie);
+    return await this.moviesRepository.save(createMovie);
   }
 
   /**
@@ -64,9 +57,8 @@ export class MovieRepositoryPersistence implements MovieRepository {
   async findOneMovie(id: number): Promise<Movie> {
     const movie = await this.moviesRepository.findOneBy({ id: id });
 
-    if (!movie) {
+    if (!movie)
       throw new NotFoundException(`Movie with ${id} not found`);
-    }
 
     return movie;
   }
@@ -78,17 +70,17 @@ export class MovieRepositoryPersistence implements MovieRepository {
     id: number,
     updateMovie: UpdateMovieDto,
   ): Promise<Partial<Movie>> {
-    const movie = await this.moviesRepository.update(id, updateMovie);
 
-    if (!updateMovie.id) {
+    if (!updateMovie || !id)
+      throw new BadRequestException(`Update Movie data is invalid`);
+
+    const updatedMovie = await this.moviesRepository.update(id, updateMovie);
+
+    if (updatedMovie.affected === 0)
       throw new NotFoundException(`Movie Update ${id} not found`);
-    }
-
-    if (!movie) {
-      throw new BadRequestException(`Update Movie ${movie} data is invalid`);
-    }
-
-    return { id, ...movie };
+  
+    console.log(updatedMovie.raw);
+    return updatedMovie.raw
   }
 
   /**
@@ -97,10 +89,9 @@ export class MovieRepositoryPersistence implements MovieRepository {
   async deleteMovie(id: number): Promise<boolean> {
     const deleteMovie = await this.moviesRepository.delete(id);
 
-    if (!deleteMovie) {
+    if (deleteMovie.affected === 0)
       throw new NotFoundException(`Movie width ${id} not found`);
-    }
 
-    return !!deleteMovie;
+    return deleteMovie.affected > 0;
   }
 }
