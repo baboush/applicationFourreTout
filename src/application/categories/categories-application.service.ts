@@ -1,11 +1,10 @@
 import { CategoriesEntity, CategoriesService } from "@domain/categories";
-import { CategorieRepositoryPersistence } from "@infrastructure/persistence/repositories/categories";
+import { CategoriesRepositoryPersistence } from "@infrastructure/persistence/repositories/categories";
 import {
   BadRequestException,
   Injectable,
   NotFoundException,
 } from "@nestjs/common";
-import { nameCategorySchema } from "@shared/types/category-types";
 import { CreateCategoryDtoApplication } from "./dto/create-category-dto-application";
 
 /**
@@ -14,7 +13,7 @@ import { CreateCategoryDtoApplication } from "./dto/create-category-dto-applicat
 @Injectable()
 export class CategoryiesApplicationService implements CategoriesService {
   constructor(
-    private readonly categoriesRepository: CategorieRepositoryPersistence,
+    private readonly categoriesRepository: CategoriesRepositoryPersistence,
   ) {}
 
   /**
@@ -26,9 +25,8 @@ export class CategoryiesApplicationService implements CategoriesService {
     const newCategory =
       await this.categoriesRepository.createCategory(category);
 
-    if (!newCategory && nameCategorySchema.parse(newCategory.name)) {
+    if (!newCategory || Object.keys(newCategory).length === 0)
       throw new BadRequestException(`Category ${category} bad schema`);
-    }
 
     return newCategory;
   }
@@ -39,9 +37,8 @@ export class CategoryiesApplicationService implements CategoriesService {
   async removeCategorySaved(id: number): Promise<Boolean> {
     const isDelete = this.categoriesRepository.removeCategory(id);
 
-    if (!isDelete) {
+    if (!isDelete)
       throw new NotFoundException(`Category with ID ${id} not found`);
-    }
 
     return !!isDelete;
   }
@@ -58,9 +55,8 @@ export class CategoryiesApplicationService implements CategoriesService {
       idCategory,
     );
 
-    if (!addCategoryToMovie) {
+    if (!addCategoryToMovie)
       throw new BadRequestException(`Category not found`);
-    }
 
     return !!addCategoryToMovie;
   }
@@ -77,11 +73,8 @@ export class CategoryiesApplicationService implements CategoriesService {
       idCategory,
     );
 
-    if (!isDelete) {
-      throw new NotFoundException(
-        `Category with ID ${idCategory} or Movie with ID ${idMovie} not found `,
-      );
-    }
+    if (!isDelete) 
+      throw new NotFoundException(`Category with ID ${idCategory} or Movie with ID ${idMovie} not found `);
 
     return !!isDelete;
   }
@@ -92,9 +85,8 @@ export class CategoryiesApplicationService implements CategoriesService {
   async findAllCategorySaved(): Promise<CategoriesEntity[]> {
     const result = await this.categoriesRepository.findCategories();
 
-    if (!result) {
-      throw new NotFoundException(`Ressources not found`);
-    }
+    if (!result)
+      throw new NotFoundException(`Resources not found`);
 
     return result;
   }

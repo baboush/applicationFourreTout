@@ -6,6 +6,7 @@ import { SwaggerService } from "@shared/swagger/swagger.service";
 import { CatchAllExceptionFilterFilter } from "@shared/filter/catch-all-exception.filter";
 import { SwaggerModule } from "@nestjs/swagger";
 import metadata from "./metadata";
+import { ValidationPipe } from "@nestjs/common";
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {});
@@ -17,6 +18,7 @@ async function bootstrap() {
   await SwaggerModule.loadPluginMetadata(metadata);
   swaggerService.createDocumentSwagger(app);
   app.useGlobalFilters(new CatchAllExceptionFilterFilter({ httpAdapter }));
+  app.useGlobalPipes(new ValidationPipe());
 
   await app.listen(3000);
 }

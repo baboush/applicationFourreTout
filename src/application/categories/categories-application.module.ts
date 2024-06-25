@@ -1,5 +1,5 @@
 import { Module, forwardRef } from "@nestjs/common";
-import { CategoriePersistenceModule } from "@infrastructure/persistence/repositories/categories/categorie-persistence.module";
+import { CategoriesPersistenceModule } from "@infrastructure/persistence/repositories/categories/categorie-persistence.module";
 import { CreateCategoryUsecaseApplication } from "./usecases/create-category-usecase-application";
 import { DeleteCategoryMovieUsecaseApplication } from "./usecases/movies-usecase/delete-category-movie-usecase-application";
 import { DeleteCategoryUsecaseApplication } from "./usecases/delete-category-usecase-application";
@@ -9,7 +9,7 @@ import { CategoryiesApplicationService } from "./categories-application.service"
 import { FindCategoriesUsecaseApplication } from "./usecases/find-categories-usecase-application";
 
 @Module({
-  imports: [forwardRef(() => CategoriePersistenceModule)],
+  imports: [forwardRef(() => CategoriesPersistenceModule)],
   controllers: [CategoriesApplicationController],
   providers: [
     CategoryiesApplicationService,

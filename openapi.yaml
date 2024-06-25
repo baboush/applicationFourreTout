@@ -193,7 +193,7 @@
         ]
       }
     },
-    "/movie/delet/{id}": {
+    "/movie/delete/{id}": {
       "delete": {
         "operationId": "MovieApplicationController_handleDeleteSavedMovie",
         "parameters": [

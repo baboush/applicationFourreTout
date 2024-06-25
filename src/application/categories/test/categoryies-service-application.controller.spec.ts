@@ -1,19 +1,52 @@
-import { Test, TestingModule } from "@nestjs/testing";
-import { CategoryiesServiceApplicationController } from "./categoryies-service-application.controller";
+import { Test, TestingModule } from '@nestjs/testing';
+import { BadRequestException  } from '@nestjs/common';
+import { CategoryiesApplicationService } from '../categories-application.service';
+import { CategoriesRepositoryPersistence } from '@infrastructure/persistence/repositories/categories';
+import { CreateCategoryDtoApplication } from '../dto/create-category-dto-application';
 
-/*describe('CategoryiesServiceApplicationController', () => {
-  let controller: CategoryiesServiceApplicationController;
+describe('CategoryiesApplicationService', () => {
+  let service: CategoryiesApplicationService;
+  let repo: CategoriesRepositoryPersistence;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      controllers: [CategoryiesServiceApplicationController],
+      providers: [
+        CategoryiesApplicationService,
+        {
+          provide: CategoriesRepositoryPersistence,
+          useValue: {
+            createCategory: jest.fn(),
+            removeCategory: jest.fn(),
+            addCategoryMovie: jest.fn(),
+            removeCategoryMovie: jest.fn(),
+            findCategories: jest.fn(),
+          },
+        },
+      ],
     }).compile();
 
-    controller = module.get<CategoryiesServiceApplicationController>(CategoryiesServiceApplicationController);
+    service = module.get<CategoryiesApplicationService>(CategoryiesApplicationService);
+    repo = module.get<CategoriesRepositoryPersistence>(CategoriesRepositoryPersistence);
   });
 
   it('should be defined', () => {
-    expect(controller).toBeDefined();
+    expect(service).toBeDefined();
   });
+
+  describe('createCategoryAndPublish', () => {
+    it('should throw BadRequestException if category data is invalid', async () => {
+      const category: CreateCategoryDtoApplication = {} as any;
+      await expect(service.createCategoryAndPublish(category)).rejects.toThrow(BadRequestException);
+    });
+
+    it('should create a category if data is valid', async () => {
+      const category: CreateCategoryDtoApplication = 
+        { name: 'Action' } as any;
+      const createdCategory = { /* created category data */ } as any;
+      jest.spyOn(repo, 'createCategory').mockResolvedValueOnce(createdCategory);
+      await expect(service.createCategoryAndPublish(category)).resolves.toEqual(createdCategory);
+    });
+  });
+
 });
-*/
+
