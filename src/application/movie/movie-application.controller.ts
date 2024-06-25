@@ -10,7 +10,6 @@ import {
   Param,
   Post,
   Put,
-  Sse,
   UseGuards,
 } from "@nestjs/common";
 import { CreateMoviesUsecaseApplication } from "./usecases/create-movie-usecase-application";
@@ -52,13 +51,12 @@ export class MovieApplicationController implements MovieController {
     @Body()
     createMovie: CreateMovieApplicationDto,
   ): Promise<Partial<MovieEntity>> {
-    const newMovie: CreateMovieApplicationDto = { ...createMovie };
 
-    if (!newMovie) {
-      throw new BadRequestException(`${newMovie} Data is missing`);
+    if (!createMovie) {
+      throw new BadRequestException(`Data is missing for create movie`);
     }
 
-    return await this.createMovieUsecase.execute(newMovie);
+    return await this.createMovieUsecase.execute(createMovie);
   }
 
   /**
@@ -69,7 +67,7 @@ export class MovieApplicationController implements MovieController {
     const movies = await this.findAllMovieUsecase.execute();
 
     if (!movies) {
-      throw new BadRequestException(`Movies with pagination error fetching`);
+      throw new BadRequestException(`Movies error fetching`);
     }
 
     return movies;
@@ -99,23 +97,23 @@ export class MovieApplicationController implements MovieController {
     @Body()
     updateMovie: UpdateMovieApplicationDto,
   ): Promise<Partial<MovieEntity>> {
-    const updatedMovie: UpdateMovieApplicationDto = { ...updateMovie };
 
-    if (!updatedMovie.id) {
-      throw new NotFoundException(`Movie with ID ${updatedMovie.id} not found`);
+
+    if (!updateMovie.id) {
+      throw new NotFoundException(`Movie with ID ${updateMovie.id} not found`);
     }
 
-    if (!updatedMovie) {
-      throw new BadRequestException(`Movie update ${updatedMovie} is invalid`);
+    if (!updateMovie) {
+      throw new BadRequestException(`Movie update ${updateMovie} is invalid`);
     }
 
-    return await this.updateMovieUsecase.execute(updatedMovie);
+    return await this.updateMovieUsecase.execute(updateMovie);
   }
 
   /**
    * @inheritdoc MovieController.handleDeleteSavedMovie
    */
-  @Delete("delet/:id")
+  @Delete("delete/:id")
   async handleDeleteSavedMovie(@Param("id") id: number): Promise<boolean> {
     const isDelete = await this.deleteMovieUsecase.execute(id);
 

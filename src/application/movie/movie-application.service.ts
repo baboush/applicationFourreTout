@@ -1,4 +1,4 @@
-import { MovieEntity, MovieService, UpdateMovieDto } from "@domain/movies";
+import { MovieEntity, MovieService  } from "@domain/movies";
 import { Movie } from "@domain/movies/movie.interface";
 import { MovieRepositoryPersistence } from "../../infrastructure/persistence/repositories/movie/movie-repository-persistence";
 import {
@@ -6,7 +6,6 @@ import {
   Injectable,
   NotFoundException,
 } from "@nestjs/common";
-import { movieSchema } from "@shared/types/movie-types";
 import {
   CreateMovieApplicationDto,
   ReadMovieApplicationDto,
@@ -20,14 +19,10 @@ import {
  */
 @Injectable()
 export class MovieApplicationService implements MovieService {
-  /**
-   * Injected MovieRepository for data persistence.
-   */
-  private readonly movieRepository: MovieRepositoryPersistence;
+
   constructor(
-    private readonly MovieRepositoryPersistence: MovieRepositoryPersistence,
+    private readonly movieRepository: MovieRepositoryPersistence,
   ) {
-    this.movieRepository = MovieRepositoryPersistence;
   }
 
   /**
@@ -36,20 +31,23 @@ export class MovieApplicationService implements MovieService {
   async createAndPublishMovie(
     createMovie: CreateMovieApplicationDto,
   ): Promise<Partial<Movie>> {
-    const newMovie = { ...createMovie };
 
-    if (!newMovie && !movieSchema.parse(newMovie)) {
-      throw new BadRequestException(`${newMovie} Missing data !`);
-    }
+    if (!createMovie || Object.keys(createMovie).length === 0)
+      throw new BadRequestException(`Missing data for movie creation`);
 
-    return await this.movieRepository.createMovie(newMovie);
+    return await this.movieRepository.createMovie(createMovie);
   }
 
   /**
    * @inheritdoc MovieService.findSavedMoviesList
    */
   async findSavedMoviesList(): Promise<MovieEntity[]> {
-    return await this.movieRepository.findAllMovie();
+    const movies = await this.movieRepository.findAllMovie();
+
+    if (!movies)
+      throw new NotFoundException(`No movies found in database`);
+
+    return movies;
   }
 
   /**
@@ -59,9 +57,9 @@ export class MovieApplicationService implements MovieService {
     const movie: ReadMovieApplicationDto =
       await this.movieRepository.findOneMovie(id);
 
-    if (!movie && !movieSchema.parse(movie)) {
-      throw new NotFoundException(`${movie} Does not exist in database`);
-    }
+    if (!movie)
+      throw new NotFoundException(`Movie with ${id} not exist in database`);
+
     return movie;
   }
 
@@ -69,23 +67,19 @@ export class MovieApplicationService implements MovieService {
    * @inheritdoc MovieService.updateMovieDetail
    */
   async updateMovieDetail(
-    updateMovie: UpdateMovieDto,
+    updateMovie: UpdateMovieApplicationDto,
   ): Promise<Partial<Movie>> {
-    const updatedMovie: UpdateMovieApplicationDto = { ...updateMovie };
+    const movie = await this.movieRepository.findOneMovie(updateMovie.id);
 
-    if (!updatedMovie.id) {
-      throw new NotFoundException(
-        `Movie width ID ${updatedMovie.id} not found`,
-      );
-    }
+    if (!movie.id)
+      throw new NotFoundException(`Movie width ID ${movie.id} not found`);
 
-    if (!updatedMovie && !movieSchema.parse(updatedMovie)) {
-      throw new BadRequestException(`${updatedMovie} Missing data`);
-    }
+    if (!updateMovie || Object.keys(updateMovie).length === 0)
+      throw new BadRequestException(`${updateMovie} Missing data`);
 
     return await this.movieRepository.updateMovie(
-      updatedMovie.id,
-      updatedMovie,
+      updateMovie.id,
+      updateMovie,
     );
   }
 
@@ -93,12 +87,17 @@ export class MovieApplicationService implements MovieService {
    * @inheritdoc MovieService.deleteSavedMovie
    */
   async deleteSavedMovie(id: number): Promise<boolean> {
+
+    const movie = await this.movieRepository.findOneMovie(id);
+
+    if (!movie)
+      throw new NotFoundException(`Movie with ID ${id} not found`);
+
     const isDeleted = await this.movieRepository.deleteMovie(id);
 
-    if (!isDeleted) {
-      throw new NotFoundException(`Movie width ID ${id} not found`);
-    }
+    if (!isDeleted)
+      throw new BadRequestException(`Failed delete movie with ID: ${id} `)
 
-    return !!isDeleted;
+    return isDeleted;
   }
 }

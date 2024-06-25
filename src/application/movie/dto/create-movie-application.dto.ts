@@ -1,4 +1,3 @@
-import { ApiProperty, ApiTags } from "@nestjs/swagger";
 import { IsNotEmpty, IsNumber, IsString, Length } from "class-validator";
 import { TitleMovie, PosterMovie, DirectorMovie } from "@shared/types";
 import { CreateMovieDto } from "@domain/movies";
