@@ -1,3 +1,3 @@
-import { CategorieRepositoryPersistence } from "./categorie-repository-persistence";
+import { CategoriesRepositoryPersistence } from "./categories-repository-persistence";
 
-export { CategorieRepositoryPersistence };
+export { CategoriesRepositoryPersistence };
