@@ -8,6 +8,7 @@ import { DataSourceService } from "@infrastructure/persistence/data-access/data-
 import { AuthApplcationModule } from "@application/auth";
 import { MovieApplicationModule } from "@application/movie/movie-application.module";
 import { CategoriesApplicationModule } from "@application/categories/categories-application.module";
+import { BookApplicationModule } from "@application/books/book-application.module";
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { CategoriesApplicationModule } from "@application/categories/categories-
     AuthApplcationModule,
     MovieApplicationModule,
     CategoriesApplicationModule,
+    BookApplicationModule,
   ],
   controllers: [],
   providers: [SwaggerService],

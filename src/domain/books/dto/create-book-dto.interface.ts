@@ -1,4 +1,3 @@
-import { CategoriesEntity } from "@domain/categories";
 import { AuthorBook, PosterBook, TitleBook } from "@shared/types";
 
 /**
@@ -16,17 +15,12 @@ export interface CreateBookDto {
   readonly title: TitleBook;
 
   /**
-   * Director of the book.
+   * Author of the book.
    */
-  readonly director: AuthorBook;
+  readonly author: AuthorBook;
 
   /**
    * Poster image URL of the book.
    */
   readonly poster: PosterBook;
-
-  /**
-   * Categories book.
-   */
-  readonly categories: CategoriesEntity[];
 }

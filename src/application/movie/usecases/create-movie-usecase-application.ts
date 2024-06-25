@@ -1,4 +1,4 @@
-import { CreateMovieDto, CreateMovieUsecase, Movie } from "@domain/movies";
+import {  CreateMovieUsecase, Movie } from "@domain/movies";
 import { MovieApplicationService } from "../movie-application.service";
 import { Injectable } from "@nestjs/common";
 import { CreateMovieApplicationDto } from "../dto";

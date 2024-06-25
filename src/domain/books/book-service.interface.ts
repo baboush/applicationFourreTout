@@ -1,7 +1,4 @@
-import { BookEntity } from ".";
-import { CreateBookDto } from "./dto/create-book-dto.interface";
-import { UpdateBookDto } from "./dto/update-book-dto.interface";
-
+import { BookDto, CreateBookDto, UpdateBookDto } from "./dto";
 
 /**
  * Interface representing a book service for managing book data in the application.
@@ -15,7 +12,7 @@ export interface BookService {
    * @returns A Promise that resolves to a partially populated Book object
    *          representing the created book, or rejects with an error if creation fails.
    */
-  createAndPublishBook(createBook: CreateBookDto): Promise<Partial<BookEntity>>;
+  createAndPublishBook(createBook: CreateBookDto): Promise<Partial<BookDto>>;
 
   /**
    * Retrieves a paginated list of saved books.
@@ -23,7 +20,7 @@ export interface BookService {
    * @returns A Promise that resolves to a list of BookEntity objects,
    *          or rejects with an error if retrieval fails.
    */
-  findSavedBooksList(): Promise<BookEntity[]>;
+  findSavedBooksList(): Promise<BookDto[]>;
 
   /**
    * Finds a single saved book by its ID.
@@ -32,7 +29,7 @@ export interface BookService {
    * @returns A Promise that resolves to a complete Book object,
    *          or rejects with an error if retrieval fails.
    */
-  findOneSavedBook(id: number): Promise<BookEntity>;
+  findOneSavedBook(id: number): Promise<BookDto>;
 
   /**
    * Updates the details of a saved book.
@@ -41,7 +38,7 @@ export interface BookService {
    * @returns A Promise that resolves to a partially populated Book object
    *          reflecting the update, or rejects with an error if the update fails.
    */
-  updateBookDetail(updateBook: UpdateBookDto): Promise<Partial<BookEntity>>;
+  updateBookDetail(updateBook: UpdateBookDto): Promise<Partial<BookDto>>;
 
   /**
    * Deletes a saved book by its ID.

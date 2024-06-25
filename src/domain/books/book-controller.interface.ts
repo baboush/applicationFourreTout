@@ -1,6 +1,4 @@
-import { BookDto } from "./dto/book-dto.interface";
-import { CreateBookDto } from "./dto/create-book-dto.interface";
-import { UpdateBookDto } from "./dto/update-book-dto.interface";
+import { BookDto, CreateBookDto, UpdateBookDto } from "./dto";
 
 /**
  * Interface representing a book controller in the Angular application.
@@ -44,7 +42,7 @@ export interface BookController {
    */
   handleUpdateBookDetail(
     updateBook: UpdateBookDto,
-  ): Promise<Partial<UpdateBookDto>>;
+  ): Promise<Partial<BookDto>>;
 
   /**
    * Handles the logic for deleting a saved book by its ID.

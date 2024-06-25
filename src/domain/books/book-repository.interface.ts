@@ -1,6 +1,4 @@
-import { BookEntity } from ".";
-import { CreateBookDto } from "./dto/create-book-dto.interface";
-import { UpdateBookDto } from "./dto/update-book-dto.interface";
+import { BookDto, CreateBookDto, UpdateBookDto } from "./dto";
 
 /**
  * Interface representing a book repository for data access operations.
@@ -14,14 +12,14 @@ export interface BookRepository {
    * @returns A Promise that resolves to a complete Book object
    *          representing the created book, or rejects with an error if creation fails.
    */
-  createBook(createBook: CreateBookDto): Promise<BookEntity>;
+  createBook(createBook: CreateBookDto): Promise<BookDto>;
 
   /**
    *
    * @returns A Promise that resolves to a list of BookEntity objects,
    *          or rejects with an error if retrieval fails.
    */
-  findAllBook(): Promise<BookEntity[]>;
+  findAllBook(): Promise<BookDto[]>;
 
   /**
    * Finds a single book by its ID from the data source.
@@ -30,7 +28,7 @@ export interface BookRepository {
    * @returns A Promise that resolves to a complete Book object,
    *          or rejects with an error if retrieval fails.
    */
-  findOneBook(id: number): Promise<BookEntity>;
+  findOneBook(id: number): Promise<BookDto>;
 
   /**
    * Updates the details of an existing book in the data source.
@@ -40,7 +38,7 @@ export interface BookRepository {
    * @returns A Promise that resolves to a partially populated Book object
    *          reflecting the update, or rejects with an error if the update fails.
    */
-  updateBook(id: number, updateBook: UpdateBookDto): Promise<Partial<BookEntity>>;
+  updateBook(id: number, updateBook: UpdateBookDto): Promise<Partial<BookDto>>;
 
   /**
    * Deletes a book from the data source based on its ID.

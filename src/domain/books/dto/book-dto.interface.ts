@@ -6,9 +6,9 @@ import { AuthorBook, PosterBook, TitleBook } from "@shared/types";
  */
 export interface BookDto {
   /**
-   * Optional unique identifier of the book. (usually set by the server)
+   * Unique identifier of the book. (usually set by the server)
    */
-  readonly id?: number;
+  readonly id: number;
 
   /**
    * Title of the book.
@@ -16,9 +16,9 @@ export interface BookDto {
   readonly title: TitleBook;
 
   /**
-   * Director of the book.
+   * Author of the book.
    */
-  readonly director: AuthorBook;
+  readonly author: AuthorBook;
 
   /**
    * Poster image URL of the book.

@@ -20,7 +20,7 @@ export interface UpdateBookDto {
   readonly poster: PosterBook;
 
   /**
-   * Director of the book. (can be updated)
+   * Author of the book. (can be updated)
    */
-  readonly director: AuthorBook;
+  readonly author: AuthorBook;
 }

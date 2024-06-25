@@ -392,6 +392,152 @@
           "Categories"
         ]
       }
+    },
+    "/book/create": {
+      "post": {
+        "operationId": "BooksApplicationController_handleCreateAndPublishBook",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateBookApplicationDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Book"
+        ]
+      }
+    },
+    "/book/list": {
+      "get": {
+        "operationId": "BooksApplicationController_handleFindSavedBooksList",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ReadBookApplicationDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Book"
+        ]
+      }
+    },
+    "/book/{id}": {
+      "get": {
+        "operationId": "BooksApplicationController_handleFindOneSavedBook",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Book"
+        ]
+      }
+    },
+    "/book/update": {
+      "put": {
+        "operationId": "BooksApplicationController_handleUpdateBookDetail",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateBookApplicationDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Book"
+        ]
+      }
+    },
+    "/book/delete/{id}": {
+      "delete": {
+        "operationId": "BooksApplicationController_handleDeleteSavedBook",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Book"
+        ]
+      }
     }
   },
   "info": {
@@ -837,6 +983,111 @@
         "required": [
           "id",
           "name"
+        ]
+      },
+      "CreateBookApplicationDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "title": {
+            "type": "object",
+            "minLength": 3,
+            "maxLength": 80
+          },
+          "poster": {
+            "type": "object",
+            "minLength": 50,
+            "maxLength": 250
+          },
+          "author": {
+            "type": "object",
+            "minLength": 3,
+            "maxLength": 80
+          }
+        },
+        "required": [
+          "title",
+          "poster",
+          "author"
+        ]
+      },
+      "ReadBookApplicationDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "title": {
+            "type": "object",
+            "minLength": 3,
+            "maxLength": 80
+          },
+          "poster": {
+            "type": "object",
+            "minLength": 50,
+            "maxLength": 250
+          },
+          "author": {
+            "type": "object",
+            "minLength": 3,
+            "maxLength": 80
+          },
+          "categories": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Categories"
+            }
+          },
+          "favories": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Favories"
+            }
+          },
+          "profiles": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Profile"
+            }
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "poster",
+          "author",
+          "categories"
+        ]
+      },
+      "UpdateBookApplicationDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "title": {
+            "type": "object",
+            "minLength": 3,
+            "maxLength": 80
+          },
+          "poster": {
+            "type": "object",
+            "minLength": 50,
+            "maxLength": 250
+          },
+          "author": {
+            "type": "object",
+            "minLength": 3,
+            "maxLength": 80
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "poster",
+          "author"
         ]
       }
     }

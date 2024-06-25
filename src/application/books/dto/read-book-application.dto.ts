@@ -5,49 +5,49 @@ import {
   IsString,
   Length,
 } from "class-validator";
-import { ReadMovieDto } from "@domain/movies";
-import { DirectorMovie, PosterMovie, TitleMovie } from "@shared/types";
+import { BookDto } from "@domain/books/dto";
+import { AuthorBook, PosterBook, TitleBook } from "@shared/types";
 import { CategoriesEntity } from "@domain/categories";
 import { FavoriesEntity } from "@domain/favories";
 import { ProfileEntity } from "@domain/profiles";
 
 /**
- * @inheritdoc ReadMovieDto
+ * @inheritdoc BookDto
  */
-export class ReadMovieApplicationDto implements ReadMovieDto {
+export class ReadBookApplicationDto implements BookDto {
   /**
-   * @inheritdoc ReadMovieDto.id
+   * @inheritdoc BookDto.id
    */
   @IsNumber()
   @IsNotEmpty()
   readonly id: number;
 
   /**
-   * @inheritdoc ReadMovieDto.title
+   * @inheritdoc BookDto.title
    */
   @IsString()
   @Length(3, 80)
   @IsNotEmpty()
-  readonly title: TitleMovie;
+  readonly title: TitleBook;
 
   /**
-   * @inheritdoc ReadMovieDto.poster
+   * @inheritdoc BookDto.poster
    */
   @IsString()
   @Length(50, 250)
   @IsNotEmpty()
-  readonly poster: PosterMovie;
+  readonly poster: PosterBook;
 
   /**
-   * @inheritdoc ReadMovieDto.director
+   * @inheritdoc BookDto.director
    */
   @IsString()
   @Length(3, 80)
   @IsNotEmpty()
-  readonly director: DirectorMovie;
+  readonly author: AuthorBook;
 
   @IsArray()
-  readonly categories?: CategoriesEntity[];
+  readonly categories: CategoriesEntity[];
 
   @IsArray()
   readonly favories?: FavoriesEntity[];
