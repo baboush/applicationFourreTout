@@ -4,7 +4,7 @@ import { AuthorBook, PosterBook, TitleBook } from "@shared/types";
 /**
  * Interface representing a DTO (Data Transfer Object) used to create a new book.
  */
-export interface BookDto {
+export interface ReadBookDto {
   /**
    * Unique identifier of the book. (usually set by the server)
    */

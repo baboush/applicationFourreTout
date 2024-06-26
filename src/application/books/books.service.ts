@@ -1,21 +1,20 @@
 import { BookService } from '@domain/books/book-service.interface';
 import { BookRepositoryPersistence } from '@infrastructure/persistence/repositories/books/book-repository-persistence';
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
-import { CreateBookApplicationDto, ReadBookApplicationDto, UpdateBookApplicationDto } from './dto';
+import { CreateBookDtoImp, ReadBookDtoImp, UpdateBookDtoImp } from './dto';
 
 @Injectable()
-export class BooksApplicationService implements BookService {
+export class BooksServiceImp implements BookService {
   constructor(
     private readonly bookRepository: BookRepositoryPersistence
-  ) {
-  }
+  ) { }
 
   /**
    * @inheritdoc bookService.createAndPublishbook
    */
   async createAndPublishBook(
-    createBook: CreateBookApplicationDto,
-  ): Promise<Partial<CreateBookApplicationDto>> {
+    createBook: CreateBookDtoImp,
+  ): Promise<Partial<CreateBookDtoImp>> {
 
     if (!createBook || Object.keys(createBook).length === 0)
       throw new BadRequestException(`Missing data for book creation`);
@@ -26,7 +25,7 @@ export class BooksApplicationService implements BookService {
   /**
    * @inheritdoc bookService.findSavedbooksList
    */
-  async findSavedBooksList(): Promise<ReadBookApplicationDto[]> {
+  async findSavedBooksList(): Promise<ReadBookDtoImp[]> {
     const books = await this.bookRepository.findAllBook();
 
     if (!books)
@@ -38,8 +37,8 @@ export class BooksApplicationService implements BookService {
   /**
    * @inheritdoc bookService.findOneSavedbook
    */
-  async findOneSavedBook(id: number): Promise<ReadBookApplicationDto> {
-    const book: ReadBookApplicationDto =
+  async findOneSavedBook(id: number): Promise<ReadBookDtoImp> {
+    const book: ReadBookDtoImp =
       await this.bookRepository.findOneBook(id);
 
     if (!book)
@@ -52,8 +51,8 @@ export class BooksApplicationService implements BookService {
    * @inheritdoc bookService.updatebookDetail
    */
   async updateBookDetail(
-    updateBook: UpdateBookApplicationDto
-  ): Promise<Partial<ReadBookApplicationDto>> {
+    updateBook: UpdateBookDtoImp
+  ): Promise<Partial<UpdateBookDtoImp>> {
     const book = await this.bookRepository.findOneBook(updateBook.id);
 
     if (!book.id)

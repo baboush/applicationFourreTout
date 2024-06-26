@@ -1,6 +1,13 @@
-import { CreateBookUsecaseApplication } from "./create-book-application-usecase";
-import { ReadBookUsecaseApplication } from "./read-book-application-usecase";
-import { UpdateBookUsecaseApplication } from "./update-book-application-usecase";
-import { DeleteBookUsecaseApplication } from "./delete-book-application-usecase";
-import { FindAllBooksUsecaseApplication } from "./find-all-books-application-usecase";
-export {CreateBookUsecaseApplication, ReadBookUsecaseApplication, UpdateBookUsecaseApplication, DeleteBookUsecaseApplication, FindAllBooksUsecaseApplication}
+import { CreateBookUsecaseImp } from "./create-book-usecase-imp";
+import { UpdateBookUsecaseImp } from "./update-book-usecase-imp";
+import { DeleteBookUsecaseImp } from "./delete-book-usecase-imp";
+import { FindAllBooksUsecaseImp } from "./find-all-books-usecase-imp";
+import { ReadBookUsecaseImp } from "./read-book-usecase-imp";
+
+export {
+  ReadBookUsecaseImp,
+  UpdateBookUsecaseImp,
+  DeleteBookUsecaseImp,
+  FindAllBooksUsecaseImp,
+  CreateBookUsecaseImp
+}

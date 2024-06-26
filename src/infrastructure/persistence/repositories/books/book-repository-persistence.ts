@@ -1,8 +1,6 @@
 import { BookEntity } from "@domain/books";
 import { BookRepository } from "@domain/books/book-repository.interface";
-import { BookDto } from "@domain/books/dto/book-dto.interface";
-import { CreateBookDto } from "@domain/books/dto/create-book-dto.interface";
-import { UpdateBookDto } from "@domain/books/dto/update-book-dto.interface";
+import { CreateBookDto, ReadBookDto, UpdateBookDto } from "@domain/books/dto";
 import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
@@ -18,7 +16,7 @@ export class BookRepositoryPersistence implements BookRepository {
   /**
    * @inheritdoc bookRepository.createBook
    */
-  async createBook(createbook: CreateBookDto): Promise<BookDto> {
+  async createBook(createbook: CreateBookDto): Promise<CreateBookDto> {
 
     if (!createbook)
       throw new BadRequestException(`book data is Invalid`);
@@ -29,7 +27,7 @@ export class BookRepositoryPersistence implements BookRepository {
       poster: createbook.poster,
     });
 
-    if (existingbook)
+    if (existingbook && existingbook.length > 0)
       throw new BadRequestException(`book exist in database`);
 
     return await this.booksRepository.save(createbook);
@@ -38,7 +36,7 @@ export class BookRepositoryPersistence implements BookRepository {
   /**
    * @inheritdoc bookRepository.findAllBook
    */
-  async findAllBook(): Promise<BookDto[]> {
+  async findAllBook(): Promise<ReadBookDto[]> {
     return await this.booksRepository
       .createQueryBuilder("book")
       .leftJoinAndSelect("book.categories", "categories")
@@ -48,7 +46,7 @@ export class BookRepositoryPersistence implements BookRepository {
   /**
    * @inheritdoc bookRepository.findOneBook
    */
-  async findOneBook(id: number): Promise<BookDto> {
+  async findOneBook(id: number): Promise<ReadBookDto> {
     const book = await this.booksRepository.findOneBy({ id: id });
 
     if (!book)
@@ -63,7 +61,7 @@ export class BookRepositoryPersistence implements BookRepository {
   async updateBook(
     id: number,
     updatebook: UpdateBookDto,
-  ): Promise<Partial<BookDto>> {
+  ): Promise<Partial<UpdateBookDto>> {
 
     if (!updatebook || !id)
       throw new BadRequestException(`Update book data is invalid`);

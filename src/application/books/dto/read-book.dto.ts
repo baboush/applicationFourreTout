@@ -1,29 +1,29 @@
-import {
-  IsArray,
-  IsNotEmpty,
-  IsNumber,
-  IsString,
-  Length,
-} from "class-validator";
-import { BookDto } from "@domain/books/dto";
-import { AuthorBook, PosterBook, TitleBook } from "@shared/types";
+import { ReadBookDto } from "@domain/books/dto";
 import { CategoriesEntity } from "@domain/categories";
 import { FavoriesEntity } from "@domain/favories";
 import { ProfileEntity } from "@domain/profiles";
+import { AuthorBook, PosterBook, TitleBook } from "@shared/types";
+import {
+    IsArray,
+    IsNotEmpty,
+    IsNumber,
+    IsString,
+    Length,
+} from "class-validator";
 
 /**
- * @inheritdoc BookDto
+ * @inheritdoc ReadBookDto
  */
-export class ReadBookApplicationDto implements BookDto {
+export class ReadBookDtoImp implements ReadBookDto {
   /**
-   * @inheritdoc BookDto.id
+   * @inheritdoc ReadBookDto.id
    */
   @IsNumber()
   @IsNotEmpty()
   readonly id: number;
 
   /**
-   * @inheritdoc BookDto.title
+   * @inheritdoc ReadBookDto.title
    */
   @IsString()
   @Length(3, 80)
@@ -31,7 +31,7 @@ export class ReadBookApplicationDto implements BookDto {
   readonly title: TitleBook;
 
   /**
-   * @inheritdoc BookDto.poster
+   * @inheritdoc ReadBookDto.poster
    */
   @IsString()
   @Length(50, 250)
@@ -39,7 +39,7 @@ export class ReadBookApplicationDto implements BookDto {
   readonly poster: PosterBook;
 
   /**
-   * @inheritdoc BookDto.director
+   * @inheritdoc ReadBookDto.director
    */
   @IsString()
   @Length(3, 80)

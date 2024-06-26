@@ -1,5 +1,5 @@
-import { AuthorBook, PosterBook, TitleBook } from "@shared/types";
 import { UpdateBookDto } from "@domain/books/dto";
+import { AuthorBook, PosterBook, TitleBook } from "@shared/types";
 import { IsNotEmpty, IsNumber, IsString, Length } from "class-validator";
 
 /**
@@ -8,7 +8,7 @@ import { IsNotEmpty, IsNumber, IsString, Length } from "class-validator";
  * and adds presentation logic or validation rules.
  * It targets the "Book" endpoint group within a NestJS application.
  */
-export class UpdateBookApplicationDto implements UpdateBookDto {
+export class UpdateBookDtoImp implements UpdateBookDto {
   /**
    * @inheritdoc.UpdateBookDto.id
    */

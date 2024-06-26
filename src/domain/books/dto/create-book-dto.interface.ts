@@ -5,11 +5,6 @@ import { AuthorBook, PosterBook, TitleBook } from "@shared/types";
  */
 export interface CreateBookDto {
   /**
-   * Optional unique identifier of the book. (usually set by the server)
-   */
-  readonly id?: number;
-
-  /**
    * Title of the book.
    */
   readonly title: TitleBook;

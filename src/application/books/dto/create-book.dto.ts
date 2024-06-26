@@ -5,7 +5,7 @@ import { IsNotEmpty, IsNumber, IsString, Length } from "class-validator";
 /*
  * @inheritdoc CreateBookDto
  */
-export class CreateBookApplicationDto implements CreateBookDto {
+export class CreateBookDtoImp implements CreateBookDto {
   /**
    * @inheritdoc CreateBookDto.id
    */

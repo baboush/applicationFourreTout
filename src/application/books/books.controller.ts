@@ -11,20 +11,16 @@ import {
   Put,
   UseGuards,
 } from "@nestjs/common";
-import {
-  CreateBookApplicationDto,
-  ReadBookApplicationDto,
-  UpdateBookApplicationDto,
-} from "./dto";
-import {
-    CreateBookUsecaseApplication,
-    UpdateBookUsecaseApplication,
-    DeleteBookUsecaseApplication,
-    FindAllBooksUsecaseApplication,
-    ReadBookUsecaseApplication
-} from "@application/books/usecases";
 import { ApiTags } from "@nestjs/swagger";
 import { BookController } from "@domain/books";
+import {
+  CreateBookUsecaseImp,
+  DeleteBookUsecaseImp,
+  FindAllBooksUsecaseImp,
+  UpdateBookUsecaseImp,
+  ReadBookUsecaseImp
+} from "./usecases";
+import { CreateBookDtoImp, ReadBookDtoImp, UpdateBookDtoImp } from "./dto";
 
 /**
  * Controller handling book application logic.
@@ -36,13 +32,13 @@ import { BookController } from "@domain/books";
 @ApiTags("Book")
 //@UseGuards(JwtGuard)
 @Controller("book")
-export class BooksApplicationController implements BookController {
+export class BooksControllerImp implements BookController {
   constructor(
-    private readonly createBookUsecase: CreateBookUsecaseApplication,
-    private readonly findAllBookUsecase: FindAllBooksUsecaseApplication,
-    private readonly readOneBookUsecase: ReadBookUsecaseApplication,
-    private readonly updateBookUsecase: UpdateBookUsecaseApplication,
-    private readonly deleteBookUsecase: DeleteBookUsecaseApplication,
+    private readonly createBookUsecase: CreateBookUsecaseImp,
+    private readonly findAllBookUsecase: FindAllBooksUsecaseImp,
+    private readonly readOneBookUsecase: ReadBookUsecaseImp,
+    private readonly updateBookUsecase: UpdateBookUsecaseImp,
+    private readonly deleteBookUsecase: DeleteBookUsecaseImp,
   ) {}
 
   /**
@@ -51,13 +47,14 @@ export class BooksApplicationController implements BookController {
   @Post("create")
   async handleCreateAndPublishBook(
     @Body()
-    createBook: CreateBookApplicationDto,
-  ): Promise<Partial<ReadBookApplicationDto>> {
+    createBook: CreateBookDtoImp,
+  ): Promise<Partial<CreateBookDtoImp>> {
+    console.log('call function');
 
     if (!createBook) {
       throw new BadRequestException(`Data is missing for create book`);
     }
-
+ 
     return await this.createBookUsecase.execute(createBook);
   }
 
@@ -65,7 +62,7 @@ export class BooksApplicationController implements BookController {
    * @inheritdoc BookController.handleFindSavedBooksListe
    */
   @Get("list")
-  async handleFindSavedBooksList(): Promise<ReadBookApplicationDto[]> {
+  async handleFindSavedBooksList(): Promise<ReadBookDtoImp[]> {
     const books = await this.findAllBookUsecase.execute();
 
     if (!books) {
@@ -81,8 +78,8 @@ export class BooksApplicationController implements BookController {
   @Get(":id")
   async handleFindOneSavedBook(
     @Param("id") id: number,
-  ): Promise<Partial<ReadBookApplicationDto>> {
-    const book: ReadBookApplicationDto =
+  ): Promise<Partial<ReadBookDtoImp>> {
+    const book: ReadBookDtoImp =
       await this.readOneBookUsecase.execute(id);
 
     if (!book) {
@@ -97,8 +94,8 @@ export class BooksApplicationController implements BookController {
   @Put("update")
   async handleUpdateBookDetail(
     @Body()
-    updateBook: UpdateBookApplicationDto,
-  ): Promise<Partial<UpdateBookApplicationDto>> {
+    updateBook: UpdateBookDtoImp,
+  ): Promise<Partial<UpdateBookDtoImp>> {
 
 
     if (!updateBook.id) {

@@ -1,13 +1,13 @@
 import { Injectable } from "@nestjs/common";
-import { BooksApplicationService } from "../books-application.service";
+import { BooksServiceImp } from "../books.service";
 
 /**
  * Injectable use case implementation for deleting a movie.
  * This use case interacts with the BookApplicationService to delete a movie by its ID.
  */
 @Injectable()
-export class DeleteBookUsecaseApplication  {
-  constructor(private readonly movieService: BooksApplicationService) {}
+export class DeleteBookUsecaseImp  {
+  constructor(private readonly movieService: BooksServiceImp) {}
 
   /**
    * @inheritdoc DeleteBookUsecase.execute

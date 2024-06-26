@@ -1,4 +1,4 @@
-import { BookDto, CreateBookDto, UpdateBookDto } from "./dto";
+import { ReadBookDto, CreateBookDto, UpdateBookDto } from "./dto";
 
 /**
  * Interface representing a book controller in the Angular application.
@@ -14,7 +14,7 @@ export interface BookController {
    */
   handleCreateAndPublishBook(
     createBook: CreateBookDto,
-  ): Promise<Partial<BookDto>>;
+  ): Promise<Partial<ReadBookDto>>;
 
   /**
    * Handles the logic for finding a list of saved books with pagination.
@@ -22,7 +22,7 @@ export interface BookController {
    * @returns A Promise that resolves to a  list of BookEntity objects,
    *          or rejects with an error if retrieval fails.
    */
-  handleFindSavedBooksList(): Promise<BookDto[]>;
+  handleFindSavedBooksList(): Promise<ReadBookDto[]>;
 
   /**
    * Handles the logic for finding a single saved book by its ID.
@@ -31,7 +31,7 @@ export interface BookController {
    * @returns A Promise that resolves to a complete Book object,
    *          or rejects with an error if retrieval fails.
    */
-  handleFindOneSavedBook(id: number): Promise<Partial<BookDto>>;
+  handleFindOneSavedBook(id: number): Promise<Partial<ReadBookDto>>;
 
   /**
    * Handles the logic for updating the details of a saved book.
@@ -42,7 +42,7 @@ export interface BookController {
    */
   handleUpdateBookDetail(
     updateBook: UpdateBookDto,
-  ): Promise<Partial<BookDto>>;
+  ): Promise<Partial<ReadBookDto>>;
 
   /**
    * Handles the logic for deleting a saved book by its ID.

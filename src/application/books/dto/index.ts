@@ -1,5 +1,5 @@
-import {CreateBookApplicationDto} from './create-book-application.dto';
-import {UpdateBookApplicationDto} from './update-book-application.dto';
-import {ReadBookApplicationDto} from './read-book-application.dto';
+import {CreateBookDtoImp} from './create-book.dto';
+import {UpdateBookDtoImp} from './update-book.dto';
+import {ReadBookDtoImp} from './read-book.dto';
 
-export {CreateBookApplicationDto, UpdateBookApplicationDto, ReadBookApplicationDto}
+export {CreateBookDtoImp, UpdateBookDtoImp, ReadBookDtoImp};
