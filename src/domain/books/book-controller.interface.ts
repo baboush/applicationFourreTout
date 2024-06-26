@@ -14,7 +14,7 @@ export interface BookController {
    */
   handleCreateAndPublishBook(
     createBook: CreateBookDto,
-  ): Promise<Partial<ReadBookDto>>;
+  ): Promise<Partial<CreateBookDto>>;
 
   /**
    * Handles the logic for finding a list of saved books with pagination.

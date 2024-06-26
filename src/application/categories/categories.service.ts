@@ -5,13 +5,12 @@ import {
   Injectable,
   NotFoundException,
 } from "@nestjs/common";
-import { CreateCategoryDtoApplication } from "./dto/create-category-dto-application";
 
 /**
  * @inheritdoc CategoriesServic
  */
 @Injectable()
-export class CategoryiesApplicationService implements CategoriesService {
+export class CategoriesServiceImp implements CategoriesService {
   constructor(
     private readonly categoriesRepository: CategoriesRepositoryPersistence,
   ) {}
@@ -20,7 +19,7 @@ export class CategoryiesApplicationService implements CategoriesService {
    * @inheritdoc CategoriesService.createCategoryAndPublish
    */
   async createCategoryAndPublish(
-    category: CreateCategoryDtoApplication,
+    category: any,
   ): Promise<Partial<CategoriesEntity>> {
     const newCategory =
       await this.categoriesRepository.createCategory(category);

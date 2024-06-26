@@ -1,11 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { BadRequestException  } from '@nestjs/common';
-import { CategoryiesApplicationService } from '../categories-application.service';
 import { CategoriesRepositoryPersistence } from '@infrastructure/persistence/repositories/categories';
-import { CreateCategoryDtoApplication } from '../dto/create-category-dto-application';
 
 describe('CategoryiesApplicationService', () => {
-  let service: CategoryiesApplicationService;
+  let service: CategoriesServiceImp,
   let repo: CategoriesRepositoryPersistence;
 
   beforeEach(async () => {
@@ -35,7 +33,7 @@ describe('CategoryiesApplicationService', () => {
 
   describe('createCategoryAndPublish', () => {
     it('should throw BadRequestException if category data is invalid', async () => {
-      const category: CreateCategoryDtoApplication = {} as any;
+      const category: CreateCategoryDtoImp = {} as any;
       await expect(service.createCategoryAndPublish(category)).rejects.toThrow(BadRequestException);
     });
 

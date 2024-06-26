@@ -1,13 +1,13 @@
 import { DeleteCategory } from "@domain/categories/usecases/delete-category-usecase.interface";
 import { Injectable } from "@nestjs/common";
-import { CategoryiesApplicationService } from "../categories-application.service";
+import { CategoriesServiceImp,  } from "../categories.service";
 /**
  * @inheritdoc DeleteCategory
  */
 @Injectable()
 export class DeleteCategoryUsecaseApplication implements DeleteCategory {
   constructor(
-    private readonly categoriesService: CategoryiesApplicationService,
+    private readonly categoriesService: CategoriesServiceImp,
   ) {}
 
   /**

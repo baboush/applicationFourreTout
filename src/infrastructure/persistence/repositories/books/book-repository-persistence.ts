@@ -7,83 +7,87 @@ import { Repository } from "typeorm";
 
 @Injectable()
 export class BookRepositoryPersistence implements BookRepository {
-
   constructor(
     @InjectRepository(BookEntity)
     private readonly booksRepository: Repository<BookEntity>,
   ) {}
 
-  /**
-   * @inheritdoc bookRepository.createBook
+   /**
+   * @inheritdoc BookRepository.createBook
    */
-  async createBook(createbook: CreateBookDto): Promise<CreateBookDto> {
+  async createBook(createBook: CreateBookDto): Promise<CreateBookDto> {
 
-    if (!createbook)
-      throw new BadRequestException(`book data is Invalid`);
+    if (!createBook)
+      throw new BadRequestException(`Book data is Invalid`);
 
-    const existingbook = await this.booksRepository.findBy({
-      title: createbook.title,
-      author: createbook.author,
-      poster: createbook.poster,
+    const existingBook = await this.booksRepository.findBy({
+      title: createBook.title,
+      author: createBook.author,
+      poster: createBook.poster,
     });
 
-    if (existingbook && existingbook.length > 0)
-      throw new BadRequestException(`book exist in database`);
+    if (existingBook && existingBook.length > 0)
+      throw new BadRequestException(`Book exist in database`);
 
-    return await this.booksRepository.save(createbook);
+    return await this.booksRepository.save(createBook)
   }
 
   /**
-   * @inheritdoc bookRepository.findAllBook
+   * @inheritdoc BookRepository.findAllBook
    */
   async findAllBook(): Promise<ReadBookDto[]> {
-    return await this.booksRepository
+    const books = await this.booksRepository
       .createQueryBuilder("book")
       .leftJoinAndSelect("book.categories", "categories")
       .getMany();
+
+    if(!books)
+      throw new NotFoundException(`Books not found`);
+
+    return books;
   }
 
   /**
-   * @inheritdoc bookRepository.findOneBook
+   * @inheritdoc BookRepository.findOneBook
    */
   async findOneBook(id: number): Promise<ReadBookDto> {
     const book = await this.booksRepository.findOneBy({ id: id });
 
     if (!book)
-      throw new NotFoundException(`book with ${id} not found`);
+      throw new NotFoundException(`Book with ${id} not found`);
 
     return book;
   }
 
   /**
-   * @inheritdoc bookRepository.updateBook
+   * @inheritdoc BookRepository.updateBook
    */
   async updateBook(
     id: number,
-    updatebook: UpdateBookDto,
+    updateBook: UpdateBookDto,
   ): Promise<Partial<UpdateBookDto>> {
 
-    if (!updatebook || !id)
-      throw new BadRequestException(`Update book data is invalid`);
+    if (!updateBook || !id)
+      throw new BadRequestException(`Update Book data is invalid`);
 
-    const updatedbook = await this.booksRepository.update(id, updatebook);
+    const updatedBook = await this.booksRepository.update(id, updateBook);
 
-    if (updatedbook.affected === 0)
-      throw new NotFoundException(`book Update ${id} not found`);
+    if (updatedBook.affected === 0)
+      throw new NotFoundException(`Book Update ${id} not found`);
   
-    console.log(updatedbook.raw);
-    return updatedbook.raw
+    console.log(updatedBook.raw);
+    return updatedBook.raw
   }
 
   /**
-   * @inheritdoc bookRepository.deleteBook
+   * @inheritdoc BookRepository.deleteBook
    */
   async deleteBook(id: number): Promise<boolean> {
-    const deletebook = await this.booksRepository.delete(id);
+    const deleteBook = await this.booksRepository.delete(id);
 
-    if (deletebook.affected === 0)
-      throw new NotFoundException(`book width ${id} not found`);
+    if (deleteBook.affected === 0)
+      throw new NotFoundException(`Book width ${id} not found`);
 
-    return deletebook.affected > 0;
+    return deleteBook.affected > 0;
   }
 }

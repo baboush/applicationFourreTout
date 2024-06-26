@@ -1,7 +1,7 @@
 import { CategoriesEntity } from "@domain/categories";
 import { FindAllCategoryUsecase } from "@domain/categories/usecases";
 import { Injectable } from "@nestjs/common";
-import { CategoryiesApplicationService } from "../categories-application.service";
+import { CategoriesServiceImp } from "../categories.service";
 
 /**
  * @inheritdoc.FindAllCategoryUsecase.execute
@@ -11,7 +11,7 @@ export class FindCategoriesUsecaseApplication
   implements FindAllCategoryUsecase
 {
   constructor(
-    private readonly categoryService: CategoryiesApplicationService,
+    private readonly categoryService: CategoriesServiceImp,
   ) {}
 
   async execute(): Promise<CategoriesEntity[]> {

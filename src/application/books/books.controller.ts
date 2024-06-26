@@ -49,7 +49,6 @@ export class BooksControllerImp implements BookController {
     @Body()
     createBook: CreateBookDtoImp,
   ): Promise<Partial<CreateBookDtoImp>> {
-    console.log('call function');
 
     if (!createBook) {
       throw new BadRequestException(`Data is missing for create book`);

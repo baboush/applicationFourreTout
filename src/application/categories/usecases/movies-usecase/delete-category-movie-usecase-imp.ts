@@ -1,15 +1,15 @@
-import { CategoryiesApplicationService } from "@application/categories/categories-application.service";
+import { CategoriesServiceImp } from "@application/categories/categories.service";
 import { DeleteCategoryMovieUsecase } from "@domain/categories/usecases/movies-usecase";
 import { Injectable } from "@nestjs/common";
 /**
  * @inheritdoc DeleteCategoryMovieUsecase
  */
 @Injectable()
-export class DeleteCategoryMovieUsecaseApplication
+export class DeleteCategoryMovieUsecaseImp
   implements DeleteCategoryMovieUsecase
 {
   constructor(
-    private readonly categoriesService: CategoryiesApplicationService,
+    private readonly categoriesService: CategoriesServiceImp,
   ) {}
 
   /**

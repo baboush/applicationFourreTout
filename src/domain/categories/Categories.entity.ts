@@ -20,11 +20,18 @@ export class Categories {
   name: NameCategory;
 
   @ManyToMany(() => BookEntity, (books) => books.categories)
+  @JoinTable({
+    name: "Book_categories",
+    joinColumns: [{ name: "category_id", referencedColumnName: "id" }],
+    inverseJoinColumns: [{ name: "book_id", referencedColumnName: "id" }],
+    schema: "migration1",
+  })
+
   books: BookEntity[];
 
   @ManyToMany(() => MovieEntity, (movies) => movies.categories)
   @JoinTable({
-    name: "Movie_categorie",
+    name: "Movie_categories",
     joinColumns: [{ name: "category_id", referencedColumnName: "id" }],
     inverseJoinColumns: [{ name: "movie_id", referencedColumnName: "id" }],
     schema: "migration1",

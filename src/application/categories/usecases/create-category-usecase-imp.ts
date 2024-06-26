@@ -1,7 +1,6 @@
 import { CategoriesEntity, CreateCategoryUsecase } from "@domain/categories";
 import { Injectable } from "@nestjs/common";
-import { CreateCategoryDtoApplication } from "../dto/create-category-dto-application";
-import { CategoryiesApplicationService } from "../categories-application.service";
+import { CategoriesServiceImp } from "../categories.service";
 
 /**
  * @inheritdoc CreateCategoryUsecase
@@ -9,14 +8,14 @@ import { CategoryiesApplicationService } from "../categories-application.service
 @Injectable()
 export class CreateCategoryUsecaseApplication implements CreateCategoryUsecase {
   constructor(
-    private readonly categoriesService: CategoryiesApplicationService,
+    private readonly categoriesService: CategoriesServiceImp,
   ) {}
 
   /**
    * @inheritdoc CreateCategoryUsecase.execute
    */
   async execute(
-    createCategory: CreateCategoryDtoApplication,
+    createCategory: any,
   ): Promise<Partial<CategoriesEntity>> {
     return await this.categoriesService.createCategoryAndPublish(
       createCategory,

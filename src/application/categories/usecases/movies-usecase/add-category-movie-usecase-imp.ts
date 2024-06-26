@@ -1,4 +1,4 @@
-import { CategoryiesApplicationService } from "@application/categories/categories-application.service";
+import { CategoriesServiceImp } from "@application/categories/categories.service";
 import { AddCategoryMovieUsecase } from "@domain/categories/usecases/movies-usecase";
 import { Injectable } from "@nestjs/common";
 
@@ -6,11 +6,11 @@ import { Injectable } from "@nestjs/common";
  * @inheritdoc AddCategoryMovieUsecase
  */
 @Injectable()
-export class AddCategoryMovieUsecaseApplication
+export class AddCategoryMovieUsecaseImp
   implements AddCategoryMovieUsecase
 {
   constructor(
-    private readonly categoriesService: CategoryiesApplicationService,
+    private readonly categoriesService: CategoriesServiceImp,
   ) {}
 
   /**

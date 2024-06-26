@@ -12,7 +12,7 @@ export interface BookService {
    * @returns A Promise that resolves to a partially populated Book object
    *          representing the created book, or rejects with an error if creation fails.
    */
-  createAndPublishBook(createBook: CreateBookDto): Promise<Partial<ReadBookDto>>;
+  createAndPublishBook(createBook: CreateBookDto):Promise<Partial<CreateBookDto>>;
 
   /**
    * Retrieves a paginated list of saved books.

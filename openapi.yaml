@@ -846,13 +846,13 @@
             "type": "number"
           },
           "title": {
-            "type": "object"
+            "type": "string"
           },
           "author": {
-            "type": "object"
+            "type": "string"
           },
           "poster": {
-            "type": "object",
+            "type": "string",
             "nullable": true
           },
           "categories": {
@@ -872,6 +872,18 @@
             "items": {
               "$ref": "#/components/schemas/Profile"
             }
+          },
+          "createAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "updateAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "deleteAt": {
+            "format": "date-time",
+            "type": "string"
           }
         },
         "required": [
@@ -881,7 +893,10 @@
           "poster",
           "categories",
           "favories",
-          "profiles"
+          "profiles",
+          "createAt",
+          "updateAt",
+          "deleteAt"
         ]
       },
       "Categories": {
@@ -992,29 +1007,26 @@
       "CreateBookDtoImp": {
         "type": "object",
         "properties": {
-          "id": {
-            "type": "number"
-          },
           "title": {
-            "type": "object",
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 80
+          },
+          "author": {
+            "type": "string",
             "minLength": 3,
             "maxLength": 80
           },
           "poster": {
-            "type": "object",
+            "type": "string",
             "minLength": 50,
             "maxLength": 250
-          },
-          "author": {
-            "type": "object",
-            "minLength": 3,
-            "maxLength": 80
           }
         },
         "required": [
           "title",
-          "poster",
-          "author"
+          "author",
+          "poster"
         ]
       },
       "ReadBookDtoImp": {
@@ -1024,17 +1036,17 @@
             "type": "number"
           },
           "title": {
-            "type": "object",
+            "type": "string",
             "minLength": 3,
             "maxLength": 80
           },
           "poster": {
-            "type": "object",
+            "type": "string",
             "minLength": 50,
             "maxLength": 250
           },
           "author": {
-            "type": "object",
+            "type": "string",
             "minLength": 3,
             "maxLength": 80
           },
@@ -1072,17 +1084,17 @@
             "type": "number"
           },
           "title": {
-            "type": "object",
+            "type": "string",
             "minLength": 3,
             "maxLength": 80
           },
           "poster": {
-            "type": "object",
+            "type": "string",
             "minLength": 50,
             "maxLength": 250
           },
           "author": {
-            "type": "object",
+            "type": "string",
             "minLength": 3,
             "maxLength": 80
           }

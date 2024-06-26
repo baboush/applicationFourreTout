@@ -10,40 +10,37 @@ import {
   Post,
   UseGuards,
 } from "@nestjs/common";
-import { CreateCategoryUsecaseApplication } from "./usecases/create-category-usecase-application";
-import { CreateCategoryDtoApplication } from "./dto/create-category-dto-application";
+import { CreateCategoryUsecaseApplication } from "./usecases/create-category-usecase-imp";
 import { nameCategorySchema } from "@shared/types/category-types";
 import { ApiTags, ApiBody } from "@nestjs/swagger";
-import { DeleteCategoryMovieUsecaseApplication } from "./usecases/movies-usecase/delete-category-movie-usecase-application";
-import { DeleteCategoryUsecaseApplication } from "./usecases/delete-category-usecase-application";
-import { AddCategoryMovieUsecaseApplication } from "./usecases/movies-usecase/add-category-movie-usecase-application";
+import { DeleteCategoryUsecaseApplication } from "./usecases/delete-category-usecase";
 import { JwtGuard } from "@application/auth/jwt.guard";
-import { FindCategoriesUsecaseApplication } from "./usecases/find-categories-usecase-application";
+import { FindCategoriesUsecaseApplication } from "./usecases/find-categories-usecase";
+import { AddCategoryMovieUsecaseImp, DeleteCategoryMovieUsecaseImp } from "./usecases/movies-usecase";
 
 /**
- * @inheritdoc CategoryiesApplication
+* @inheritdoc CategoryiesController
  */
 @ApiTags("Categories")
 //@UseGuards(JwtGuard)
 @Controller("categories")
-export class CategoriesApplicationController implements CategoriesController {
+export class CategoriesControllerImp implements CategoriesController {
   constructor(
     private readonly createCategoryUsecase: CreateCategoryUsecaseApplication,
     private readonly deleteCategoryUsecase: DeleteCategoryUsecaseApplication,
-    private readonly addCategoryMovieUsecase: AddCategoryMovieUsecaseApplication,
-    private readonly deleteCategoryMovieUsecase: DeleteCategoryMovieUsecaseApplication,
     private readonly findAllCategorySavedUsecase: FindCategoriesUsecaseApplication,
+    private readonly addCategoryMovieUsecase: AddCategoryMovieUsecaseImp,
+    private readonly deleteCategoryMovieUsecase: DeleteCategoryMovieUsecaseImp,
   ) {}
 
   /**
    * @inheritdocn CategoriesController.handleCreateCategoryAndPublish
    */
   @Post()
-  @ApiBody({ type: CreateCategoryDtoApplication })
   async handleCreateCategoryAndPublish(
-    @Body() category: CreateCategoryDtoApplication,
+    @Body() category: any,
   ): Promise<Partial<CategoriesEntity>> {
-    const newCategory: CreateCategoryDtoApplication = { ...category };
+    const newCategory: any = { ...category };
 
     if (!newCategory && nameCategorySchema.safeParse(newCategory.name)) {
       throw new BadRequestException(`Category  ${newCategory} bad schema`);
