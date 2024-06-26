@@ -1,18 +1,11 @@
-import { IsNotEmpty, IsNumber, IsString, Length } from "class-validator";
+import { IsNotEmpty, IsString, Length } from "class-validator";
 import { TitleMovie, PosterMovie, DirectorMovie } from "@shared/types";
 import { CreateMovieDto } from "@domain/movies";
 
 /*
  * @inheritdoc CreateMovieDto
  */
-export class CreateMovieApplicationDto implements CreateMovieDto {
-  /**
-   * @inheritdoc CreateMovieDto.id
-   */
-  @IsNumber()
-  @IsNotEmpty()
-  readonly id?: number;
-
+export class CreateMovieDtoImp implements CreateMovieDto {
   /**
    * @inheritdoc CreateMovieDto.title
    */

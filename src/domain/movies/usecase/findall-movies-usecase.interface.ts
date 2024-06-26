@@ -1,4 +1,4 @@
-import { MovieEntity } from "../Movies.entity";
+import { ReadMovieDto } from "../dto";
 
 /**
  * Interface representing a use case for finding all movies.
@@ -10,5 +10,5 @@ export interface FindAllMoviesUsecase {
    * @returns A Promise that resolves to a paginated list of MovieEntity objects,
    *          or rejects with an error if retrieval fails.
    */
-  execute(): Promise<MovieEntity[]>;
+  execute(): Promise<ReadMovieDto[]>;
 }

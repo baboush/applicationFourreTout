@@ -1,7 +1,4 @@
-import { CreateMovieDto } from "./dto/create-movie-dto.interface";
-import { UpdateMovieDto } from "./dto/update-movie-dto.interface";
-import { Movie } from "./movie.interface";
-import { MovieEntity } from "./Movies.entity";
+import { CreateMovieDto, ReadMovieDto, UpdateMovieDto } from "./dto";
 
 /**
  * Interface representing a movie service for managing movie data in the application.
@@ -15,7 +12,7 @@ export interface MovieService {
    * @returns A Promise that resolves to a partially populated Movie object
    *          representing the created movie, or rejects with an error if creation fails.
    */
-  createAndPublishMovie(createMovie: CreateMovieDto): Promise<Partial<Movie>>;
+  createAndPublishMovie(createMovie: CreateMovieDto): Promise<Partial<CreateMovieDto>>;
 
   /**
    * Retrieves a paginated list of saved movies.
@@ -23,7 +20,7 @@ export interface MovieService {
    * @returns A Promise that resolves to a list of MovieEntity objects,
    *          or rejects with an error if retrieval fails.
    */
-  findSavedMoviesList(): Promise<MovieEntity[]>;
+  findSavedMoviesList(): Promise<ReadMovieDto[]>;
 
   /**
    * Finds a single saved movie by its ID.
@@ -32,7 +29,7 @@ export interface MovieService {
    * @returns A Promise that resolves to a complete Movie object,
    *          or rejects with an error if retrieval fails.
    */
-  findOneSavedMovie(id: number): Promise<Movie>;
+  findOneSavedMovie(id: number): Promise<ReadMovieDto>;
 
   /**
    * Updates the details of a saved movie.
@@ -41,7 +38,7 @@ export interface MovieService {
    * @returns A Promise that resolves to a partially populated Movie object
    *          reflecting the update, or rejects with an error if the update fails.
    */
-  updateMovieDetail(updateMovie: UpdateMovieDto): Promise<Partial<Movie>>;
+  updateMovieDetail(updateMovie: UpdateMovieDto): Promise<Partial<UpdateMovieDto>>;
 
   /**
    * Deletes a saved movie by its ID.

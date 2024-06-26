@@ -1,8 +1,8 @@
 import {
   CreateMovieDto,
-  Movie,
   MovieEntity,
   MovieRepository,
+  ReadMovieDto,
   UpdateMovieDto,
 } from "@domain/movies";
 import {
@@ -23,8 +23,7 @@ export class MovieRepositoryPersistence implements MovieRepository {
   /**
    * @inheritdoc MovieRepository.createMovie
    */
-  async createMovie(createMovie: CreateMovieDto): Promise<Movie> {
-
+  async createMovie(createMovie: CreateMovieDto): Promise<CreateMovieDto> {
 
     if (!createMovie)
       throw new BadRequestException(`Movie data is Invalid`);
@@ -35,7 +34,7 @@ export class MovieRepositoryPersistence implements MovieRepository {
       poster: createMovie.poster,
     });
 
-    if (existingMovie)
+    if (existingMovie && existingMovie.length > 0)
       throw new BadRequestException(`Movie exist in database`);
 
     return await this.moviesRepository.save(createMovie);
@@ -44,7 +43,7 @@ export class MovieRepositoryPersistence implements MovieRepository {
   /**
    * @inheritdoc MovieRepository.findAllMovie
    */
-  async findAllMovie(): Promise<MovieEntity[]> {
+  async findAllMovie(): Promise<ReadMovieDto[]> {
     return await this.moviesRepository
       .createQueryBuilder("movie")
       .leftJoinAndSelect("movie.categories", "categories")
@@ -54,7 +53,7 @@ export class MovieRepositoryPersistence implements MovieRepository {
   /**
    * @inheritdoc MovieRepository.findOneMovie
    */
-  async findOneMovie(id: number): Promise<Movie> {
+  async findOneMovie(id: number): Promise<ReadMovieDto> {
     const movie = await this.moviesRepository.findOneBy({ id: id });
 
     if (!movie)
@@ -69,7 +68,7 @@ export class MovieRepositoryPersistence implements MovieRepository {
   async updateMovie(
     id: number,
     updateMovie: UpdateMovieDto,
-  ): Promise<Partial<Movie>> {
+  ): Promise<Partial<UpdateMovieDto>> {
 
     if (!updateMovie || !id)
       throw new BadRequestException(`Update Movie data is invalid`);

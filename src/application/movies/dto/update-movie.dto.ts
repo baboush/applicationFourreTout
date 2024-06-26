@@ -1,5 +1,5 @@
-import { DirectorMovie, PosterMovie, TitleMovie } from "@shared/types";
 import { UpdateMovieDto } from "@domain/movies";
+import { DirectorMovie, PosterMovie, TitleMovie } from "@shared/types";
 import { IsNotEmpty, IsNumber, IsString, Length } from "class-validator";
 
 /**
@@ -8,7 +8,7 @@ import { IsNotEmpty, IsNumber, IsString, Length } from "class-validator";
  * and adds presentation logic or validation rules.
  * It targets the "Movie" endpoint group within a NestJS application.
  */
-export class UpdateMovieApplicationDto implements UpdateMovieDto {
+export class UpdateMovieDtoImp implements UpdateMovieDto {
   /**
    * @inheritdoc.UpdateMovieDto.id
    */

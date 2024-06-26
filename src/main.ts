@@ -17,8 +17,8 @@ async function bootstrap() {
   app.use(helmet());
   await SwaggerModule.loadPluginMetadata(metadata);
   swaggerService.createDocumentSwagger(app);
-  app.useGlobalFilters(new CatchAllExceptionFilterFilter({ httpAdapter }));
   app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalFilters(new CatchAllExceptionFilterFilter({ httpAdapter }));
 
   await app.listen(3000);
 }

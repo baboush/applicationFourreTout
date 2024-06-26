@@ -1,4 +1,4 @@
-import { Movie } from "../movie.interface";
+import { ReadMovieDto } from "../dto";
 
 /**
  * Interface representing a use case for reading a single movie.
@@ -11,5 +11,5 @@ export interface ReadMovieUsecase {
    * @returns A Promise that resolves to a complete Movie object,
    *          or rejects with an error if retrieval fails.
    */
-  execute(id: number): Promise<Movie>;
+  execute(id: number): Promise<ReadMovieDto>;
 }

@@ -1,5 +1,4 @@
-import { UpdateMovieDto } from "../dto/update-movie-dto.interface";
-import { Movie } from "../movie.interface";
+import { UpdateMovieDto } from "../dto";
 
 /**
  * Interface representing a use case for updating an existing movie.
@@ -12,5 +11,5 @@ export interface UpdateMovieUsecase {
    * @returns A Promise that resolves to a partially populated Movie object
    *          reflecting the update, or rejects with an error if the update fails.
    */
-  execute(updateMovie: UpdateMovieDto): Promise<Partial<Movie>>;
+  execute(updateMovie: UpdateMovieDto): Promise<Partial<UpdateMovieDto>>;
 }

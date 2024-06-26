@@ -6,9 +6,9 @@ import * as Joi from "joi";
 import configuration from "./infrastructure/config/configuration";
 import { DataSourceService } from "@infrastructure/persistence/data-access/data-source.service";
 import { AuthApplcationModule } from "@application/auth";
-import { MovieApplicationModule } from "@application/movie/movie-application.module";
-import { CategoriesApplicationModule } from "@application/categories/categories-application.module";
-import { BookApplicationModule } from "@application/books/book-application.module";
+import { MovieModule } from "@application/movies";
+import { CategoriesModule } from "@application/categories";
+import { BookModule } from "@application/books";
 
 @Module({
   imports: [
@@ -28,9 +28,9 @@ import { BookApplicationModule } from "@application/books/book-application.modul
       }),
     }),
     AuthApplcationModule,
-    MovieApplicationModule,
-    CategoriesApplicationModule,
-    BookApplicationModule,
+    MovieModule,
+    CategoriesModule,
+    BookModule,
   ],
   controllers: [],
   providers: [SwaggerService],

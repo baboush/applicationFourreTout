@@ -1,18 +1,18 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { MovieRepositoryPersistence } from '@infrastructure/persistence/repositories';
-import { MovieApplicationService } from '../movie-application.service';
-import { CreateMovieApplicationDto, ReadMovieApplicationDto } from '../dto';
+import { MovieServiceImp } from '../movie.service';
+import { CreateMovieDtoImp, ReadMovieDtoImp } from '../dto';
 import { MovieEntity, UpdateMovieDto } from '@domain/movies';
 
 describe('MovieApplicationService', () => {
-  let service: MovieApplicationService;
+  let service: MovieServiceImp;
   let repo: MovieRepositoryPersistence;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
-        MovieApplicationService,
+        MovieServiceImp,
         {
           provide: MovieRepositoryPersistence,
           useValue: {
@@ -26,7 +26,7 @@ describe('MovieApplicationService', () => {
       ],
     }).compile();
 
-    service = module.get<MovieApplicationService>(MovieApplicationService);
+    service = module.get<MovieServiceImp>(MovieServiceImp);
     repo = module.get<MovieRepositoryPersistence>(MovieRepositoryPersistence);
   });
 
@@ -36,12 +36,12 @@ describe('MovieApplicationService', () => {
 
   describe('createAndPublishMovie', () => {
     it('should throw BadRequestException if movie data is invalid', async () => {
-      const movie: CreateMovieApplicationDto = {} as any;
+      const movie: CreateMovieDtoImp = {} as any;
       await expect(service.createAndPublishMovie(movie)).rejects.toThrowError(BadRequestException);
     });
 
     it('should create a movie if data is valid', async () => {
-      const movie: CreateMovieApplicationDto = { 
+      const movie: CreateMovieDtoImp = { 
         title: 'The Shawshank Redemption',
         poster: 'https://example.com/poster.jpg',
         director: 'Frank Darabont',
@@ -89,7 +89,7 @@ describe('MovieApplicationService', () => {
 
       it('should return a movie if it exists', async () => {
         const id = 1;
-        const movie: ReadMovieApplicationDto = { 
+        const movie: ReadMovieDtoImp = { 
           id: 1,
           title: "Dalut",
           Poster: 'testset',

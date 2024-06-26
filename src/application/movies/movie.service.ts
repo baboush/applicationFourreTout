@@ -1,16 +1,15 @@
-import { MovieEntity, MovieService  } from "@domain/movies";
-import { Movie } from "@domain/movies/movie.interface";
-import { MovieRepositoryPersistence } from "../../infrastructure/persistence/repositories/movie/movie-repository-persistence";
+import {  MovieService  } from "@domain/movies";
 import {
   BadRequestException,
   Injectable,
   NotFoundException,
 } from "@nestjs/common";
 import {
-  CreateMovieApplicationDto,
-  ReadMovieApplicationDto,
-  UpdateMovieApplicationDto,
+  CreateMovieDtoImp,
+  ReadMovieDtoImp,
+  UpdateMovieDtoImp
 } from "./dto";
+import { MovieRepositoryPersistence } from "@infrastructure/persistence/repositories";
 
 /**
  * Injectable application service implementation of the MovieService interface.
@@ -18,7 +17,7 @@ import {
  * It handles additional logic beyond data persistence.
  */
 @Injectable()
-export class MovieApplicationService implements MovieService {
+export class MovieServiceImp implements MovieService {
 
   constructor(
     private readonly movieRepository: MovieRepositoryPersistence,
@@ -29,8 +28,8 @@ export class MovieApplicationService implements MovieService {
    * @inheritdoc MovieService.createAndPublishMovie
    */
   async createAndPublishMovie(
-    createMovie: CreateMovieApplicationDto,
-  ): Promise<Partial<Movie>> {
+    createMovie: CreateMovieDtoImp,
+  ): Promise<Partial<CreateMovieDtoImp>> {
 
     if (!createMovie || Object.keys(createMovie).length === 0)
       throw new BadRequestException(`Missing data for movie creation`);
@@ -41,7 +40,7 @@ export class MovieApplicationService implements MovieService {
   /**
    * @inheritdoc MovieService.findSavedMoviesList
    */
-  async findSavedMoviesList(): Promise<MovieEntity[]> {
+  async findSavedMoviesList(): Promise<ReadMovieDtoImp[]> {
     const movies = await this.movieRepository.findAllMovie();
 
     if (!movies)
@@ -53,8 +52,8 @@ export class MovieApplicationService implements MovieService {
   /**
    * @inheritdoc MovieService.findOneSavedMovie
    */
-  async findOneSavedMovie(id: number): Promise<Movie> {
-    const movie: ReadMovieApplicationDto =
+  async findOneSavedMovie(id: number): Promise<ReadMovieDtoImp> {
+    const movie: ReadMovieDtoImp =
       await this.movieRepository.findOneMovie(id);
 
     if (!movie)
@@ -67,8 +66,8 @@ export class MovieApplicationService implements MovieService {
    * @inheritdoc MovieService.updateMovieDetail
    */
   async updateMovieDetail(
-    updateMovie: UpdateMovieApplicationDto,
-  ): Promise<Partial<Movie>> {
+    updateMovie: UpdateMovieDtoImp
+  ): Promise<Partial<UpdateMovieDtoImp>> {
     const movie = await this.movieRepository.findOneMovie(updateMovie.id);
 
     if (!movie.id)

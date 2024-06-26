@@ -5,11 +5,6 @@ import { DirectorMovie, PosterMovie, TitleMovie } from "@shared/types";
  */
 export interface CreateMovieDto {
   /**
-   * Optional unique identifier of the movie. (usually set by the server)
-   */
-  readonly id?: number;
-
-  /**
    * Title of the movie.
    */
   readonly title: TitleMovie;

@@ -1,7 +1,4 @@
-import { CreateMovieDto } from "./dto/create-movie-dto.interface";
-import { UpdateMovieDto } from "./dto/update-movie-dto.interface";
-import { Movie } from "./movie.interface";
-import { MovieEntity } from "./Movies.entity";
+import { CreateMovieDto, ReadMovieDto, UpdateMovieDto } from "./dto";
 
 /**
  * Interface representing a movie repository for data access operations.
@@ -15,14 +12,14 @@ export interface MovieRepository {
    * @returns A Promise that resolves to a complete Movie object
    *          representing the created movie, or rejects with an error if creation fails.
    */
-  createMovie(createMovie: CreateMovieDto): Promise<Movie>;
+  createMovie(createMovie: CreateMovieDto): Promise<CreateMovieDto>;
 
   /**
    *
    * @returns A Promise that resolves to a list of MovieEntity objects,
    *          or rejects with an error if retrieval fails.
    */
-  findAllMovie(): Promise<MovieEntity[]>;
+  findAllMovie(): Promise<ReadMovieDto[]>;
 
   /**
    * Finds a single movie by its ID from the data source.
@@ -31,7 +28,7 @@ export interface MovieRepository {
    * @returns A Promise that resolves to a complete Movie object,
    *          or rejects with an error if retrieval fails.
    */
-  findOneMovie(id: number): Promise<Movie>;
+  findOneMovie(id: number): Promise<ReadMovieDto>;
 
   /**
    * Updates the details of an existing movie in the data source.
@@ -41,7 +38,7 @@ export interface MovieRepository {
    * @returns A Promise that resolves to a partially populated Movie object
    *          reflecting the update, or rejects with an error if the update fails.
    */
-  updateMovie(id: number, updateMovie: UpdateMovieDto): Promise<Partial<Movie>>;
+  updateMovie(id: number, updateMovie: UpdateMovieDto): Promise<Partial<UpdateMovieDto>>;
 
   /**
    * Deletes a movie from the data source based on its ID.

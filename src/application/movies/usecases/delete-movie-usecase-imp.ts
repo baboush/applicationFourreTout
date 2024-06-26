@@ -1,14 +1,14 @@
 import { DeleteMovieUsecase } from "@domain/movies/usecase";
-import { MovieApplicationService } from "../movie-application.service";
 import { Injectable } from "@nestjs/common";
+import { MovieServiceImp } from "../movie.service";
 
 /**
  * Injectable use case implementation for deleting a movie.
  * This use case interacts with the MovieApplicationService to delete a movie by its ID.
  */
 @Injectable()
-export class DeleteMovieUsecaseApplication implements DeleteMovieUsecase {
-  constructor(private readonly movieService: MovieApplicationService) {}
+export class DeleteMovieUsecaseImp implements DeleteMovieUsecase {
+  constructor(private readonly movieService: MovieServiceImp) {}
 
   /**
    * @inheritdoc DeleteMovieUsecase.execute

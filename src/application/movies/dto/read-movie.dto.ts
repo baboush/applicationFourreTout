@@ -1,20 +1,20 @@
-import {
-  IsArray,
-  IsNotEmpty,
-  IsNumber,
-  IsString,
-  Length,
-} from "class-validator";
-import { ReadMovieDto } from "@domain/movies";
-import { DirectorMovie, PosterMovie, TitleMovie } from "@shared/types";
 import { CategoriesEntity } from "@domain/categories";
 import { FavoriesEntity } from "@domain/favories";
+import { ReadMovieDto } from "@domain/movies";
 import { ProfileEntity } from "@domain/profiles";
+import { DirectorMovie, PosterMovie, TitleMovie } from "@shared/types";
+import {
+    IsArray,
+    IsNotEmpty,
+    IsNumber,
+    IsString,
+    Length,
+} from "class-validator";
 
 /**
  * @inheritdoc ReadMovieDto
  */
-export class ReadMovieApplicationDto implements ReadMovieDto {
+export class ReadMovieDtoImp implements ReadMovieDto {
   /**
    * @inheritdoc ReadMovieDto.id
    */

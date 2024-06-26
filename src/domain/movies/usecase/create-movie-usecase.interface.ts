@@ -1,5 +1,4 @@
-import { CreateMovieDto } from "../dto/create-movie-dto.interface";
-import { Movie } from "../movie.interface";
+import { CreateMovieDto } from "../dto";
 
 /**
  * Interface representing a use case for creating a new movie.
@@ -12,5 +11,5 @@ export interface CreateMovieUsecase {
    * @returns A Promise that resolves to a partially populated Movie object,
    *          or rejects with an error if the creation fails.
    */
-  execute(createMovie: CreateMovieDto): Promise<Partial<Movie>>;
+  execute(createMovie: CreateMovieDto): Promise<Partial<CreateMovieDto>>;
 }

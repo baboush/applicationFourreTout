@@ -1,6 +1,4 @@
-import { CreateMovieDto } from "./dto/create-movie-dto.interface";
-import { UpdateMovieDto } from "./dto/update-movie-dto.interface";
-import { MovieEntity } from "./Movies.entity";
+import { CreateMovieDto, ReadMovieDto, UpdateMovieDto } from "./dto";
 
 /**
  * Interface representing a movie controller in the Angular application.
@@ -16,7 +14,7 @@ export interface MovieController {
    */
   handleCreateAndPublishMovie(
     createMovie: CreateMovieDto,
-  ): Promise<Partial<MovieEntity>>;
+  ): Promise<Partial<CreateMovieDto>>;
 
   /**
    * Handles the logic for finding a list of saved movies with pagination.
@@ -24,7 +22,7 @@ export interface MovieController {
    * @returns A Promise that resolves to a  list of MovieEntity objects,
    *          or rejects with an error if retrieval fails.
    */
-  handleFindSavedMoviesList(): Promise<MovieEntity[]>;
+  handleFindSavedMoviesList(): Promise<ReadMovieDto[]>;
 
   /**
    * Handles the logic for finding a single saved movie by its ID.
@@ -33,7 +31,7 @@ export interface MovieController {
    * @returns A Promise that resolves to a complete Movie object,
    *          or rejects with an error if retrieval fails.
    */
-  handleFindOneSavedMovie(id: number): Promise<Partial<MovieEntity>>;
+  handleFindOneSavedMovie(id: number): Promise<Partial<ReadMovieDto>>;
 
   /**
    * Handles the logic for updating the details of a saved movie.
@@ -44,7 +42,7 @@ export interface MovieController {
    */
   handleUpdateMovieDetail(
     updateMovie: UpdateMovieDto,
-  ): Promise<Partial<MovieEntity>>;
+  ): Promise<Partial<UpdateMovieDto>>;
 
   /**
    * Handles the logic for deleting a saved movie by its ID.

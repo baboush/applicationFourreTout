@@ -1,5 +1,5 @@
 import { JwtGuard } from "@application/auth/jwt.guard";
-import { MovieController, MovieEntity } from "@domain/movies";
+import { MovieController  } from "@domain/movies";
 import {
   BadRequestException,
   Body,
@@ -12,16 +12,19 @@ import {
   Put,
   UseGuards,
 } from "@nestjs/common";
-import { CreateMoviesUsecaseApplication } from "./usecases/create-movie-usecase-application";
-import { DeleteMovieUsecaseApplication } from "./usecases/delete-movie-usecase-application";
-import { FindAllMoviesUsecaseApplication } from "./usecases/find-all-movies-usecase-application";
-import { ReadMovieUsecaseApplication } from "./usecases/read-movie-usecase-application";
-import { UpdateMovieUsecaseApplication } from "./usecases/update-movie-usecase-application";
 import {
-  CreateMovieApplicationDto,
-  ReadMovieApplicationDto,
-  UpdateMovieApplicationDto,
+  CreateMovieDtoImp,
+  ReadMovieDtoImp,
+  UpdateMovieDtoImp,
 } from "./dto";
+import {
+  CreateMovieUsecaseImp,
+  UpdateMovieUsecaseImp,
+  ReadMovieUsecaseImp,
+  FindAllMoviesUsecaseImp,
+  DeleteMovieUsecaseImp
+} from "./usecases";
+
 import { ApiTags } from "@nestjs/swagger";
 
 /**
@@ -34,13 +37,13 @@ import { ApiTags } from "@nestjs/swagger";
 @ApiTags("Movie")
 //@UseGuards(JwtGuard)
 @Controller("movie")
-export class MovieApplicationController implements MovieController {
+export class MovieControllerImp implements MovieController {
   constructor(
-    private readonly createMovieUsecase: CreateMoviesUsecaseApplication,
-    private readonly findAllMovieUsecase: FindAllMoviesUsecaseApplication,
-    private readonly readOneMovieUsecase: ReadMovieUsecaseApplication,
-    private readonly updateMovieUsecase: UpdateMovieUsecaseApplication,
-    private readonly deleteMovieUsecase: DeleteMovieUsecaseApplication,
+    private readonly createMovieUsecase: CreateMovieUsecaseImp,
+    private readonly findAllMovieUsecase: FindAllMoviesUsecaseImp,
+    private readonly readOneMovieUsecase: ReadMovieUsecaseImp,
+    private readonly updateMovieUsecase: UpdateMovieUsecaseImp,
+    private readonly deleteMovieUsecase: DeleteMovieUsecaseImp,
   ) {}
 
   /**
@@ -49,8 +52,8 @@ export class MovieApplicationController implements MovieController {
   @Post("create")
   async handleCreateAndPublishMovie(
     @Body()
-    createMovie: CreateMovieApplicationDto,
-  ): Promise<Partial<MovieEntity>> {
+    createMovie: CreateMovieDtoImp,
+  ): Promise<Partial<CreateMovieDtoImp>> {
 
     if (!createMovie) {
       throw new BadRequestException(`Data is missing for create movie`);
@@ -63,7 +66,7 @@ export class MovieApplicationController implements MovieController {
    * @inheritdoc MovieController.handleFindSavedMoviesListe
    */
   @Get("list")
-  async handleFindSavedMoviesList(): Promise<MovieEntity[]> {
+  async handleFindSavedMoviesList(): Promise<ReadMovieDtoImp[]> {
     const movies = await this.findAllMovieUsecase.execute();
 
     if (!movies) {
@@ -79,8 +82,8 @@ export class MovieApplicationController implements MovieController {
   @Get(":id")
   async handleFindOneSavedMovie(
     @Param("id") id: number,
-  ): Promise<Partial<MovieEntity>> {
-    const movie: ReadMovieApplicationDto =
+  ): Promise<Partial<ReadMovieDtoImp>> {
+    const movie: ReadMovieDtoImp =
       await this.readOneMovieUsecase.execute(id);
 
     if (!movie) {
@@ -95,8 +98,8 @@ export class MovieApplicationController implements MovieController {
   @Put("update")
   async handleUpdateMovieDetail(
     @Body()
-    updateMovie: UpdateMovieApplicationDto,
-  ): Promise<Partial<MovieEntity>> {
+    updateMovie: UpdateMovieDtoImp,
+  ): Promise<Partial<UpdateMovieDtoImp>> {
 
 
     if (!updateMovie.id) {

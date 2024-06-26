@@ -79,14 +79,14 @@
     },
     "/movie/create": {
       "post": {
-        "operationId": "MovieApplicationController_handleCreateAndPublishMovie",
+        "operationId": "MovieControllerImp_handleCreateAndPublishMovie",
         "parameters": [],
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateMovieApplicationDto"
+                "$ref": "#/components/schemas/CreateMovieDtoImp"
               }
             }
           }
@@ -110,7 +110,7 @@
     },
     "/movie/list": {
       "get": {
-        "operationId": "MovieApplicationController_handleFindSavedMoviesList",
+        "operationId": "MovieControllerImp_handleFindSavedMoviesList",
         "parameters": [],
         "responses": {
           "200": {
@@ -120,7 +120,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/MovieEntity"
+                    "$ref": "#/components/schemas/ReadMovieDtoImp"
                   }
                 }
               }
@@ -134,7 +134,7 @@
     },
     "/movie/{id}": {
       "get": {
-        "operationId": "MovieApplicationController_handleFindOneSavedMovie",
+        "operationId": "MovieControllerImp_handleFindOneSavedMovie",
         "parameters": [
           {
             "name": "id",
@@ -164,14 +164,14 @@
     },
     "/movie/update": {
       "put": {
-        "operationId": "MovieApplicationController_handleUpdateMovieDetail",
+        "operationId": "MovieControllerImp_handleUpdateMovieDetail",
         "parameters": [],
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UpdateMovieApplicationDto"
+                "$ref": "#/components/schemas/UpdateMovieDtoImp"
               }
             }
           }
@@ -195,7 +195,7 @@
     },
     "/movie/delete/{id}": {
       "delete": {
-        "operationId": "MovieApplicationController_handleDeleteSavedMovie",
+        "operationId": "MovieControllerImp_handleDeleteSavedMovie",
         "parameters": [
           {
             "name": "id",
@@ -223,31 +223,10 @@
         ]
       }
     },
-    "/movies/sse": {
-      "get": {
-        "operationId": "MoviesControllerSse_sse",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        }
-      }
-    },
     "/categories": {
       "post": {
-        "operationId": "CategoriesApplicationController_handleCreateCategoryAndPublish",
+        "operationId": "CategoriesControllerImp_handleCreateCategoryAndPublish",
         "parameters": [],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateCategoryDtoApplication"
-              }
-            }
-          }
-        },
         "responses": {
           "201": {
             "description": "",
@@ -267,7 +246,7 @@
     },
     "/categories/{id}": {
       "delete": {
-        "operationId": "CategoriesApplicationController_handleRemoveCategorySaved",
+        "operationId": "CategoriesControllerImp_handleRemoveCategorySaved",
         "parameters": [
           {
             "name": "id",
@@ -297,7 +276,7 @@
     },
     "/categories/{idCategory}/movie/{idMovie}": {
       "post": {
-        "operationId": "CategoriesApplicationController_handleAddCategoryToMovieRelation",
+        "operationId": "CategoriesControllerImp_handleAddCategoryToMovieRelation",
         "parameters": [
           {
             "name": "idCategory",
@@ -333,7 +312,7 @@
         ]
       },
       "delete": {
-        "operationId": "CategoriesApplicationController_handleRemoveCategoryMovieSaved",
+        "operationId": "CategoriesControllerImp_handleRemoveCategoryMovieSaved",
         "parameters": [
           {
             "name": "idCategory",
@@ -371,7 +350,7 @@
     },
     "/categories/list": {
       "get": {
-        "operationId": "CategoriesApplicationController_handleFindAllCategorySaved",
+        "operationId": "CategoriesControllerImp_handleFindAllCategorySaved",
         "parameters": [],
         "responses": {
           "200": {
@@ -395,14 +374,14 @@
     },
     "/book/create": {
       "post": {
-        "operationId": "BooksApplicationController_handleCreateAndPublishBook",
+        "operationId": "BooksControllerImp_handleCreateAndPublishBook",
         "parameters": [],
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateBookApplicationDto"
+                "$ref": "#/components/schemas/CreateBookDtoImp"
               }
             }
           }
@@ -426,7 +405,7 @@
     },
     "/book/list": {
       "get": {
-        "operationId": "BooksApplicationController_handleFindSavedBooksList",
+        "operationId": "BooksControllerImp_handleFindSavedBooksList",
         "parameters": [],
         "responses": {
           "200": {
@@ -436,7 +415,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/ReadBookApplicationDto"
+                    "$ref": "#/components/schemas/ReadBookDtoImp"
                   }
                 }
               }
@@ -450,7 +429,7 @@
     },
     "/book/{id}": {
       "get": {
-        "operationId": "BooksApplicationController_handleFindOneSavedBook",
+        "operationId": "BooksControllerImp_handleFindOneSavedBook",
         "parameters": [
           {
             "name": "id",
@@ -480,14 +459,14 @@
     },
     "/book/update": {
       "put": {
-        "operationId": "BooksApplicationController_handleUpdateBookDetail",
+        "operationId": "BooksControllerImp_handleUpdateBookDetail",
         "parameters": [],
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UpdateBookApplicationDto"
+                "$ref": "#/components/schemas/UpdateBookDtoImp"
               }
             }
           }
@@ -511,7 +490,7 @@
     },
     "/book/delete/{id}": {
       "delete": {
-        "operationId": "BooksApplicationController_handleDeleteSavedBook",
+        "operationId": "BooksControllerImp_handleDeleteSavedBook",
         "parameters": [
           {
             "name": "id",
@@ -607,12 +586,9 @@
           "role"
         ]
       },
-      "CreateMovieApplicationDto": {
+      "CreateMovieDtoImp": {
         "type": "object",
         "properties": {
-          "id": {
-            "type": "number"
-          },
           "title": {
             "type": "string",
             "minLength": 3,
@@ -832,33 +808,35 @@
           "deleteAt"
         ]
       },
-      "Categories": {
+      "Favories": {
         "type": "object",
         "properties": {
-          "id": {
+          "bookId": {
             "type": "number"
           },
-          "name": {
-            "type": "string"
+          "movieId": {
+            "type": "number"
           },
-          "books": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Books"
-            }
+          "profileId": {
+            "type": "number"
           },
-          "movies": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/MovieEntity"
-            }
+          "book": {
+            "$ref": "#/components/schemas/Books"
+          },
+          "movie": {
+            "$ref": "#/components/schemas/MovieEntity"
+          },
+          "profile": {
+            "$ref": "#/components/schemas/Profile"
           }
         },
         "required": [
-          "id",
-          "name",
-          "books",
-          "movies"
+          "bookId",
+          "movieId",
+          "profileId",
+          "book",
+          "movie",
+          "profile"
         ]
       },
       "Books": {
@@ -906,38 +884,83 @@
           "profiles"
         ]
       },
-      "Favories": {
+      "Categories": {
         "type": "object",
         "properties": {
-          "bookId": {
+          "id": {
             "type": "number"
           },
-          "movieId": {
-            "type": "number"
+          "name": {
+            "type": "string"
           },
-          "profileId": {
-            "type": "number"
+          "books": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Books"
+            }
           },
-          "book": {
-            "$ref": "#/components/schemas/Books"
-          },
-          "movie": {
-            "$ref": "#/components/schemas/MovieEntity"
-          },
-          "profile": {
-            "$ref": "#/components/schemas/Profile"
+          "movies": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MovieEntity"
+            }
           }
         },
         "required": [
-          "bookId",
-          "movieId",
-          "profileId",
-          "book",
-          "movie",
-          "profile"
+          "id",
+          "name",
+          "books",
+          "movies"
         ]
       },
-      "UpdateMovieApplicationDto": {
+      "ReadMovieDtoImp": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "title": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 80
+          },
+          "poster": {
+            "type": "string",
+            "minLength": 50,
+            "maxLength": 250
+          },
+          "director": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 80
+          },
+          "categories": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Categories"
+            }
+          },
+          "favories": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Favories"
+            }
+          },
+          "profiles": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Profile"
+            }
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "poster",
+          "director"
+        ]
+      },
+      "UpdateMovieDtoImp": {
         "type": "object",
         "properties": {
           "id": {
@@ -966,26 +989,7 @@
           "director"
         ]
       },
-      "CreateCategoryDtoApplication": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "number",
-            "description": "The unique identifier of the category"
-          },
-          "name": {
-            "type": "object",
-            "description": "The name of the category",
-            "minLength": 5,
-            "maxLength": 40
-          }
-        },
-        "required": [
-          "id",
-          "name"
-        ]
-      },
-      "CreateBookApplicationDto": {
+      "CreateBookDtoImp": {
         "type": "object",
         "properties": {
           "id": {
@@ -1013,7 +1017,7 @@
           "author"
         ]
       },
-      "ReadBookApplicationDto": {
+      "ReadBookDtoImp": {
         "type": "object",
         "properties": {
           "id": {
@@ -1061,7 +1065,7 @@
           "categories"
         ]
       },
-      "UpdateBookApplicationDto": {
+      "UpdateBookDtoImp": {
         "type": "object",
         "properties": {
           "id": {
