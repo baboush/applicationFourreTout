@@ -9,6 +9,8 @@ import { AuthApplcationModule } from "@application/auth";
 import { MovieModule } from "@application/movies";
 import { CategoriesModule } from "@application/categories";
 import { BookModule } from "@application/books";
+import { APP_INTERCEPTOR } from "@nestjs/core";
+import { ValidationInterceptor } from "@shared/filter/validation-interceptor";
 
 @Module({
   imports: [
@@ -33,6 +35,13 @@ import { BookModule } from "@application/books";
     BookModule,
   ],
   controllers: [],
-  providers: [SwaggerService],
+  providers: [
+    SwaggerService,
+    /* {
+      provide: APP_INTERCEPTOR,
+      useClass: ValidationInterceptor,
+    },
+    */
+  ],
 })
 export class AppModule {}

@@ -1,2 +1,2 @@
-import { CatchAllExceptionFilterFilter } from './catch-all-exception.filter';
-export { CatchAllExceptionFilterFilter };
+import { CatchAllExceptionFilter } from "./catch-all-exception.filter";
+export { CatchAllExceptionFilter };

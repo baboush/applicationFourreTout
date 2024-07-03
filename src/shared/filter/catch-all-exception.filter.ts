@@ -1,37 +1,51 @@
 import {
   ArgumentsHost,
   Catch,
+  ExceptionFilter,
   HttpException,
   HttpStatus,
-  Logger,
+  Inject,
+  LoggerService,
 } from "@nestjs/common";
 import { HttpAdapterHost } from "@nestjs/core";
-import { request } from "http";
 
 @Catch()
-export class CatchAllExceptionFilterFilter {
-  constructor(private readonly httpAdapterHost: HttpAdapterHost) {}
-  private readonly logger = new Logger(CatchAllExceptionFilterFilter.name);
+export class CatchAllExceptionFilter implements ExceptionFilter {
+  constructor(
+    private readonly httpAdapterHost: HttpAdapterHost,
+    @Inject("Logger") private readonly logger: LoggerService,
+  ) {}
 
   catch(exception: unknown, host: ArgumentsHost): void {
     const { httpAdapter } = this.httpAdapterHost;
-
     const ctx = host.switchToHttp();
-    const response = ctx.getResponse<Response>();
-    const request = ctx.getRequest<Request>();
+    const request = ctx.getRequest();
+    const response = ctx.getResponse();
 
     const httpStatus =
       exception instanceof HttpException
         ? exception.getStatus()
         : HttpStatus.INTERNAL_SERVER_ERROR;
 
-    this.logger.error(`${request.method} ${request.url} - ${exception}`);
+    let errorMessage =
+      exception instanceof HttpException ? exception.getResponse() : exception;
+
+    if (
+      typeof errorMessage === "object" &&
+      errorMessage.hasOwnProperty("message")
+    ) {
+      errorMessage = (errorMessage as any).message;
+    }
+
     const responseBody = {
       statusCode: httpStatus,
       timestamp: new Date().toISOString(),
-      path: httpAdapter.getRequestUrl(ctx.getRequest()),
+      path: request.url,
+      message: errorMessage,
     };
 
-    httpAdapter.reply(ctx.getResponse(), responseBody, httpStatus);
+    this.logger.error(responseBody, exception.toString());
+
+    httpAdapter.reply(response, responseBody, httpStatus);
   }
 }
