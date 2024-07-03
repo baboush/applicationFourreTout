@@ -5,10 +5,10 @@
   "username": "root",
   "password": "root",
   "database": "migration1",
-  "entities": ["./src/domain/entities/*.entity.ts"],
+  "entities": ["./src/domain/**/*.entity.ts"],
   "migrations": ["./dist/migrations/*.js"],
   "cli": {
-    "entitiesDir": "./src/domain/entities/",
+    "entitiesDir": "./src/domain/**/*.entity.ts",
     "migrationDir": "./src/infrastructure/persistence/migrations/"
   }
 }

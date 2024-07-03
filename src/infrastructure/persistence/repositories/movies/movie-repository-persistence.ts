@@ -5,61 +5,52 @@ import {
   ReadMovieDto,
   UpdateMovieDto,
 } from "@domain/movies";
-import {
-  BadRequestException,
-  Injectable,
-  NotFoundException,
-} from "@nestjs/common";
+import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
+import { AbstractGeneralRepository } from "@infrastructure/persistence/repositories/generics/admin";
 
 @Injectable()
-export class MovieRepositoryPersistence implements MovieRepository {
+export class MovieRepositoryPersistence
+  extends AbstractGeneralRepository<MovieEntity>
+  implements MovieRepository
+{
   constructor(
     @InjectRepository(MovieEntity)
-    private readonly moviesRepository: Repository<MovieEntity>,
-  ) {}
-
+    private readonly movieRepository: Repository<MovieEntity>,
+  ) {
+    super(movieRepository);
+  }
   /**
    * @inheritdoc MovieRepository.createMovie
    */
   async createMovie(createMovie: CreateMovieDto): Promise<CreateMovieDto> {
+    await super.createEntity(createMovie);
 
-    if (!createMovie)
-      throw new BadRequestException(`Movie data is Invalid`);
-
-    const existingMovie = await this.moviesRepository.findBy({
+    return {
       title: createMovie.title,
       director: createMovie.director,
       poster: createMovie.poster,
-    });
-
-    if (existingMovie && existingMovie.length > 0)
-      throw new BadRequestException(`Movie exist in database`);
-
-    return await this.moviesRepository.save(createMovie);
+    };
   }
 
   /**
    * @inheritdoc MovieRepository.findAllMovie
    */
   async findAllMovie(): Promise<ReadMovieDto[]> {
-    return await this.moviesRepository
+    throw new Error("Method not implemented");
+    /*return await this.moviesRepository
       .createQueryBuilder("movie")
       .leftJoinAndSelect("movie.categories", "categories")
       .getMany();
+      */
   }
 
   /**
    * @inheritdoc MovieRepository.findOneMovie
    */
   async findOneMovie(id: number): Promise<ReadMovieDto> {
-    const movie = await this.moviesRepository.findOneBy({ id: id });
-
-    if (!movie)
-      throw new NotFoundException(`Movie with ${id} not found`);
-
-    return movie;
+    return await super.findOneEntity(id);
   }
 
   /**
@@ -69,28 +60,13 @@ export class MovieRepositoryPersistence implements MovieRepository {
     id: number,
     updateMovie: UpdateMovieDto,
   ): Promise<Partial<UpdateMovieDto>> {
-
-    if (!updateMovie || !id)
-      throw new BadRequestException(`Update Movie data is invalid`);
-
-    const updatedMovie = await this.moviesRepository.update(id, updateMovie);
-
-    if (updatedMovie.affected === 0)
-      throw new NotFoundException(`Movie Update ${id} not found`);
-  
-    console.log(updatedMovie.raw);
-    return updatedMovie.raw
+    return await super.updateEntity(id, updateMovie);
   }
 
   /**
    * @inheritdoc MovieRepository.deleteMovie
    */
   async deleteMovie(id: number): Promise<boolean> {
-    const deleteMovie = await this.moviesRepository.delete(id);
-
-    if (deleteMovie.affected === 0)
-      throw new NotFoundException(`Movie width ${id} not found`);
-
-    return deleteMovie.affected > 0;
+    return await super.deleteEntity(id);
   }
 }

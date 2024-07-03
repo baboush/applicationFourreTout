@@ -41,7 +41,7 @@ export class MovieEntity {
   @ManyToMany(() => ProfileEntity, (profile) => profile.movies)
   @JoinTable({
     name: "Profile_movie",
-    joinColumns: [{ name: "film_id", referencedColumnName: "id" }],
+    joinColumns: [{ name: "movie_id", referencedColumnName: "id" }],
     inverseJoinColumns: [{ name: "profile_id", referencedColumnName: "id" }],
     schema: "migration1",
   })

@@ -162,7 +162,7 @@
         ]
       }
     },
-    "/movie/update": {
+    "/movie/udapte/{id}": {
       "put": {
         "operationId": "MovieControllerImp_handleUpdateMovieDetail",
         "parameters": [],
@@ -457,7 +457,7 @@
         ]
       }
     },
-    "/book/update": {
+    "/book/update/{id}": {
       "put": {
         "operationId": "BooksControllerImp_handleUpdateBookDetail",
         "parameters": [],
@@ -655,33 +655,39 @@
         "type": "object",
         "properties": {
           "id": {
-            "type": "number",
-            "description": "id"
+            "type": "number"
           },
           "title": {
-            "type": "string",
-            "description": "title"
+            "type": "string"
           },
           "content": {
-            "type": "string",
-            "description": "content"
+            "type": "string"
           },
           "dateFinish": {
+            "type": "string"
+          },
+          "state": {
             "type": "string",
-            "description": "dateFinish"
-          },
-          "etat": {
             "enum": [
-              "en",
-              "ea",
-              "fi"
-            ],
-            "type": "EC\" | \"EA\" | \"F\"",
-            "description": "etat"
+              "IP",
+              "PE",
+              "FI"
+            ]
           },
-          "profiles": {
-            "type": "Profile[]",
-            "description": "profiles"
+          "profile": {
+            "$ref": "#/components/schemas/Profile"
+          },
+          "createAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "updateAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "deleteAt": {
+            "format": "date-time",
+            "type": "string"
           }
         },
         "required": [
@@ -689,8 +695,11 @@
           "title",
           "content",
           "dateFinish",
-          "etat",
-          "profiles"
+          "state",
+          "profile",
+          "createAt",
+          "updateAt",
+          "deleteAt"
         ]
       },
       "Profile": {
@@ -919,13 +928,28 @@
             "items": {
               "$ref": "#/components/schemas/MovieEntity"
             }
+          },
+          "createAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "updateAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "deleteAt": {
+            "format": "date-time",
+            "type": "string"
           }
         },
         "required": [
           "id",
           "name",
           "books",
-          "movies"
+          "movies",
+          "createAt",
+          "updateAt",
+          "deleteAt"
         ]
       },
       "ReadMovieDtoImp": {

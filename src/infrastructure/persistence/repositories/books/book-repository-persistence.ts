@@ -1,35 +1,34 @@
 import { BookEntity } from "@domain/books";
 import { BookRepository } from "@domain/books/book-repository.interface";
 import { CreateBookDto, ReadBookDto, UpdateBookDto } from "@domain/books/dto";
-import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
+import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
+import { AbstractGeneralRepository } from "@infrastructure/persistence/repositories/generics/admin";
 
 @Injectable()
-export class BookRepositoryPersistence implements BookRepository {
+export class BookRepositoryPersistence
+  extends AbstractGeneralRepository<BookEntity>
+  implements BookRepository
+{
   constructor(
     @InjectRepository(BookEntity)
     private readonly booksRepository: Repository<BookEntity>,
-  ) {}
+  ) {
+    super(booksRepository);
+  }
 
-   /**
+  /**
    * @inheritdoc BookRepository.createBook
    */
   async createBook(createBook: CreateBookDto): Promise<CreateBookDto> {
+    await super.createEntity(createBook);
 
-    if (!createBook)
-      throw new BadRequestException(`Book data is Invalid`);
-
-    const existingBook = await this.booksRepository.findBy({
+    return {
       title: createBook.title,
-      author: createBook.author,
       poster: createBook.poster,
-    });
-
-    if (existingBook && existingBook.length > 0)
-      throw new BadRequestException(`Book exist in database`);
-
-    return await this.booksRepository.save(createBook)
+      author: createBook.author,
+    };
   }
 
   /**
@@ -41,8 +40,7 @@ export class BookRepositoryPersistence implements BookRepository {
       .leftJoinAndSelect("book.categories", "categories")
       .getMany();
 
-    if(!books)
-      throw new NotFoundException(`Books not found`);
+    if (!books) throw new NotFoundException(`Books not found`);
 
     return books;
   }
@@ -51,12 +49,7 @@ export class BookRepositoryPersistence implements BookRepository {
    * @inheritdoc BookRepository.findOneBook
    */
   async findOneBook(id: number): Promise<ReadBookDto> {
-    const book = await this.booksRepository.findOneBy({ id: id });
-
-    if (!book)
-      throw new NotFoundException(`Book with ${id} not found`);
-
-    return book;
+    return await this.booksRepository.findOneBy({ id: id });
   }
 
   /**
@@ -66,28 +59,13 @@ export class BookRepositoryPersistence implements BookRepository {
     id: number,
     updateBook: UpdateBookDto,
   ): Promise<Partial<UpdateBookDto>> {
-
-    if (!updateBook || !id)
-      throw new BadRequestException(`Update Book data is invalid`);
-
-    const updatedBook = await this.booksRepository.update(id, updateBook);
-
-    if (updatedBook.affected === 0)
-      throw new NotFoundException(`Book Update ${id} not found`);
-  
-    console.log(updatedBook.raw);
-    return updatedBook.raw
+    return super.updateEntity(id, updateBook);
   }
 
   /**
    * @inheritdoc BookRepository.deleteBook
    */
   async deleteBook(id: number): Promise<boolean> {
-    const deleteBook = await this.booksRepository.delete(id);
-
-    if (deleteBook.affected === 0)
-      throw new NotFoundException(`Book width ${id} not found`);
-
-    return deleteBook.affected > 0;
+    return await super.deleteEntity(id);
   }
 }
