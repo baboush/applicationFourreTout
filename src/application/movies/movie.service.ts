@@ -1,15 +1,8 @@
-import {  MovieService  } from "@domain/movies";
-import {
-  BadRequestException,
-  Injectable,
-  NotFoundException,
-} from "@nestjs/common";
-import {
-  CreateMovieDtoImp,
-  ReadMovieDtoImp,
-  UpdateMovieDtoImp
-} from "./dto";
+import { AbstractGeneralService } from "@application/generics/general";
+import { MovieEntity, MovieService } from "@domain/movies";
 import { MovieRepositoryPersistence } from "@infrastructure/persistence/repositories";
+import { Injectable } from "@nestjs/common";
+import { CreateMovieDtoImp, ReadMovieDtoImp, UpdateMovieDtoImp } from "./dto";
 
 /**
  * Injectable application service implementation of the MovieService interface.
@@ -17,11 +10,12 @@ import { MovieRepositoryPersistence } from "@infrastructure/persistence/reposito
  * It handles additional logic beyond data persistence.
  */
 @Injectable()
-export class MovieServiceImp implements MovieService {
-
-  constructor(
-    private readonly movieRepository: MovieRepositoryPersistence,
-  ) {
+export class MovieServiceImp
+  extends AbstractGeneralService<MovieEntity>
+  implements MovieService
+{
+  constructor(movieRepository: MovieRepositoryPersistence) {
+    super(movieRepository);
   }
 
   /**
@@ -30,73 +24,36 @@ export class MovieServiceImp implements MovieService {
   async createAndPublishMovie(
     createMovie: CreateMovieDtoImp,
   ): Promise<Partial<CreateMovieDtoImp>> {
-
-    if (!createMovie || Object.keys(createMovie).length === 0)
-      throw new BadRequestException(`Missing data for movie creation`);
-
-    return await this.movieRepository.createMovie(createMovie);
+    return await super.createEntity(createMovie);
   }
 
   /**
    * @inheritdoc MovieService.findSavedMoviesList
    */
   async findSavedMoviesList(): Promise<ReadMovieDtoImp[]> {
-    const movies = await this.movieRepository.findAllMovie();
-
-    if (!movies)
-      throw new NotFoundException(`No movies found in database`);
-
-    return movies;
+    return await super.findAllEntity();
   }
 
   /**
    * @inheritdoc MovieService.findOneSavedMovie
    */
   async findOneSavedMovie(id: number): Promise<ReadMovieDtoImp> {
-    const movie: ReadMovieDtoImp =
-      await this.movieRepository.findOneMovie(id);
-
-    if (!movie)
-      throw new NotFoundException(`Movie with ${id} not exist in database`);
-
-    return movie;
+    return await super.findOneEntity(id);
   }
 
   /**
    * @inheritdoc MovieService.updateMovieDetail
    */
   async updateMovieDetail(
-    updateMovie: UpdateMovieDtoImp
+    updateMovie: UpdateMovieDtoImp,
   ): Promise<Partial<UpdateMovieDtoImp>> {
-    const movie = await this.movieRepository.findOneMovie(updateMovie.id);
-
-    if (!movie.id)
-      throw new NotFoundException(`Movie width ID ${movie.id} not found`);
-
-    if (!updateMovie || Object.keys(updateMovie).length === 0)
-      throw new BadRequestException(`${updateMovie} Missing data`);
-
-    return await this.movieRepository.updateMovie(
-      updateMovie.id,
-      updateMovie,
-    );
+    return await super.updateEntity(updateMovie.id, updateMovie);
   }
 
   /**
    * @inheritdoc MovieService.deleteSavedMovie
    */
   async deleteSavedMovie(id: number): Promise<boolean> {
-
-    const movie = await this.movieRepository.findOneMovie(id);
-
-    if (!movie)
-      throw new NotFoundException(`Movie with ID ${id} not found`);
-
-    const isDeleted = await this.movieRepository.deleteMovie(id);
-
-    if (!isDeleted)
-      throw new BadRequestException(`Failed delete movie with ID: ${id} `)
-
-    return isDeleted;
+    return await super.deleteEntity(id);
   }
 }

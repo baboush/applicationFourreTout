@@ -4,11 +4,11 @@ import { ReadMovieDto } from "@domain/movies";
 import { ProfileEntity } from "@domain/profiles";
 import { DirectorMovie, PosterMovie, TitleMovie } from "@shared/types";
 import {
-    IsArray,
-    IsNotEmpty,
-    IsNumber,
-    IsString,
-    Length,
+  IsArray,
+  IsNotEmpty,
+  IsNumber,
+  IsString,
+  Length,
 } from "class-validator";
 
 /**
@@ -25,33 +25,37 @@ export class ReadMovieDtoImp implements ReadMovieDto {
   /**
    * @inheritdoc ReadMovieDto.title
    */
-  @IsString()
-  @Length(3, 80)
-  @IsNotEmpty()
+  @IsString({ message: "title movie must be a string" })
+  @Length(3, 80, { message: "title movie must be between 3 and 80 characters" })
+  @IsNotEmpty({ message: "title movie must not be empty" })
   readonly title: TitleMovie;
 
   /**
    * @inheritdoc ReadMovieDto.poster
    */
-  @IsString()
-  @Length(50, 250)
-  @IsNotEmpty()
+  @IsString({ message: "poster movie must be a string" })
+  @Length(50, 250, {
+    message: "poster movie must be between 50 and 250 characters",
+  })
+  @IsNotEmpty({ message: "poster movie must not be empty" })
   readonly poster: PosterMovie;
 
   /**
    * @inheritdoc ReadMovieDto.director
    */
-  @IsString()
-  @Length(3, 80)
-  @IsNotEmpty()
+  @IsString({ message: "director movie must be a string" })
+  @Length(3, 80, {
+    message: "director movie must be between 3 and 80 characters",
+  })
+  @IsNotEmpty({ message: "director movie must not be empty" })
   readonly director: DirectorMovie;
 
-  @IsArray()
+  @IsArray({ message: "categories must be an array" })
   readonly categories?: CategoriesEntity[];
 
-  @IsArray()
+  @IsArray({ message: "favories must be an array" })
   readonly favories?: FavoriesEntity[];
 
-  @IsArray()
+  @IsArray({ message: "profiles must be an array" })
   readonly profiles?: ProfileEntity[];
 }

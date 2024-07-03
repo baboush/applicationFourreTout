@@ -1,31 +1,19 @@
 import { JwtGuard } from "@application/auth/jwt.guard";
-import { MovieController  } from "@domain/movies";
+import { MovieController, MovieEntity } from "@domain/movies";
 import {
-  BadRequestException,
   Body,
   Controller,
   Delete,
   Get,
-  NotFoundException,
   Param,
   Post,
   Put,
   UseGuards,
 } from "@nestjs/common";
-import {
-  CreateMovieDtoImp,
-  ReadMovieDtoImp,
-  UpdateMovieDtoImp,
-} from "./dto";
-import {
-  CreateMovieUsecaseImp,
-  UpdateMovieUsecaseImp,
-  ReadMovieUsecaseImp,
-  FindAllMoviesUsecaseImp,
-  DeleteMovieUsecaseImp
-} from "./usecases";
-
+import { CreateMovieDtoImp, ReadMovieDtoImp, UpdateMovieDtoImp } from "./dto";
 import { ApiTags } from "@nestjs/swagger";
+import { MovieServiceImp } from "./movie.service";
+import { AbstractGeneralController } from "@application/generics/general";
 
 /**
  * Controller handling movie application logic.
@@ -37,14 +25,13 @@ import { ApiTags } from "@nestjs/swagger";
 @ApiTags("Movie")
 //@UseGuards(JwtGuard)
 @Controller("movie")
-export class MovieControllerImp implements MovieController {
-  constructor(
-    private readonly createMovieUsecase: CreateMovieUsecaseImp,
-    private readonly findAllMovieUsecase: FindAllMoviesUsecaseImp,
-    private readonly readOneMovieUsecase: ReadMovieUsecaseImp,
-    private readonly updateMovieUsecase: UpdateMovieUsecaseImp,
-    private readonly deleteMovieUsecase: DeleteMovieUsecaseImp,
-  ) {}
+export class MovieControllerImp
+  extends AbstractGeneralController<MovieEntity>
+  implements MovieController
+{
+  constructor(private readonly movieService: MovieServiceImp) {
+    super(movieService);
+  }
 
   /**
    * @inheritdoc MovieController.handleCreateAndPublishMovie
@@ -54,12 +41,7 @@ export class MovieControllerImp implements MovieController {
     @Body()
     createMovie: CreateMovieDtoImp,
   ): Promise<Partial<CreateMovieDtoImp>> {
-
-    if (!createMovie) {
-      throw new BadRequestException(`Data is missing for create movie`);
-    }
-
-    return await this.createMovieUsecase.execute(createMovie);
+    return await super.createEntity(createMovie);
   }
 
   /**
@@ -67,13 +49,7 @@ export class MovieControllerImp implements MovieController {
    */
   @Get("list")
   async handleFindSavedMoviesList(): Promise<ReadMovieDtoImp[]> {
-    const movies = await this.findAllMovieUsecase.execute();
-
-    if (!movies) {
-      throw new BadRequestException(`Movies error fetching`);
-    }
-
-    return movies;
+    return await super.findAllEntity();
   }
 
   /**
@@ -83,34 +59,18 @@ export class MovieControllerImp implements MovieController {
   async handleFindOneSavedMovie(
     @Param("id") id: number,
   ): Promise<Partial<ReadMovieDtoImp>> {
-    const movie: ReadMovieDtoImp =
-      await this.readOneMovieUsecase.execute(id);
-
-    if (!movie) {
-      throw new NotFoundException(`Movie with ID ${id} not found`);
-    }
-    return movie;
+    return await super.findOneEntity(id);
   }
 
   /**
    * @inheritdoc MovieController.handleUpdateMovieDetail
    */
-  @Put("update")
+  @Put("udapte/:id")
   async handleUpdateMovieDetail(
     @Body()
     updateMovie: UpdateMovieDtoImp,
   ): Promise<Partial<UpdateMovieDtoImp>> {
-
-
-    if (!updateMovie.id) {
-      throw new NotFoundException(`Movie with ID ${updateMovie.id} not found`);
-    }
-
-    if (!updateMovie) {
-      throw new BadRequestException(`Movie update ${updateMovie} is invalid`);
-    }
-
-    return await this.updateMovieUsecase.execute(updateMovie);
+    return await super.updateEntity(updateMovie.id, updateMovie);
   }
 
   /**
@@ -118,12 +78,6 @@ export class MovieControllerImp implements MovieController {
    */
   @Delete("delete/:id")
   async handleDeleteSavedMovie(@Param("id") id: number): Promise<boolean> {
-    const isDelete = await this.deleteMovieUsecase.execute(id);
-
-    if (!isDelete) {
-      throw new NotFoundException(`Movie with ID ${id} not deleted`);
-    }
-
-    return !!isDelete;
+    return await super.deleteEntity(id);
   }
 }
