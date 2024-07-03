@@ -19,24 +19,26 @@ export class UpdateBookDtoImp implements UpdateBookDto {
   /**
    * @inheritdoc.UpdateBookDto.title
    */
-  @IsString()
-  @Length(3, 80)
-  @IsNotEmpty()
+  @IsString({ message: "Title book must be a string" })
+  @Length(3, 80, { message: "Title book must be between 3 and 80 characters" })
+  @IsNotEmpty({ message: "Title book must not be empty" })
   readonly title: TitleBook;
 
   /**
    * @inheritdoc.UpdateBookDto.poster
    */
-  @IsString()
-  @Length(50, 250)
-  @IsNotEmpty()
+  @IsString({ message: "Poster book must be a string" })
+  @Length(50, 250, {
+    message: "Poster book must be between 50 and 250 characters",
+  })
+  @IsNotEmpty({ message: "Poster book must not be empty" })
   readonly poster: PosterBook;
 
   /**
    * @inheritdoc.UpdateBookDto.author
    */
-  @IsString()
-  @Length(3, 80)
-  @IsNotEmpty()
+  @IsString({ message: "Author book must be a string" })
+  @Length(3, 80, { message: "Author book must be between 3 and 80 characters" })
+  @IsNotEmpty({ message: "Author book must not be empty" })
   readonly author: AuthorBook;
 }

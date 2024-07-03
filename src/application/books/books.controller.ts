@@ -1,26 +1,19 @@
 import { JwtGuard } from "@application/auth/jwt.guard";
 import {
-  BadRequestException,
   Body,
   Controller,
   Delete,
   Get,
-  NotFoundException,
   Param,
   Post,
   Put,
   UseGuards,
 } from "@nestjs/common";
 import { ApiTags } from "@nestjs/swagger";
-import { BookController } from "@domain/books";
-import {
-  CreateBookUsecaseImp,
-  DeleteBookUsecaseImp,
-  FindAllBooksUsecaseImp,
-  UpdateBookUsecaseImp,
-  ReadBookUsecaseImp
-} from "./usecases";
+import { BookController, BookEntity } from "@domain/books";
 import { CreateBookDtoImp, ReadBookDtoImp, UpdateBookDtoImp } from "./dto";
+import { BooksServiceImp } from "./books.service";
+import { AbstractGeneralController } from "@application/generics/general";
 
 /**
  * Controller handling book application logic.
@@ -32,14 +25,13 @@ import { CreateBookDtoImp, ReadBookDtoImp, UpdateBookDtoImp } from "./dto";
 @ApiTags("Book")
 //@UseGuards(JwtGuard)
 @Controller("book")
-export class BooksControllerImp implements BookController {
-  constructor(
-    private readonly createBookUsecase: CreateBookUsecaseImp,
-    private readonly findAllBookUsecase: FindAllBooksUsecaseImp,
-    private readonly readOneBookUsecase: ReadBookUsecaseImp,
-    private readonly updateBookUsecase: UpdateBookUsecaseImp,
-    private readonly deleteBookUsecase: DeleteBookUsecaseImp,
-  ) {}
+export class BooksControllerImp
+  extends AbstractGeneralController<BookEntity>
+  implements BookController
+{
+  constructor(private readonly bookService: BooksServiceImp) {
+    super(bookService);
+  }
 
   /**
    * @inheritdoc BookController.handleCreateAndPublishBook
@@ -49,12 +41,7 @@ export class BooksControllerImp implements BookController {
     @Body()
     createBook: CreateBookDtoImp,
   ): Promise<Partial<CreateBookDtoImp>> {
-
-    if (!createBook) {
-      throw new BadRequestException(`Data is missing for create book`);
-    }
- 
-    return await this.createBookUsecase.execute(createBook);
+    return await super.createEntity(createBook);
   }
 
   /**
@@ -62,13 +49,7 @@ export class BooksControllerImp implements BookController {
    */
   @Get("list")
   async handleFindSavedBooksList(): Promise<ReadBookDtoImp[]> {
-    const books = await this.findAllBookUsecase.execute();
-
-    if (!books) {
-      throw new BadRequestException(`Books error fetching`);
-    }
-
-    return books;
+    return await super.findAllEntity();
   }
 
   /**
@@ -78,34 +59,18 @@ export class BooksControllerImp implements BookController {
   async handleFindOneSavedBook(
     @Param("id") id: number,
   ): Promise<Partial<ReadBookDtoImp>> {
-    const book: ReadBookDtoImp =
-      await this.readOneBookUsecase.execute(id);
-
-    if (!book) {
-      throw new NotFoundException(`Book with ID ${id} not found`);
-    }
-    return book;
+    return await super.findOneEntity(id);
   }
 
   /**
    * @inheritdoc BookController.handleUpdateBookDetail
    */
-  @Put("update")
+  @Put("update/:id")
   async handleUpdateBookDetail(
     @Body()
     updateBook: UpdateBookDtoImp,
   ): Promise<Partial<UpdateBookDtoImp>> {
-
-
-    if (!updateBook.id) {
-      throw new NotFoundException(`Book with ID ${updateBook.id} not found`);
-    }
-
-    if (!updateBook) {
-      throw new BadRequestException(`Book update ${updateBook} is invalid`);
-    }
-
-    return await this.updateBookUsecase.execute(updateBook);
+    return await super.updateEntity(updateBook.id, updateBook);
   }
 
   /**
@@ -113,12 +78,6 @@ export class BooksControllerImp implements BookController {
    */
   @Delete("delete/:id")
   async handleDeleteSavedBook(@Param("id") id: number): Promise<boolean> {
-    const isDelete = await this.deleteBookUsecase.execute(id);
-
-    if (!isDelete) {
-      throw new NotFoundException(`Book with ID ${id} not deleted`);
-    }
-
-    return !!isDelete;
+    return super.deleteEntity(id);
   }
 }

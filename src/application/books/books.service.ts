@@ -1,13 +1,17 @@
-import { BookService } from '@domain/books/book-service.interface';
-import { BookRepositoryPersistence } from '@infrastructure/persistence/repositories/books/book-repository-persistence';
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
-import { CreateBookDtoImp, ReadBookDtoImp, UpdateBookDtoImp } from './dto';
+import { AbstractGeneralService } from "@application/generics/general";
+import { BookEntity, BookService } from "@domain/books";
+import { BookRepositoryPersistence } from "@infrastructure/persistence/repositories/books/book-repository-persistence";
+import { Injectable } from "@nestjs/common";
+import { CreateBookDtoImp, ReadBookDtoImp, UpdateBookDtoImp } from "./dto";
 
 @Injectable()
-export class BooksServiceImp implements BookService {
-  constructor(
-    private readonly bookRepository: BookRepositoryPersistence
-  ) { }
+export class BooksServiceImp
+  extends AbstractGeneralService<BookEntity>
+  implements BookService
+{
+  constructor(private readonly bookRepository: BookRepositoryPersistence) {
+    super(bookRepository);
+  }
 
   /**
    * @inheritdoc bookService.createAndPublishbook
@@ -15,74 +19,36 @@ export class BooksServiceImp implements BookService {
   async createAndPublishBook(
     createBook: CreateBookDtoImp,
   ): Promise<Partial<CreateBookDtoImp>> {
-
-    if (!createBook || Object.keys(createBook).length === 0)
-      throw new BadRequestException(`Missing data for book creation`);
-
-    return await this.bookRepository.createBook(createBook);
+    return await super.createEntity(createBook);
   }
 
   /**
    * @inheritdoc bookService.findSavedbooksList
    */
   async findSavedBooksList(): Promise<ReadBookDtoImp[]> {
-    const books = await this.bookRepository.findAllBook();
-
-    if (!books)
-      throw new NotFoundException(`No books found in database`);
-
-    return books;
+    return await super.findAllEntity();
   }
 
   /**
    * @inheritdoc bookService.findOneSavedbook
    */
   async findOneSavedBook(id: number): Promise<ReadBookDtoImp> {
-    const book: ReadBookDtoImp =
-      await this.bookRepository.findOneBook(id);
-
-    if (!book)
-      throw new NotFoundException(`book with ${id} not exist in database`);
-
-    return book;
+    return await super.findOneEntity(id);
   }
 
   /**
    * @inheritdoc bookService.updatebookDetail
    */
   async updateBookDetail(
-    updateBook: UpdateBookDtoImp
+    updateBook: UpdateBookDtoImp,
   ): Promise<Partial<UpdateBookDtoImp>> {
-    const book = await this.bookRepository.findOneBook(updateBook.id);
-
-    if (!book.id)
-      throw new NotFoundException(`book width ID ${book.id} not found`);
-
-    if (!updateBook || Object.keys(updateBook).length === 0)
-      throw new BadRequestException(`${updateBook} Missing data`);
-
-    return await this.bookRepository.updateBook(
-      updateBook.id,
-      updateBook,
-    );
+    return super.updateEntity(updateBook.id, updateBook);
   }
 
   /**
    * @inheritdoc bookService.deleteSavedbook
    */
   async deleteSavedBook(id: number): Promise<boolean> {
-
-    const book = await this.bookRepository.findOneBook(id);
-
-    if (!book)
-      throw new NotFoundException(`book with ID ${id} not found`);
-
-    const isDeleted = await this.bookRepository.deleteBook(id);
-
-    if (!isDeleted)
-      throw new BadRequestException(`Failed delete book with ID: ${id} `)
-
-    return isDeleted;
+    return await super.deleteEntity(id);
   }
-
 }
