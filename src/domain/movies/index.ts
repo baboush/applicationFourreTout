@@ -1,9 +1,4 @@
 import { CreateMovieDto, UpdateMovieDto, ReadMovieDto } from "./dto";
-import {
-  CreateMovieUsecase,
-  UpdateMovieUsecase,
-  ReadMovieUsecase,
-} from "./usecase";
 import { MovieController } from "./movie-controller.interface";
 import { MovieRepository } from "./movie-repository.interface";
 import { MovieService } from "./movie-service.interface";
@@ -14,9 +9,6 @@ export {
   CreateMovieDto,
   UpdateMovieDto,
   ReadMovieDto,
-  CreateMovieUsecase,
-  UpdateMovieUsecase,
-  ReadMovieUsecase,
   MovieController,
   MovieService,
   MovieRepository,

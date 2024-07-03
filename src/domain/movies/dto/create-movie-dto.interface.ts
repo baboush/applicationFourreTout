@@ -3,7 +3,7 @@ import { DirectorMovie, PosterMovie, TitleMovie } from "@shared/types";
 /**
  * Interface representing a DTO (Data Transfer Object) used to create a new movie.
  */
-export interface CreateMovieDto {
+export interface CreateMovieDto  {
   /**
    * Title of the movie.
    */
