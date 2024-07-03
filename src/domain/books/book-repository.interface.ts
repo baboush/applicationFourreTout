@@ -1,3 +1,4 @@
+import { DeepPartial } from "typeorm";
 import { ReadBookDto, CreateBookDto, UpdateBookDto } from "./dto";
 
 /**
@@ -12,7 +13,7 @@ export interface BookRepository {
    * @returns A Promise that resolves to a complete Book object
    *          representing the created book, or rejects with an error if creation fails.
    */
-  createBook(createBook: CreateBookDto): Promise<CreateBookDto>;
+  createBook(createBook: DeepPartial<CreateBookDto>): Promise<CreateBookDto>;
 
   /**
    *
@@ -38,7 +39,10 @@ export interface BookRepository {
    * @returns A Promise that resolves to a partially populated Book object
    *          reflecting the update, or rejects with an error if the update fails.
    */
-  updateBook(id: number, updateBook: UpdateBookDto): Promise<Partial<UpdateBookDto>>;
+  updateBook(
+    id: number,
+    updateBook: UpdateBookDto,
+  ): Promise<Partial<UpdateBookDto>>;
 
   /**
    * Deletes a book from the data source based on its ID.
