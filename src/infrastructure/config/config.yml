@@ -1,0 +1,15 @@
+# Use root/example as user/password credentials
+
+db:
+  mysql:
+    url: "localhost"
+    port: "3333"
+    database: "migration1"
+    database_usr: "root"
+    database_password: "root"
+    database_type: "mysql"
+
+swagger:
+  title: "Application Fourre Tout"
+  description: "Api Rest pour ajouter, supprimer, des rendez-vous, des films, des livres, des taches"
+  version: 1.0.0
