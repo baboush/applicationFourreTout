@@ -7,7 +7,7 @@ import { AbstractGeneralService } from "./abstract-general.service";
 export class AbstractGeneralController<T extends Entity>
   implements AbstractGeneralEntityController<T>
 {
-  constructor(protected readonly service: AbstractGeneralService<T>) {}
+  constructor(private readonly service: AbstractGeneralService<T>) {}
 
   async createEntity(entity: DeepPartial<T>): Promise<Partial<T>> {
     return await this.service.createEntity(entity);
@@ -22,8 +22,8 @@ export class AbstractGeneralController<T extends Entity>
     return await this.service.deleteEntity(id);
   }
 
-  async findAllEntity(): Promise<T[]> {
-    throw new Error("Method not implemented.");
+  async findAllEntities(entity: string, entityRelation: string): Promise<T[]> {
+    return await this.service.findAllEntities(entity, entityRelation);
   }
 
   async findOneEntity(id: number): Promise<T> {
