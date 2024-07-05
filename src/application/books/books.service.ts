@@ -1,8 +1,8 @@
 import { AbstractGeneralService } from "@application/generics/general";
 import { BookEntity, BookService } from "@domain/books";
-import { BookRepositoryPersistence } from "@infrastructure/persistence/repositories/books/book-repository-persistence";
 import { Injectable } from "@nestjs/common";
 import { CreateBookDtoImp, ReadBookDtoImp, UpdateBookDtoImp } from "./dto";
+import { BookRepositoryPersistence } from "@infrastructure/persistence/repositories/books/book-repository-persistence";
 
 @Injectable()
 export class BooksServiceImp
@@ -26,7 +26,7 @@ export class BooksServiceImp
    * @inheritdoc bookService.findSavedbooksList
    */
   async findSavedBooksList(): Promise<ReadBookDtoImp[]> {
-    return await super.findAllEntity();
+    return await super.findAllEntities("book", "categories");
   }
 
   /**

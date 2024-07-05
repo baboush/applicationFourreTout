@@ -49,7 +49,7 @@ export class BooksControllerImp
    */
   @Get("list")
   async handleFindSavedBooksList(): Promise<ReadBookDtoImp[]> {
-    return await super.findAllEntity();
+    return await super.findAllEntities("book", "categories");
   }
 
   /**
