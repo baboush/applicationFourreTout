@@ -31,7 +31,7 @@ export class MovieServiceImp
    * @inheritdoc MovieService.findSavedMoviesList
    */
   async findSavedMoviesList(): Promise<ReadMovieDtoImp[]> {
-    return await super.findAllEntity();
+    return await super.findAllEntities("movie", "categories");
   }
 
   /**

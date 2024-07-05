@@ -49,7 +49,7 @@ export class MovieControllerImp
    */
   @Get("list")
   async handleFindSavedMoviesList(): Promise<ReadMovieDtoImp[]> {
-    return await super.findAllEntity();
+    return await super.findAllEntities("movie", "categories");
   }
 
   /**

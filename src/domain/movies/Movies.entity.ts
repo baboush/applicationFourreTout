@@ -35,7 +35,10 @@ export class MovieEntity {
   @OneToMany(() => FavoriesEntity, (favories) => favories.movie)
   favories: FavoriesEntity[];
 
-  @ManyToMany(() => CategoriesEntity, (categories) => categories.movies)
+  @ManyToMany(() => CategoriesEntity, (categories) => categories.movies, {
+    cascade: true,
+  })
+  @JoinTable()
   categories: CategoriesEntity[];
 
   @ManyToMany(() => ProfileEntity, (profile) => profile.movies)

@@ -1,11 +1,11 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { BadRequestException, NotFoundException } from '@nestjs/common';
-import { MovieRepositoryPersistence } from '@infrastructure/persistence/repositories';
-import { MovieServiceImp } from '../movie.service';
-import { CreateMovieDtoImp, ReadMovieDtoImp } from '../dto';
-import { MovieEntity, UpdateMovieDto } from '@domain/movies';
+import { Test, TestingModule } from "@nestjs/testing";
+import { BadRequestException, NotFoundException } from "@nestjs/common";
+import { MovieRepositoryPersistence } from "@infrastructure/persistence/repositories";
+import { MovieServiceImp } from "../movie.service";
+import { CreateMovieDtoImp } from "../dto";
+import { UpdateMovieDto } from "@domain/movies";
 
-describe('MovieApplicationService', () => {
+describe("MovieApplicationService", () => {
   let service: MovieServiceImp;
   let repo: MovieRepositoryPersistence;
 
@@ -16,11 +16,11 @@ describe('MovieApplicationService', () => {
         {
           provide: MovieRepositoryPersistence,
           useValue: {
-            createMovie: jest.fn(),
-            findAllMovie: jest.fn(),
-            findOneMovie: jest.fn(),
-            updateMovie: jest.fn(),
-            deleteMovie: jest.fn(),
+            createEntity: jest.fn(),
+            findAllEntities: jest.fn(),
+            findOneEntity: jest.fn(),
+            updateEntity: jest.fn(),
+            deleteEntity: jest.fn(),
           },
         },
       ],
@@ -30,103 +30,167 @@ describe('MovieApplicationService', () => {
     repo = module.get<MovieRepositoryPersistence>(MovieRepositoryPersistence);
   });
 
-  it('should be defined', () => {
+  it("should be defined", () => {
     expect(service).toBeDefined();
   });
 
-  describe('createAndPublishMovie', () => {
-    it('should throw BadRequestException if movie data is invalid', async () => {
+  describe("createAndPublishMovie", () => {
+    it("should throw BadRequestException if movie data is invalid", async () => {
       const movie: CreateMovieDtoImp = {} as any;
-      await expect(service.createAndPublishMovie(movie)).rejects.toThrowError(BadRequestException);
+      jest
+        .spyOn(repo, "createEntity")
+        .mockRejectedValueOnce(new BadRequestException());
+      await expect(service.createAndPublishMovie(movie)).rejects.toThrow(
+        BadRequestException,
+      );
     });
 
-    it('should create a movie if data is valid', async () => {
-      const movie: CreateMovieDtoImp = { 
-        title: 'The Shawshank Redemption',
-        poster: 'https://example.com/poster.jpg',
-        director: 'Frank Darabont',
+    it("should create a movie if data is valid", async () => {
+      const movie: CreateMovieDtoImp = {
+        title: "The Shawshank Redemption",
+        poster: "https://example.com/poster.jpg",
+        director: "Frank Darabont",
       } as any;
-      const createdMovie = { 
-        title: 'The Shawshank Redemption',
-        poster: 'https://example.com/poster.jpg',
-        director: 'Frank Darabont',
+      const createdMovie = {
+        title: "The Shawshank Redemption",
+        poster: "https://example.com/poster.jpg",
+        director: "Frank Darabont",
       } as any;
-      jest.spyOn(repo, 'createMovie').mockResolvedValueOnce(createdMovie);
-      await expect(service.createAndPublishMovie(movie)).resolves.toEqual(createdMovie);
+      jest.spyOn(repo, "createEntity").mockResolvedValueOnce(createdMovie);
+      await expect(service.createAndPublishMovie(movie)).resolves.toEqual(
+        createdMovie,
+      );
     });
 
-    describe('findSavedMoviesList', () => {
-       it('should throw NotFoundException if movies does not exist', async () => {
-        jest.spyOn(repo, 'findAllMovie').mockResolvedValueOnce(undefined);
-        await expect(service.findSavedMoviesList()).rejects.toThrow(NotFoundException);
+    describe("findSavedMoviesList", () => {
+      it("should throw NotFoundException if movies does not exist", async () => {
+        jest
+          .spyOn(repo, "findAllEntities")
+          .mockRejectedValueOnce(new NotFoundException());
+        await expect(service.findSavedMoviesList()).rejects.toThrow(
+          NotFoundException,
+        );
       });
 
-      it('should return a list of movies', async () => {
-        const movies: MovieEntity[] = [
+      it("should return a list of movies", async () => {
+        const movies = [
           {
             id: 1,
-            title: 'The Shawshank Redemption',
-            director: 'Frank Darabont',
-            poster: 'gfdgdfgdfg'
+            title: "The Shawshank Redemption",
+            director: "Frank Darabont",
+            poster: "gfdgdfgdfg",
           },
           {
             id: 2,
-            title: 'The Godfather',
-            director: 'Francis Ford Coppola',
-            poster: 'fsdfsdfsdfsdf'
-          } as any];
-        jest.spyOn(repo, 'findAllMovie').mockResolvedValueOnce(movies);
+            title: "The Godfather",
+            director: "Francis Ford Coppola",
+            poster: "fsdfsdfsdfsdf",
+          } as any,
+        ];
+        jest.spyOn(repo, "findAllEntities").mockResolvedValueOnce(movies);
         await expect(service.findSavedMoviesList()).resolves.toEqual(movies);
       });
     });
 
-    describe('findOneSavedMovie', () => {
-      it('should throw NotFoundException if movie does not exist', async () => {
+    describe("findOneSavedMovie", () => {
+      it("should throw NotFoundException if movie does not exist", async () => {
         const id = 1;
-        jest.spyOn(repo, 'findOneMovie').mockResolvedValueOnce(undefined);
-        await expect(service.findOneSavedMovie(id)).rejects.toThrow(NotFoundException);
+        jest
+          .spyOn(repo, "findOneEntity")
+          .mockRejectedValueOnce(
+            new NotFoundException(`Entity with id ${id} not found`),
+          );
+        await expect(service.findOneSavedMovie(id)).rejects.toThrow(
+          NotFoundException,
+        );
       });
 
-      it('should return a movie if it exists', async () => {
+      it("should return a movie if it exists", async () => {
         const id = 1;
-        const movie: ReadMovieDtoImp = { 
+        const movie = {
           id: 1,
           title: "Dalut",
-          Poster: 'testset',
-          director: 'sdfgjdklfgjdfklg',
+          Poster: "testset",
+          director: "sdfgjdklfgjdfklg",
         } as any;
-        jest.spyOn(repo, 'findOneMovie').mockResolvedValueOnce(movie);
+        jest.spyOn(repo, "findOneEntity").mockResolvedValueOnce(movie);
         await expect(service.findOneSavedMovie(id)).resolves.toEqual(movie);
       });
     });
 
-    describe('updateMovieDetail', () => {
-      it('should throw NotFoundException if movie id is not provided', async () => {
+    describe("updateEntityDetail", () => {
+      it("should throw NotFoundException if movie id is not exist", async () => {
         const movie: UpdateMovieDto = {} as any;
-        await expect(service.updateMovieDetail(movie)).rejects.toThrow(NotFoundException);
+        jest
+          .spyOn(repo, "updateEntity")
+          .mockRejectedValueOnce(new NotFoundException());
+
+        await expect(service.updateMovieDetail(movie)).rejects.toThrow(
+          NotFoundException,
+        );
       });
 
-      it('should update a movie if data is valid', async () => {
-        const movie: UpdateMovieDto = { 
-          id: 1, titre: 'test', poster:'test', director:'test'
+      it("should throw NotFoundException if movie id is not exist", async () => {
+        const movie: UpdateMovieDto = {
+          id: 1,
+          title: "tet",
+          poster: "",
+          director: "",
         } as any;
-        const updatedMovie = { id: 1, titre: 'test2', poster:'test2', director:'test2'  } as any;
-        jest.spyOn(repo, 'updateMovie').mockResolvedValueOnce(updatedMovie);
-        await expect(service.updateMovieDetail(movie)).resolves.toEqual(updatedMovie);
+        jest
+          .spyOn(repo, "updateEntity")
+          .mockRejectedValueOnce(new BadRequestException());
+
+        await expect(service.updateMovieDetail(movie)).rejects.toThrow(
+          BadRequestException,
+        );
+      });
+
+      it("should update a movie if data is valid", async () => {
+        const movie = {
+          id: 1,
+          titre: "test",
+          poster: "test",
+          director: "test",
+        } as any;
+        const updatedMovie = {
+          id: 1,
+          titre: "test2",
+          poster: "test2",
+          director: "test2",
+        } as any;
+
+        jest.spyOn(repo, "findOneEntity").mockResolvedValueOnce(movie);
+        jest.spyOn(repo, "updateEntity").mockResolvedValueOnce(updatedMovie);
+        await expect(service.updateMovieDetail(movie)).resolves.toEqual(
+          updatedMovie,
+        );
       });
     });
 
-    describe('deleteSavedMovie', () => {
-      it('should throw NotFoundException if movie does not exist', async () => {
+    describe("deleteSavedMovie", () => {
+      it("should throw NotFoundException if movie does not exist", async () => {
         const id = 1;
-        jest.spyOn(repo, 'deleteMovie').mockResolvedValueOnce(false);
-        await expect(service.deleteSavedMovie(id)).rejects.toThrow(NotFoundException);
+        jest
+          .spyOn(repo, "deleteEntity")
+          .mockRejectedValueOnce(
+            new NotFoundException(`Entity with id ${id} not found`),
+          );
+        await expect(service.deleteSavedMovie(id)).rejects.toThrow(
+          NotFoundException,
+        );
       });
 
-      it('should delete a movie if it exists', async () => {
-        const id = 1;
-        jest.spyOn(repo, 'deleteMovie').mockResolvedValueOnce(true);
-        await expect(service.deleteSavedMovie(id)).resolves.toEqual(true);
+      it("should delete a movie if it exists", async () => {
+        const movie = {
+          id: 1,
+          titre: "test",
+          poster: "test",
+          director: "test",
+        } as any;
+        jest.spyOn(repo, "findOneEntity").mockResolvedValueOnce(movie);
+        jest.spyOn(repo, "deleteEntity").mockResolvedValueOnce(true);
+        await expect(service.deleteSavedMovie(movie.id)).resolves.toEqual(true);
       });
     });
   });
