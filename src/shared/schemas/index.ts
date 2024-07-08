@@ -10,6 +10,12 @@ import {
 
 import { nameSchema, surnameSchema } from "./profile-schema";
 
+import {
+  titleTaskSchema,
+  contentTaskSchema,
+  dateFinishTaskSchema,
+} from "./task-schema";
+
 export {
   emailSchema,
   usernameSchema,
@@ -20,4 +26,7 @@ export {
   roleSchema,
   nameSchema,
   surnameSchema,
+  titleTaskSchema,
+  contentTaskSchema,
+  dateFinishTaskSchema,
 };

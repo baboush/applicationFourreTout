@@ -23,7 +23,7 @@ import { UpdateTaskDtoImp } from "./dto/update-task-imp.dto";
  */
 @ApiTags("Task")
 //@UseGuards(JwtGuard)
-@Controller("Task")
+@Controller("task")
 export class TaskControllerImp
   extends AbstractUsersController<TaskEntity>
   implements TasksController

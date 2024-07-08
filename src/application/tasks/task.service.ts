@@ -2,6 +2,7 @@ import { AbstractUsersService } from "@application/generics/users";
 import { TaskEntity, TasksService } from "@domain/tasks";
 import { TaskRepositoryPersistence } from "@infrastructure/persistence/repositories/tasks/task-repository-persistence";
 import { Injectable } from "@nestjs/common";
+import { CreateTaskDtoImp } from "./dto";
 
 @Injectable()
 export class TaskServiceImp
@@ -13,7 +14,7 @@ export class TaskServiceImp
   }
 
   async createAndPublishTask(
-    createTask: any,
+    createTask: CreateTaskDtoImp,
     idProfile: number,
   ): Promise<Partial<TaskEntity>> {
     return await super.createEntity(createTask, idProfile);

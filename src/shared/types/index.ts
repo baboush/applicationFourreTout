@@ -1,9 +1,9 @@
-import { Username, Email, Password, Role } from './user-type';
-import { Name, Surname } from './profile-types';
-import { NameCategory } from './category-types';
-import { TitleMovie, DirectorMovie, PosterMovie } from './movie-types';
-import { TitleBook, AuthorBook, PosterBook } from './book-types';
-import {} from './user-type';
+import { Username, Email, Password, Role } from "./user-type";
+import { Name, Surname } from "./profile-types";
+import { NameCategory } from "./category-types";
+import { TitleMovie, DirectorMovie, PosterMovie } from "./movie-types";
+import { TitleBook, AuthorBook, PosterBook } from "./book-types";
+import { TitleTask, ContentTask } from "./task-types";
 
 export {
   Name,
@@ -19,4 +19,6 @@ export {
   PosterBook,
   TitleBook,
   AuthorBook,
+  TitleTask,
+  ContentTask,
 };
