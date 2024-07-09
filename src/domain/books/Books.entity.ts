@@ -32,7 +32,10 @@ export class Books {
   @Column("varchar", { name: "poster", nullable: true, length: 250 })
   poster: PosterBook | null;
 
-  @ManyToMany(() => CategoriesEntity, (categories) => categories.books)
+  @ManyToMany(() => CategoriesEntity, (categories) => categories.books, {
+    cascade: true,
+  })
+  @JoinTable()
   categories: CategoriesEntity[];
 
   @OneToMany(() => FavoriesEntity, (favories) => favories.book)

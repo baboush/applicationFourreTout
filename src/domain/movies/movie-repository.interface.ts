@@ -16,10 +16,15 @@ export interface MovieRepository {
 
   /**
    *
+   * @param entity name entity
+   * @param entityRelation name entity relation
    * @returns A Promise that resolves to a list of MovieEntity objects,
    *          or rejects with an error if retrieval fails.
    */
-  findAllMovie(): Promise<ReadMovieDto[]>;
+  findAllMovies(
+    entity: string,
+    entityRelation: string,
+  ): Promise<ReadMovieDto[]>;
 
   /**
    * Finds a single movie by its ID from the data source.
@@ -38,7 +43,10 @@ export interface MovieRepository {
    * @returns A Promise that resolves to a partially populated Movie object
    *          reflecting the update, or rejects with an error if the update fails.
    */
-  updateMovie(id: number, updateMovie: UpdateMovieDto): Promise<Partial<UpdateMovieDto>>;
+  updateMovie(
+    id: number,
+    updateMovie: UpdateMovieDto,
+  ): Promise<Partial<UpdateMovieDto>>;
 
   /**
    * Deletes a movie from the data source based on its ID.

@@ -1,36 +1,50 @@
-import { Column, Entity, ManyToMany, PrimaryGeneratedColumn } from "typeorm";
-import { ApiProperty } from "@nestjs/swagger";
+import {
+  BaseEntity,
+  Column,
+  CreateDateColumn,
+  DeleteDateColumn,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  Relation,
+  UpdateDateColumn,
+} from "typeorm";
 import { ProfileEntity } from "@domain/profiles";
 
-export enum Etat {
-  ENCOUR = "en",
-  ENATTENTE = "ea",
-  FINI = "fi",
+export enum State {
+  INPROGRESS = "IP",
+  PENDING = "PE",
+  FINISH = "FI",
 }
 
 @Entity("Tasks", { schema: "migration1" })
-export class Tasks {
+export class Tasks extends BaseEntity {
   @PrimaryGeneratedColumn({ type: "int", name: "id" })
-  @ApiProperty({ description: "id", type: "number" })
   id: number;
 
   @Column("varchar", { name: "title", length: 50 })
-  @ApiProperty({ description: "title", type: "string" })
   title: string;
 
-  @Column("varchar", { name: "content", length: 250 })
-  @ApiProperty({ description: "content", type: "string" })
+  @Column("varchar", { name: "content", length: 400 })
   content: string;
 
   @Column("date", { name: "date_finish" })
-  @ApiProperty({ description: "dateFinish", type: "string" })
-  dateFinish: string;
+  dateFinish: Date;
 
-  @Column({ type: "enum", enum: Etat, default: Etat.ENCOUR })
-  @ApiProperty({ description: "etat", type: 'EC" | "EA" | "F"' })
-  etat: Etat;
+  @Column({ type: "enum", enum: State, default: State.INPROGRESS })
+  state: State;
 
-  @ManyToMany(() => ProfileEntity, (profile) => profile.tasks)
-  @ApiProperty({ description: "profiles", type: "Profile[]" })
-  profiles: ProfileEntity[];
+  @ManyToOne(() => ProfileEntity, (profile) => profile.tasks)
+  @JoinColumn([{ name: "profile_id", referencedColumnName: "id" }])
+  profile: Relation<ProfileEntity>;
+
+  @CreateDateColumn()
+  createAt: Date;
+
+  @UpdateDateColumn()
+  updateAt: Date;
+
+  @DeleteDateColumn()
+  deleteAt: Date;
 }

@@ -12,6 +12,7 @@ import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity
 export abstract class AbstractGeneralRepository<T extends Entity>
   implements AbstractGeneralEntityRepository<T>
 {
+  abstract readonly entityName: string;
   constructor(private readonly entityRepository: Repository<T>) {}
 
   async createEntity(createEntity: DeepPartial<T>): Promise<Partial<T>> {
@@ -19,7 +20,8 @@ export abstract class AbstractGeneralRepository<T extends Entity>
       where: createEntity as FindOptionsWhere<T>,
     });
 
-    if (existEntity) throw new BadRequestException("Entity exist in database");
+    if (existEntity)
+      throw new BadRequestException(`${this.entityName} exist in database`);
 
     return await this.entityRepository.save(createEntity);
   }
@@ -30,13 +32,22 @@ export abstract class AbstractGeneralRepository<T extends Entity>
     } as FindOptionsWhere<T>;
     const entity = await this.entityRepository.findOneBy(option);
 
-    if (!entity) throw new NotFoundException(`Entity with ${id} not found`);
+    if (!entity)
+      throw new NotFoundException(`${this.entityName} with ${id} not found`);
 
     return entity;
   }
 
-  async findAllEntities(): Promise<T[]> {
-    throw new Error("Method not implemented");
+  async findAllEntities(entity: string, entityRelation: string): Promise<T[]> {
+    const entities = await this.entityRepository
+      .createQueryBuilder(entity)
+      .leftJoinAndSelect(`${entity}.${entityRelation}`, entityRelation)
+      .getMany();
+
+    if (entities.length === 0)
+      throw new NotFoundException(`${this.entityName} not found`);
+
+    return entities;
   }
 
   async updateEntity(
@@ -49,7 +60,7 @@ export abstract class AbstractGeneralRepository<T extends Entity>
     const existEntity = await this.entityRepository.findOneBy(option);
 
     if (!existEntity)
-      throw new NotFoundException(`Entity with ${id} not found`);
+      throw new NotFoundException(`${this.entityName} with ${id} not found`);
 
     await this.entityRepository.update(id, updateEntity);
 
@@ -60,7 +71,7 @@ export abstract class AbstractGeneralRepository<T extends Entity>
     const deleteEntity = await this.entityRepository.delete(id);
 
     if (deleteEntity.affected === 0)
-      throw new NotFoundException(`Movie width ${id} not found`);
+      throw new NotFoundException(`${this.entityName} width ${id} not found`);
 
     return deleteEntity.affected > 0;
   }

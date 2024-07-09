@@ -11,6 +11,7 @@ import { CategoriesModule } from "@application/categories";
 import { BookModule } from "@application/books";
 import { APP_INTERCEPTOR } from "@nestjs/core";
 import { ValidationInterceptor } from "@shared/filter/validation-interceptor";
+import { TaskModule } from "@application/tasks";
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { ValidationInterceptor } from "@shared/filter/validation-interceptor";
     MovieModule,
     CategoriesModule,
     BookModule,
+    TaskModule,
   ],
   controllers: [],
   providers: [

@@ -8,13 +8,14 @@ import {
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
-import { AbstractGeneralRepository } from "@infrastructure/persistence/repositories/generics/admin";
+import { AbstractGeneralRepository } from "@infrastructure/persistence/repositories/generics/general";
 
 @Injectable()
 export class MovieRepositoryPersistence
   extends AbstractGeneralRepository<MovieEntity>
   implements MovieRepository
 {
+  entityName = "Movie";
   constructor(
     @InjectRepository(MovieEntity)
     private readonly movieRepository: Repository<MovieEntity>,
@@ -37,13 +38,11 @@ export class MovieRepositoryPersistence
   /**
    * @inheritdoc MovieRepository.findAllMovie
    */
-  async findAllMovie(): Promise<ReadMovieDto[]> {
-    throw new Error("Method not implemented");
-    /*return await this.moviesRepository
-      .createQueryBuilder("movie")
-      .leftJoinAndSelect("movie.categories", "categories")
-      .getMany();
-      */
+  async findAllMovies(
+    entity: string,
+    entityRelation: string,
+  ): Promise<ReadMovieDto[]> {
+    return await super.findAllEntities(entity, entityRelation);
   }
 
   /**

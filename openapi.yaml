@@ -517,6 +517,187 @@
           "Book"
         ]
       }
+    },
+    "/task/create/{idProfile}": {
+      "post": {
+        "operationId": "TaskControllerImp_handleCreateAndPublishTask",
+        "parameters": [
+          {
+            "name": "idProfile",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateTaskDtoImp"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Task"
+        ]
+      }
+    },
+    "/task/{id}/list": {
+      "get": {
+        "operationId": "TaskControllerImp_handleFindSavedTasksList",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ReadTaskDtoImp"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Task"
+        ]
+      }
+    },
+    "/task/{id}": {
+      "get": {
+        "operationId": "TaskControllerImp_handleFindOneSavedTask",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Task"
+        ]
+      }
+    },
+    "/task/udapte/{idProfile}/{idTask}": {
+      "put": {
+        "operationId": "TaskControllerImp_handleUpdateTaskDetail",
+        "parameters": [
+          {
+            "name": "idProfile",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "idTask",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateTaskDtoImp"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Task"
+        ]
+      }
+    },
+    "/task/delete/{id}": {
+      "delete": {
+        "operationId": "TaskControllerImp_handleDeleteSavedTask",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Task"
+        ]
+      }
     }
   },
   "info": {
@@ -664,6 +845,7 @@
             "type": "string"
           },
           "dateFinish": {
+            "format": "date-time",
             "type": "string"
           },
           "state": {
@@ -1128,6 +1310,113 @@
           "title",
           "poster",
           "author"
+        ]
+      },
+      "CreateTaskDtoImp": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "minLength": 10,
+            "maxLength": 60
+          },
+          "content": {
+            "type": "string",
+            "minLength": 10,
+            "maxLength": 200
+          },
+          "dateFinish": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "IP",
+              "PE",
+              "FI"
+            ]
+          }
+        },
+        "required": [
+          "title",
+          "content",
+          "dateFinish",
+          "state"
+        ]
+      },
+      "ReadTaskDtoImp": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "title": {
+            "type": "string",
+            "minLength": 10,
+            "maxLength": 50
+          },
+          "content": {
+            "type": "string",
+            "minLength": 50,
+            "maxLength": 400
+          },
+          "dateFinish": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "IP",
+              "PE",
+              "FI"
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "content",
+          "dateFinish",
+          "state"
+        ]
+      },
+      "UpdateTaskDtoImp": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "title": {
+            "type": "string",
+            "minLength": 10,
+            "maxLength": 50
+          },
+          "content": {
+            "type": "string",
+            "minLength": 50,
+            "maxLength": 400
+          },
+          "dateFinish": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "IP",
+              "PE",
+              "FI"
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "content",
+          "dateFinish",
+          "state"
         ]
       }
     }
